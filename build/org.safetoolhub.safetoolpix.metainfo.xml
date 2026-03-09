@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AppStream metadata for SafeTool Pix — used by Flatpak and software centres -->
+<component type="desktop-application">
+  <id>org.safetoolhub.safetoolpix</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>SafeTool Pix</name>
+  <summary>Privacy-first photo and video management</summary>
+
+  <description>
+    <p>
+      SafeTool Pix manages, organizes, and optimizes photo and video
+      collections with absolute privacy.  All processing is 100% local —
+      no cloud, no telemetry, no external connections.
+    </p>
+    <p>Features include:</p>
+    <ul>
+      <li>Exact and visual duplicate detection (SHA-256 + perceptual hashing)</li>
+      <li>HEIC/JPG pair cleanup and Live Photo management</li>
+      <li>Smart file organisation by date</li>
+      <li>Batch renaming with EXIF-based date patterns</li>
+      <li>Zero-byte file cleanup</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">org.safetoolhub.safetoolpix.desktop</launchable>
+
+  <url type="homepage">https://safetoolhub.org</url>
+  <url type="bugtracker">https://github.com/safetoolhub/safetool-pix/issues</url>
+
+  <!-- developer tag (AppStream 1.0+); developer_name kept for legacy parsers -->
+  <developer id="org.safetoolhub">
+    <name>SafeToolHub</name>
+  </developer>
+  <developer_name>SafeToolHub</developer_name>
+
+  <content_rating type="oars-1.1" />
+
+  <categories>
+    <category>Graphics</category>
+    <category>Photography</category>
+  </categories>
+
+  <provides>
+    <binary>safetool-pix</binary>
+  </provides>
+</component>
