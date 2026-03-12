@@ -1,0 +1,17 @@
+# Requirements para desarrollo y testing
+-r requirements.txt
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+pytest-qt>=4.0.0
+
+# Build
+pyinstaller>=6.16.0
+
+# Desarrollo
+black>=22.0.0
+isort>=5.10.0
+flake8>=4.0.0
+mypy>=0.950
