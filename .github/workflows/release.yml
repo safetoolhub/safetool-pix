@@ -1,0 +1,417 @@
+name: Release
+
+# Builds binaries for all platforms and creates a DRAFT GitHub Release.
+# The release stays PRIVATE until you manually publish it from the GitHub UI.
+# Nothing is public until YOU click "Publish" on the draft release.
+#
+# Linux artifacts: .deb, .rpm (GPG signed), .AppImage, .flatpak
+# Windows: Inno Setup installer (.exe)
+# macOS: .dmg
+
+on:
+  workflow_dispatch:  # Manual trigger: use with a tag already pushed
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v0.8.6-alpha). Must already exist as a git tag.'
+        required: true
+        type: string
+  push:
+    tags:
+      - "v*"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: write
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────────
+  # Build: Linux (.deb + .rpm + .AppImage via build.py, then GPG sign)
+  # ──────────────────────────────────────────────────────────────────────────
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install Python dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+          uv pip install pyinstaller
+
+      - name: Install packaging tools and Qt dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends \
+            rpm dpkg-sig libegl1 libgl1 libglib2.0-0 libdbus-1-3 \
+            libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 \
+            libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
+            libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 \
+            libfuse2
+
+      - name: Install appimagetool
+        run: |
+          wget -q "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage" \
+            -O /usr/local/bin/appimagetool
+          chmod +x /usr/local/bin/appimagetool
+
+      - name: Build with PyInstaller + package (.deb, .rpm, .AppImage)
+        run: |
+          uv run python dev-tools/build.py
+        env:
+          QT_QPA_PLATFORM: offscreen
+
+      # ── GPG Sign .deb and .rpm ──
+      - name: Check GPG key availability
+        id: gpg-check
+        run: |
+          if [ -n "$GPG_PRIVATE_KEY" ]; then
+            echo "has_key=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_key=false" >> "$GITHUB_OUTPUT"
+            echo "⚠️  GPG_PRIVATE_KEY not set — packages will NOT be signed"
+          fi
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Import GPG key
+        if: steps.gpg-check.outputs.has_key == 'true'
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: |
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          # Trust the imported key ultimately (needs full 40-char fingerprint, from ^fpr line)
+          KEY_FPR=$(gpg --list-keys --with-colons | grep '^fpr' | head -1 | cut -d: -f10)
+          echo "${KEY_FPR}:6:" | gpg --import-ownertrust
+
+      - name: Sign .deb packages
+        if: steps.gpg-check.outputs.has_key == 'true'
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          for deb in dist/SafeToolPix-*.deb; do
+            [ -f "$deb" ] || continue
+            echo "Signing $deb ..."
+            dpkg-sig --sign builder -g "--batch --pinentry-mode loopback --passphrase '${GPG_PASSPHRASE}'" "$deb"
+            echo "✅ Signed: $deb"
+          done
+
+      - name: Sign .rpm packages
+        if: steps.gpg-check.outputs.has_key == 'true'
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          # Configure rpmsign to use our key (short key ID is fine for %_gpg_name)
+          KEY_ID=$(gpg --list-keys --with-colons | grep '^pub' | head -1 | cut -d: -f5)
+          # Use printf to avoid leading spaces being written into rpmmacros
+          printf '%%_signature gpg\n%%_gpg_name %s\n%%__gpg_sign_cmd %%{__gpg} gpg --batch --pinentry-mode loopback --passphrase '"'"'%s'"'"' --no-verbose --no-armor -u "%%{_gpg_name}" -sbo %%{__signature_filename} --digest-algo sha256 %%{__plaintext_filename}\n' \
+            "$KEY_ID" "$GPG_PASSPHRASE" > ~/.rpmmacros
+
+          for rpm_file in dist/SafeToolPix-*.rpm; do
+            [ -f "$rpm_file" ] || continue
+            echo "Signing $rpm_file ..."
+            rpmsign --addsign "$rpm_file"
+            echo "✅ Signed: $rpm_file"
+          done
+
+      - name: Generate SHA256 checksums for Linux artifacts
+        run: |
+          cd dist
+          for f in SafeToolPix-*-linux-*; do
+            [ -f "$f" ] || continue
+            sha256sum "$f" > "${f}.sha256"
+          done
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-artifacts
+          path: |
+            dist/SafeToolPix-*-linux-*.deb
+            dist/SafeToolPix-*-linux-*.rpm
+            dist/SafeToolPix-*-linux-*.AppImage
+            dist/SafeToolPix-*-linux-*.sha256
+          if-no-files-found: warn
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Build: Linux Flatpak (.flatpak bundle)
+  # ──────────────────────────────────────────────────────────────────────────
+  build-flatpak:
+    name: Build Flatpak
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install Python dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+          uv pip install pyinstaller
+
+      - name: Install Flatpak & flatpak-builder
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends \
+            flatpak flatpak-builder elfutils \
+            libegl1 libgl1 libglib2.0-0 libdbus-1-3 \
+            libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 \
+            libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
+            libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0
+
+      - name: Add Flathub remote
+        run: |
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Install Flatpak SDK
+        run: |
+          flatpak install --user -y flathub org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+            TAG="${TAG#v}"
+          else
+            TAG="${GITHUB_REF#refs/tags/v}"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Build PyInstaller binary
+        run: |
+          uv run python dev-tools/build.py --skip-installer
+        env:
+          QT_QPA_PLATFORM: offscreen
+
+      - name: Build Flatpak bundle
+        run: |
+          FULL_VERSION="${{ steps.version.outputs.tag }}"
+          APP_ID="org.safetoolhub.safetoolpix"
+
+          # Create build directory for flatpak
+          BUILD_DIR="flatpak-build"
+          REPO_DIR="flatpak-repo"
+          rm -rf "$BUILD_DIR" "$REPO_DIR"
+
+          # Build the Flatpak using flatpak-builder with the manifest
+          flatpak-builder --user --force-clean \
+            --repo="$REPO_DIR" \
+            "$BUILD_DIR" \
+            build/org.safetoolhub.safetoolpix.yml
+
+          # Export as a single-file bundle
+          BUNDLE_NAME="SafeToolPix-${FULL_VERSION}-linux-x86_64.flatpak"
+          flatpak build-bundle "$REPO_DIR" "dist/${BUNDLE_NAME}" "$APP_ID"
+          echo "✅ Flatpak bundle: dist/${BUNDLE_NAME}"
+
+      - name: Generate SHA256 checksums for Flatpak
+        run: |
+          cd dist
+          for f in SafeToolPix-*.flatpak; do
+            [ -f "$f" ] || continue
+            sha256sum "$f" > "${f}.sha256"
+          done
+
+      - name: Upload Flatpak artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-artifacts
+          path: |
+            dist/SafeToolPix-*-linux-*.flatpak
+            dist/SafeToolPix-*-linux-*.flatpak.sha256
+          if-no-files-found: warn
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Build: Windows (Inno Setup installer)
+  # ──────────────────────────────────────────────────────────────────────────
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install Python dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+          uv pip install pyinstaller
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Extract version from tag
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+            TAG="${TAG#v}"
+          else
+            TAG="${GITHUB_REF#refs/tags/v}"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Build with PyInstaller + package
+        run: |
+          uv run python dev-tools/build.py
+        env:
+          APP_VERSION: ${{ steps.version.outputs.tag }}
+          PYTHONUTF8: "1"
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifacts
+          path: dist/SafeToolPix-*-windows-setup.exe
+          if-no-files-found: warn
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Build: macOS (.dmg)
+  # ──────────────────────────────────────────────────────────────────────────
+  build-macos:
+    name: Build macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install Python dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+          uv pip install pyinstaller
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Generate macOS icon (.icns)
+        run: |
+          ICONSET="assets/icon.iconset"
+          mkdir -p "$ICONSET"
+          for size in 16 32 64 128 256 512; do
+            sips -z $size $size assets/icon.png --out "$ICONSET/icon_${size}x${size}.png"
+          done
+          for size in 32 64 256 512 1024; do
+            half=$((size / 2))
+            sips -z $size $size assets/icon.png --out "$ICONSET/icon_${half}x${half}@2x.png"
+          done
+          iconutil -c icns "$ICONSET" -o assets/icon.icns
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+            TAG="${TAG#v}"
+          else
+            TAG="${GITHUB_REF#refs/tags/v}"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Build with PyInstaller + package
+        run: |
+          uv run python dev-tools/build.py
+        env:
+          APP_VERSION: ${{ steps.version.outputs.tag }}
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-artifacts
+          path: dist/SafeToolPix-*-macos.dmg
+          if-no-files-found: warn
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Create DRAFT Release (NOT public until you manually publish)
+  # ──────────────────────────────────────────────────────────────────────────
+  release:
+    name: Create Draft Release
+    needs: [build-linux, build-flatpak, build-windows, build-macos]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: List artifacts
+        run: |
+          echo "Release artifacts:"
+          find release-assets -type f | sort
+
+      - name: Determine pre-release status
+        id: prerelease
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+            TAG="${TAG#v}"
+          else
+            TAG="${GITHUB_REF#refs/tags/v}"
+          fi
+          if echo "$TAG" | grep -qE '(alpha|beta|rc|dev)'; then
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create DRAFT GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.prerelease.outputs.tag }}
+          name: "SafeTool Pix v${{ steps.prerelease.outputs.tag }}"
+          draft: true
+          prerelease: ${{ steps.prerelease.outputs.is_prerelease }}
+          generate_release_notes: true
+          files: |
+            release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

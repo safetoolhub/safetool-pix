@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=SafeTool Pix
+GenericName=Photo Manager
+Comment=Privacy-first photo and video management — 100% local
+Exec=safetool-pix
+Icon=org.safetoolhub.safetoolpix
+Categories=Graphics;Photography;
+Keywords=photo;video;duplicate;privacy;organizer;
+Terminal=false
+StartupNotify=true
