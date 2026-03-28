@@ -1,0 +1,45 @@
+# Flatpak manifest for SafeTool Pix
+# Uses the pre-built PyInstaller binary (dist/safetool-pix/) as source.
+# Build with: flatpak-builder --user --force-clean --repo=repo build-dir build/org.safetoolhub.safetoolpix.yml
+# Bundle:     flatpak build-bundle repo SafeToolPix.flatpak org.safetoolhub.safetoolpix
+
+app-id: org.safetoolhub.safetoolpix
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: safetool-pix
+
+finish-args:
+  # Filesystem access for user photos/videos
+  - --filesystem=home
+  # Display
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
+  # GPU acceleration (image rendering)
+  - --device=dri
+
+modules:
+  - name: safetool-pix
+    buildsystem: simple
+    build-commands:
+      # Install the pre-built PyInstaller bundle
+      - install -d /app/opt/safetool-pix
+      - cp -a dist/safetool-pix/* /app/opt/safetool-pix/
+
+      # Launcher script (from build/safetool-pix-launcher.sh)
+      - install -Dm755 build/safetool-pix-launcher.sh /app/bin/safetool-pix
+
+      # Desktop file
+      - install -Dm644 build/org.safetoolhub.safetoolpix.desktop /app/share/applications/org.safetoolhub.safetoolpix.desktop
+
+      # Icon
+      - install -Dm644 assets/icon.png /app/share/icons/hicolor/512x512/apps/org.safetoolhub.safetoolpix.png
+
+      # AppStream metainfo
+      - install -Dm644 build/org.safetoolhub.safetoolpix.metainfo.xml /app/share/metainfo/org.safetoolhub.safetoolpix.metainfo.xml
+
+    sources:
+      - type: dir
+        path: ..
