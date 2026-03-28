@@ -4,6 +4,11 @@ name: Release
 # The release stays PRIVATE until you manually publish it from the GitHub UI.
 # Nothing is public until YOU click "Publish" on the draft release.
 #
+# Triggers:
+#   - Tag push v*         → full release: test + build + draft release
+#   - dry-run/* branch    → dry-run: test + build (no release created)
+#   - Manual dispatch     → full release with explicit tag
+#
 # Linux artifacts: .deb, .rpm (GPG signed), .AppImage, .flatpak
 # Windows: Inno Setup installer (.exe)
 # macOS: .dmg
@@ -18,32 +23,76 @@ on:
   push:
     tags:
       - "v*"
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    branches:
+      - "dry-run/**"
 
 permissions:
   contents: write
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
-  # Build: Linux (.deb + .rpm + .AppImage via build.py, then GPG sign)
+  # Test: Run the full test suite before building
   # ──────────────────────────────────────────────────────────────────────────
-  build-linux:
-    name: Build Linux
+  test:
+    name: Run Tests
     runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install Qt system dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends \
+            libegl1 libgl1 libglib2.0-0 libdbus-1-3 \
+            libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 \
+            libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
+            libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0
+
+      - name: Create venv & install deps
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+          uv pip install -r requirements-dev.txt
+
+      - name: Run tests
+        run: |
+          uv run pytest --ignore=tests/performance --ignore=tests/unit/ui --ignore=tests/ui -v --tb=short
+        env:
+          QT_QPA_PLATFORM: offscreen
+
+      - name: Check imports
+        run: |
+          uv run python -c "from config import Config; print(f'v{Config.get_full_version()}')"
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Build: Linux (.deb + .rpm + .AppImage via build.py, then GPG sign)
+  # ──────────────────────────────────────────────────────────────────────────
+  build-linux:
+    name: Build Linux
+    needs: [test]
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
 
       - name: Install Python dependencies
         run: |
@@ -135,7 +184,7 @@ jobs:
           done
 
       - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: linux-artifacts
           path: |
@@ -150,19 +199,20 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   build-flatpak:
     name: Build Flatpak
+    needs: [test]
     runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v7
 
       - name: Install Python dependencies
         run: |
@@ -193,6 +243,9 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             TAG="${{ inputs.tag }}"
+            TAG="${TAG#v}"
+          elif [[ "$GITHUB_REF" == refs/heads/dry-run/* ]]; then
+            TAG="${GITHUB_REF#refs/heads/dry-run/}"
             TAG="${TAG#v}"
           else
             TAG="${GITHUB_REF#refs/tags/v}"
@@ -235,7 +288,7 @@ jobs:
           done
 
       - name: Upload Flatpak artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: flatpak-artifacts
           path: |
@@ -248,19 +301,20 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   build-windows:
     name: Build Windows
+    needs: [test]
     runs-on: windows-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v7
 
       - name: Install Python dependencies
         run: |
@@ -278,6 +332,9 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             TAG="${{ inputs.tag }}"
             TAG="${TAG#v}"
+          elif [[ "$GITHUB_REF" == refs/heads/dry-run/* ]]; then
+            TAG="${GITHUB_REF#refs/heads/dry-run/}"
+            TAG="${TAG#v}"
           else
             TAG="${GITHUB_REF#refs/tags/v}"
           fi
@@ -291,7 +348,7 @@ jobs:
           PYTHONUTF8: "1"
 
       - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-artifacts
           path: dist/SafeToolPix-*-windows-setup.exe
@@ -302,19 +359,20 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   build-macos:
     name: Build macOS
+    needs: [test]
     runs-on: macos-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v7
 
       - name: Install Python dependencies
         run: |
@@ -344,6 +402,9 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             TAG="${{ inputs.tag }}"
             TAG="${TAG#v}"
+          elif [[ "$GITHUB_REF" == refs/heads/dry-run/* ]]; then
+            TAG="${GITHUB_REF#refs/heads/dry-run/}"
+            TAG="${TAG#v}"
           else
             TAG="${GITHUB_REF#refs/tags/v}"
           fi
@@ -356,7 +417,7 @@ jobs:
           APP_VERSION: ${{ steps.version.outputs.tag }}
 
       - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: macos-artifacts
           path: dist/SafeToolPix-*-macos.dmg
@@ -367,17 +428,18 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   release:
     name: Create Draft Release
+    if: ${{ !startsWith(github.ref, 'refs/heads/dry-run/') }}
     needs: [build-linux, build-flatpak, build-windows, build-macos]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: release-assets
           merge-multiple: true
@@ -392,6 +454,9 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             TAG="${{ inputs.tag }}"
+            TAG="${TAG#v}"
+          elif [[ "$GITHUB_REF" == refs/heads/dry-run/* ]]; then
+            TAG="${GITHUB_REF#refs/heads/dry-run/}"
             TAG="${TAG#v}"
           else
             TAG="${GITHUB_REF#refs/tags/v}"
