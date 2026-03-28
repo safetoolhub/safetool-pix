@@ -1,0 +1,1278 @@
+{
+  "app": {
+    "name": "SafeTool Pix",
+    "description": "Organiza, renombra y optimiza tu biblioteca de fotos"
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "error": "Error",
+    "info": "Info",
+    "ok": "OK",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "all": "Todos",
+    "unknown": "Desconocido",
+    "files": "archivos",
+    "groups": "grupos",
+    "pixels": "píxeles",
+    "folder": "Carpeta:",
+    "size": "Tamaño:",
+    "date": "Fecha:",
+    "date_source": "Origen fecha:",
+    "file_type": {
+      "image": "Imagen",
+      "video": "Video",
+      "other": "Archivo {ext}"
+    },
+    "filter": {
+      "all": "Todos",
+      "photos": "Fotos",
+      "videos": "Videos",
+      "others": "Otros",
+      "all_directories": "Todos los directorios",
+      "all_sizes": "Todos los tamaños",
+      "lt_1mb": "< 1 MB",
+      "1_10mb": "1 - 10 MB",
+      "10_100mb": "10 - 100 MB",
+      "gt_10mb": ">10 MB",
+      "gt_50mb": ">50 MB",
+      "gt_100mb": "> 100 MB",
+      "3_plus_copies": "3+ copias",
+      "5_plus_copies": "5+ copias"
+    },
+    "tree_header": {
+      "groups_files": "Grupos / Archivos",
+      "size": "Tamaño",
+      "date": "Fecha",
+      "date_source": "Origen Fecha",
+      "location": "Ubicación",
+      "status": "Estado",
+      "type": "Tipo",
+      "origin": "Origen"
+    },
+    "pagination": {
+      "load_all": "Cargar todos",
+      "load_more": "Cargar más",
+      "no_groups": "Sin grupos que mostrar",
+      "load_n_more": "Cargar {count} más",
+      "load_n_more_tooltip": "Cargar {count} elementos más ({remaining} pendientes)",
+      "all_loaded": "Todos cargados",
+      "progress_text": "{percent}% cargado en lista ({loaded} de {total})",
+      "no_items": "Sin elementos que mostrar"
+    },
+    "status": {
+      "will_keep": "Se mantendrá",
+      "will_delete": "Se eliminará",
+      "mark_keep": "Conservar",
+      "mark_delete": "Eliminar"
+    },
+    "tooltip": {
+      "settings": "Configuración",
+      "about": "Acerca de - Instrucciones y capacidades de la aplicación",
+      "folder": "Carpeta:",
+      "size": "Tamaño:",
+      "date": "Fecha:",
+      "date_source": "Origen fecha:",
+      "will_keep": "Se conservará",
+      "will_delete": "Se eliminará"
+    },
+    "details": {
+      "group_space": "Espacio grupo",
+      "strategy": "Estrategia",
+      "status": "Estado"
+    },
+    "strategy_name": {
+      "oldest": "más antiguo",
+      "newest": "más reciente",
+      "largest": "mejor calidad (más grande)",
+      "smallest": "menor tamaño"
+    },
+    "confirm_operation_title": "Confirmar operación",
+    "confirm_operation_message": "Se {operation_verb} {files_count} archivos{size_info}.",
+    "confirm_continue": "¿Continuar?",
+    "no_items_title": "Sin cambios",
+    "no_items_message": "No hay {item_type} para procesar.",
+    "dialog": {
+      "load_all_groups_title": "Cargar todos los grupos",
+      "load_all_groups_msg": "Hay {count} grupos. ¿Seguro que quieres cargarlos todos?\nEsto puede tardar y consumir memoria.",
+      "error_title": "Error"
+    },
+    "tree": {
+      "group_label": "Grupo #{num} • {count} copias"
+    }
+  },
+  "tools": {
+    "zero_byte": {
+      "title": "Archivos vacíos",
+      "short_description": "Estos archivos ocupan 0 bytes y no contienen información. Es 100% seguro eliminarlos",
+      "long_description": "Analiza tus carpetas en busca de \"archivos fantasma\" (archivos de 0 bytes o corruptos) que no contienen datos útiles. Pueden eliminarse de forma segura porque son inútiles."
+    },
+    "live_photos": {
+      "title": "Live Photos",
+      "short_description": "Live Photos de iPhone (Imagen + MOV). Los videos MOV serán eliminados para liberar espacio",
+      "long_description": "Las Live Photos de iPhone constan de una imagen y vídeo corto. Esta herramienta detecta estos pares y te permite decidir si deseas conservar ambos, o limpiar el componente de video para ahorrar espacio si solo te interesa la fotografía estática."
+    },
+    "heic": {
+      "title": "Duplicados HEIC/JPG",
+      "short_description": "Fotos HEIC con versiones JPG idénticas. Elige qué formato conservar y libera espacio",
+      "long_description": "Encuentra casos donde tienes la misma fotografía en dos formatos: HEIC (usado por iPhones) y el tradicional JPG. La herramienta le ayuda a identificar estos duplicados y eliminar las versiones redundantes para liberar espacio."
+    },
+    "duplicates_exact": {
+      "title": "Copias exactas",
+      "short_description": "Archivos 100% idénticos aunque tengan nombres diferentes. Es totalmente seguro borrarlos",
+      "long_description": "Analiza tu colección para encontrar archivos que son matemáticamente idénticos. Es la forma más segura de limpieza, ya que garantiza que no estás borrando una foto \"parecida\", sino exactamente el mismo archivo repetido en diferentes carpetas (aunque tenga distinto nombre)."
+    },
+    "visual_identical": {
+      "title": "Copias visualmente idénticas",
+      "short_description": "Archivos visualmente idénticos, pero con diferentes datos internos. Sucede en fotos enviadas por WhatsApp o redimensionadas.",
+      "long_description": "Identifica imágenes (videos en próximas versiones) que son visualmente indistinguibles para el ojo humano, aunque técnicamente sean archivos diferentes (por ejemplo, una copia descargada de internet, o la misma foto guardada en diferentes fechas). Ideal para eliminar copias de WhatsApp, screenshots repetidos o imágenes redimensionadas."
+    },
+    "duplicates_similar": {
+      "title": "Archivos similares",
+      "short_description": "Detecta imágenes similares pero no iguales (ediciones, recortes, distinta resolución...)",
+      "long_description": "Detecta fotos (videos en próximas versiones) que son muy parecidos pero no idénticos. Esto es perfecto para:\n• Seleccionar la mejor toma de una ráfaga de fotos.\n• Eliminar versiones ligeramente editadas o recortadas que ya no necesita.\n• Detectar copias de baja resolución."
+    },
+    "file_organizer": {
+      "title": "Organización inteligente",
+      "short_description": "Organiza las imágenes y videos en una nueva estructura de carpetas",
+      "long_description": "Esta herramienta analiza tus archivos y propone una nueva estructura de carpetas organizada lógicamente (por ejemplo, por Año/Mes), permitiendo reubicar miles de fotos con un solo clic y mantener la biblioteca impecable."
+    },
+    "file_renamer": {
+      "title": "Renombrado completo",
+      "short_description": "Los archivos se renombrarán al formato YYYY-MM-DD_HH-MM-SS_<PHOTO|VIDEO> usando su fecha de creación",
+      "long_description": "Estandariza los nombres de tus archivos de forma profesional. Puedes cambiar nombres crípticos como \"IMG_8823.JPG\" a formatos útiles y legibles como \"20241231_112300_PHOTO.jpg\", utilizando fechas y secuencias automáticas para evitar conflictos de nombres."
+    }
+  },
+  "categories": {
+    "cleanup": {
+      "title": "Limpieza y espacio",
+      "description": "Libera espacio eliminando archivos innecesarios"
+    },
+    "visual": {
+      "title": "Detección visual",
+      "description": "Encuentra imágenes visualmente similares"
+    },
+    "organization": {
+      "title": "Organización",
+      "description": "Ordena y renombra tu colección"
+    }
+  },
+  "stage1": {
+    "header_title": "Paso 1: selecciona la carpeta con tus fotos",
+    "button_select_folder": "Seleccionar carpeta...",
+    "tip_choose_folder": "Elige la carpeta donde tengas tus fotos y videos del iPhone, de WhatsApp, o cualquier colección que quieras organizar.",
+    "tip_privacy_notice": "SafeTool Pix únicamente analizará esa carpeta y todas sus subcarpetas. No se modificará nada hasta que tú lo autorices.",
+    "last_folder_label": "Última carpeta analizada: {path}",
+    "button_use_last_folder": "Usar esta carpeta",
+    "step2_header": "Paso 2: elige qué quieres hacer",
+    "step2_empty_state": "Las herramientas aparecerán aquí después de analizar tu carpeta",
+    "dialog_select_folder": "Seleccionar carpeta con fotos",
+    "error": {
+      "folder_unavailable_title": "Carpeta no disponible",
+      "folder_unavailable_msg": "La última carpeta ya no existe:\n{path}\n\nPor favor selecciona otra carpeta.",
+      "folder_not_found_title": "Error - Carpeta no encontrada",
+      "folder_not_found_msg": "La carpeta seleccionada no existe:\n\n{path}\n\nPuede haber sido movida o eliminada.",
+      "invalid_selection_title": "Selección inválida",
+      "invalid_selection_msg": "Por favor selecciona una carpeta, no un archivo individual.",
+      "no_permission_title": "Error - Permisos insuficientes",
+      "no_permission_msg": "No tienes permisos de lectura en esta carpeta:\n\n{path}\n\nPor favor selecciona una carpeta donde tengas acceso de lectura."
+    },
+    "warning": {
+      "empty_folder_title": "Carpeta vacía",
+      "empty_folder_msg": "La carpeta seleccionada parece estar vacía:\n\n{path}\n\n¿Deseas continuar de todos modos?"
+    }
+  },
+  "stage2": {
+    "error": {
+      "analysis_title": "Error en el análisis",
+      "analysis_msg": "Ocurrió un error durante el análisis de la carpeta.",
+      "analysis_details": "Detalles del error:\n{error}"
+    },
+    "button": {
+      "retry": "Reintentar",
+      "change_folder": "Cambiar carpeta",
+      "exit": "Salir",
+      "continue_analysis": "Continuar análisis",
+      "select_other_folder": "Seleccionar otra carpeta"
+    },
+    "cancel": {
+      "title": "Cancelar análisis",
+      "confirm_msg": "¿Estás seguro de que quieres cancelar el análisis?",
+      "warning_msg": "Se perderá el progreso actual."
+    }
+  },
+  "stage3": {
+    "banner": {
+      "stale_stats": "<b>Estadísticas desactualizadas</b><br>Se han realizado cambios en los archivos. Las estadísticas mostradas pueden no ser precisas."
+    },
+    "button": {
+      "reanalyze_now": "Re-analizar ahora"
+    },
+    "error": {
+      "no_analysis_data": "No hay datos de análisis disponibles",
+      "analysis_failed": "Error en análisis: {msg}",
+      "operation_failed_msg": "Ocurrió un error:\n\n{error}",
+      "update_failed_title": "Error en actualización",
+      "update_failed_msg": "Error actualizando estadísticas de {tool_id}:\n\n{error}",
+      "stats_update_failed_msg": "No se pudieron actualizar las estadísticas de {name}.\n\n{msg}"
+    },
+    "progress": {
+      "analyzing_live_photos": "Analizando Live Photos...",
+      "searching_heic": "Buscando duplicados HEIC/JPG...",
+      "searching_exact_copies": "Buscando copias exactas...",
+      "searching_visual_identical": "Buscando copias visuales idénticas...",
+      "analyzing_similar": "Analizando archivos similares...",
+      "searching_empty_files": "Buscando archivos vacíos...",
+      "analyzing_structure": "Analizando estructura...",
+      "analyzing_names": "Analizando nombres...",
+      "executing_operation": "Ejecutando operación...",
+      "processing_title": "Procesando",
+      "cancelling": "Cancelando operación, por favor espera...",
+      "updating_live_photos": "Actualizando Live Photos...",
+      "updating_heic": "Actualizando duplicados HEIC/JPG...",
+      "updating_exact_copies": "Actualizando copias exactas...",
+      "updating_visual": "Actualizando copias visuales...",
+      "updating_similar": "Actualizando archivos similares...",
+      "updating_empty": "Actualizando archivos vacíos...",
+      "updating_structure": "Actualizando estructura...",
+      "updating_names": "Actualizando nombres..."
+    },
+    "confirm": {
+      "delete_title": "Confirmar Eliminación",
+      "delete_msg": "Esta operación eliminará archivos de forma permanente.\n\n¿Estás seguro de que deseas continuar?",
+      "update_stats_title": "Actualizar estadísticas",
+      "update_stats_msg": "¿Deseas actualizar las estadísticas de {name}?\n\nEsto recalculará únicamente el análisis de {name} para reflejar los cambios realizados. La caché de metadatos ya está actualizada.\n\nNota: Esta operación es rápida y solo afecta a {name}.",
+      "change_folder_title": "Cambiar carpeta",
+      "change_folder_msg": "¿Cambiar de carpeta? Se perderá el análisis actual."
+    },
+    "info": {
+      "no_live_photos": "No se encontraron Live Photos.",
+      "no_heic_pairs": "No se encontraron pares HEIC/JPG.",
+      "no_exact_copies": "No se encontraron copias exactas.",
+      "no_visual_identical_title": "Sin copias visuales idénticas",
+      "no_visual_identical_msg": "No se encontraron copias visuales idénticas.\n\nTodas las imágenes son visualmente únicas.",
+      "no_files_to_analyze_title": "Sin archivos para analizar",
+      "no_files_to_analyze_msg": "No se encontraron imágenes o videos para analizar.\n\nAsegúrate de que el directorio contenga archivos soportados.",
+      "no_empty_files": "No se encontraron archivos vacíos.",
+      "stats_updated_title": "Estadísticas actualizadas",
+      "stats_updated_msg": "Las estadísticas de {name} han sido actualizadas correctamente."
+    },
+    "result": {
+      "simulation_title": "Simulación Completada",
+      "operation_title": "Operación Completada",
+      "files_would_process": "Archivos que se procesarían: {count}",
+      "files_processed": "Archivos procesados: {count}",
+      "space_would_free": "Espacio que se liberaría: {size}",
+      "space_freed": "Espacio liberado: {size}",
+      "backup_simulation": "Backup: No se crea en modo simulación",
+      "backup_created": "Backup creado en:\n{path}",
+      "backup_no_files": "Backup: Solicitado pero no se encontraron archivos para respaldar",
+      "errors_warning": "Advertencia: Se encontraron {count} errores durante la operación.",
+      "simulation_note": "MODO SIMULACIÓN: No se realizaron cambios reales en los archivos.",
+      "simulation_completed": "La simulación se completó.",
+      "operation_completed": "La operación se completó exitosamente."
+    }
+  },
+  "progress_card": {
+    "header_title": "Analizando carpeta",
+    "status_analyzing": "Analizando tu colección...",
+    "status_completed": "Análisis completado - Cargando resultados..."
+  },
+  "summary_card": {
+    "label_folder": "Carpeta:",
+    "button_change": "Cambiar",
+    "tooltip_change": "Seleccionar otra carpeta",
+    "stats_calculating": "Calculando...",
+    "stats_total": "{count} archivos • {size}",
+    "stats_images": "{count} imágenes",
+    "stats_videos": "{count} videos",
+    "stats_unsupported": "{count} ficheros no soportados",
+    "stats_empty": "No hay archivos para mostrar",
+    "button_reanalyze": "Reanalizar"
+  },
+  "analysis_phase": {
+    "phase1": "Escaneando estructura de carpetas",
+    "phase2": "Obteniendo información de archivos",
+    "phase3": "Calculando hashes de archivos",
+    "phase4": "Extrayendo metadatos de imágenes",
+    "phase5": "Extrayendo metadatos de vídeos",
+    "phase6": "Determinando fecha óptima",
+    "skipped": "(omitida)"
+  },
+  "dropzone": {
+    "main_text": "Arrastra una carpeta aquí",
+    "hint_text": "o usa el botón de debajo",
+    "drop_text": "Suelta para analizar"
+  },
+  "settings": {
+    "title": "Configuración",
+    "tab": {
+      "general": "General",
+      "analysis": "Análisis inicial",
+      "backup_logs": "Backup y Logs",
+      "advanced": "Avanzado"
+    },
+    "buttons": {
+      "restore_defaults": "Restaurar valores por defecto",
+      "save_changes": "Guardar Cambios",
+      "browse": "Cambiar..."
+    },
+    "general": {
+      "confirmations": {
+        "title": "Confirmaciones",
+        "confirm_delete": "Pedir confirmación adicional para operaciones de eliminación",
+        "confirm_delete_tooltip": "Doble confirmación para operaciones que eliminan archivos",
+        "confirm_reanalyze": "Confirmar antes de reanalizar tras ejecutar operaciones",
+        "confirm_reanalyze_tooltip": "Si está activado, se pedirá confirmación antes de actualizar las estadísticas.\nSi está desactivado, se actualizarán automáticamente tras operaciones destructivas."
+      },
+      "interface": {
+        "title": "Interfaz",
+        "language_label": "Idioma:",
+        "language_restart_title": "Cambio de idioma",
+        "language_restart_msg": "El cambio de idioma se aplicará la próxima vez que inicies la aplicación.",
+        "show_full_path": "Mostrar ruta completa del directorio en la barra de búsqueda",
+        "show_full_path_tooltip": "Si está activado, muestra la ruta completa del directorio (ej: /home/usuario/Fotos).\nSi está desactivado, solo muestra el nombre de la carpeta (ej: Fotos)."
+      },
+      "dry_run": {
+        "title": "Modo Simulación (Dry Run)",
+        "info": "En modo simulación, las operaciones se analizan y muestran pero <b>no se ejecutan</b> realmente. Útil para verificar qué hará la aplicación antes de aplicar cambios.",
+        "enable_default": "Activar modo simulación por defecto en todas las operaciones",
+        "enable_default_tooltip": "Si se activa, todos los diálogos de eliminación (HEIC, Live Photos, Duplicados)\nmostrarán el checkbox de 'Modo simulación' marcado por defecto.\nEsto añade una capa extra de seguridad para evitar eliminaciones accidentales."
+      }
+    },
+    "analysis": {
+      "system_tools": {
+        "title": "Herramientas del Sistema",
+        "info": "Para extraer metadatos de videos (duración, fecha de creación) se requieren herramientas externas. Sin ellas, la fase de análisis de videos se saltará automáticamente.",
+        "ffprobe_checking": "⏳ ffprobe: Verificando...",
+        "exiftool_checking": "⏳ exiftool: Verificando...",
+        "check_button": "Verificar",
+        "check_button_tooltip": "Verificar si las herramientas están instaladas",
+        "install_how": "📦 ¿Cómo instalar estas herramientas?",
+        "install_hide": "📦 Ocultar instrucciones de instalación",
+        "ffprobe_installed": "ffprobe: Instalado",
+        "ffprobe_not_installed": "ffprobe: No instalado",
+        "exiftool_installed": "exiftool: Instalado",
+        "exiftool_not_installed": "exiftool: No instalado",
+        "install_your_system": "Tu sistema:",
+        "install_windows": "Descargar desde ffmpeg.org y exiftool.org"
+      },
+      "config": {
+        "title": "Configuración de Análisis Inicial",
+        "info": "Controla qué información se extrae durante el escaneo inicial del directorio. Desactivar opciones hace el escaneo más rápido, pero el análisis de cada herramienta tomará más tiempo al abrirla.",
+        "precalculate_hashes": "Pre-calcular hashes SHA256 de todos los archivos",
+        "precalculate_hashes_tooltip": "Pre-calcula hashes SHA256 de todos los archivos durante el escaneo inicial.\n\nVENTAJAS:\n  • Herramienta 'Duplicados exactos' es INSTANTÁNEA (ya tiene todos los hashes)\n  • Ideal si siempre buscas duplicados\n\nDESVENTAJAS:\n  • Hace el escaneo inicial MUY lento (calcula hash de cada archivo)\n  • Para 10,000 archivos: escaneo pasa de ~10s a ~2-5 min\n\nRECOMENDACIÓN: Dejar DESACTIVADO (el análisis bajo demanda es eficiente).",
+        "image_exif": "Extraer metadatos EXIF de imágenes",
+        "image_exif_tooltip": "Extrae metadatos EXIF de todas las imágenes durante el escaneo inicial.\n\nVENTAJAS:\n  • Herramientas de organización y renombrado son más rápidas\n  • Costo moderado en el escaneo inicial (~30-60 seg para 30k fotos)\n\nDESVENTAJAS:\n  • Añade tiempo al escaneo inicial\n\nRECOMENDACIÓN: Dejar ACTIVADO (el costo es razonable y útil para la mayoría).",
+        "video_exif": "Extraer metadatos EXIF de videos (MUY LENTO)",
+        "video_exif_tooltip": "Extrae metadatos de videos usando ffprobe durante el escaneo inicial.\n\nADVERTENCIA: Este proceso es EXTREMADAMENTE LENTO\n  • Para 5,000 videos: ~3-10 minutos adicionales\n  • Bloquea el escaneo inicial\n\nVENTAJAS:\n  • Herramienta de organización de videos tiene datos listos\n\nDESVENTAJAS:\n  • Hace el escaneo inicial MUCHO más lento\n  • La mayoría de usuarios no organizan videos por fecha\n\nRECOMENDACIÓN: Dejar DESACTIVADO (análisis bajo demanda es mucho más eficiente)."
+      }
+    },
+    "backup": {
+      "auto": {
+        "title": "Backups Automáticos",
+        "warning_info": "<b>Muy Recomendado:</b> Los backups te permiten recuperar archivos en caso de error.",
+        "enable": "Crear backup automáticamente antes de cada operación destructiva",
+        "enable_tooltip": "Si está activado, se creará una copia de seguridad de los archivos antes de:\n• Renombrar archivos\n• Eliminar Live Photos\n• Eliminar duplicados HEIC\n• Organizar carpetas"
+      },
+      "directory": {
+        "title": "Directorio de Backups",
+        "info": "Ubicación donde se guardan las copias de seguridad automáticas.",
+        "browse_tooltip": "Cambiar ubicación de backups"
+      },
+      "labels": {
+        "folder": "Carpeta:"
+      }
+    },
+    "logs": {
+      "title": "Logs y diagnóstico",
+      "info": "Los archivos de log registran todas las operaciones para diagnóstico y auditoría.",
+      "browse_tooltip": "Cambiar ubicación de logs",
+      "level_label": "Nivel de detalle:",
+      "level": {
+        "debug": "DEBUG - Máximo detalle (para desarrollo)",
+        "info": "INFO - Normal (recomendado)",
+        "warning": "WARNING - Solo advertencias",
+        "error": "ERROR - Solo errores críticos"
+      },
+      "level_tooltip": "DEBUG: Toda la información técnica\nINFO: Operaciones normales\nWARNING: Situaciones inusuales\nERROR: Solo errores graves",
+      "dual_log": "Crear archivo adicional solo con WARNING y ERROR (para datasets grandes)",
+      "dual_log_tooltip": "Cuando está activado y el nivel de log es INFO o DEBUG:\n• Se creará un archivo principal con TODOS los logs (sufijo: _INFO o _DEBUG)\n• Se creará un archivo adicional solo con WARNING y ERROR (sufijo: _WARNERROR)\n\nÚtil para datasets grandes donde el log completo es muy extenso.\nEsta opción se deshabilita automáticamente si el nivel es WARNING o ERROR.",
+      "dual_log_disabled_tooltip": "Esta opción solo está disponible para niveles INFO o DEBUG.\nCon nivel WARNING o ERROR, todos los logs ya contienen solo advertencias y errores.",
+      "disable_file_logging": "No escribir archivos de log en disco",
+      "disable_file_logging_tooltip": "Cuando está activado:\n• No se escribirán archivos de log en disco\n• Solo se mostrarán mensajes WARNING y ERROR en la consola\n• Los mensajes DEBUG e INFO se descartarán completamente\n\nRecomendado si no necesitas conservar registros de operaciones.\nEsta opción deshabilita el directorio de logs, el nivel de detalle y el log dual.",
+      "open_folder": "Abrir carpeta de logs"
+    },
+    "advanced": {
+      "performance": {
+        "title": "Rendimiento",
+        "auto_info": "🤖 Configuración automática basada en tu hardware:\n   • CPU Cores: {cpu_count}\n   • Workers I/O (recomendado): {io_workers}\n   • Workers CPU (recomendado): {cpu_workers}",
+        "override_label": "Override manual (deja en 0 para usar automático):",
+        "workers_label": "Hilos de procesamiento:",
+        "workers_auto": "Automático",
+        "workers_tooltip": "Número de hilos paralelos para procesar archivos.\n\n• 0 (Automático): Detecta y usa el óptimo para tu hardware\n• I/O workers: {io_workers} (lectura/hashing)\n• CPU workers: {cpu_workers} (análisis de imágenes)\n\nSolo cambia esto si experimentas problemas de rendimiento.\nRango válido: 1-{max_workers}",
+        "ui_update_label": "Frecuencia de actualización en análisis:",
+        "ui_update_tooltip": "Cada cuántos archivos se da feedback al usuario en los análisis.\nValores más altos mejoran el rendimiento pero se recibe menos feedback.\nValores más bajos (1) pueden ralentizar el proceso.\nRecomendado: 10-50",
+        "restart_note": "Cambiar el número de hilos requiere reiniciar la aplicación para tener efecto completo."
+      },
+      "debug": {
+        "title": "Depuración",
+        "clear_all": "Restablecer TODA la configuración guardada",
+        "clear_all_info": "Esto eliminará todas las preferencias guardadas y volverá a los valores por defecto."
+      }
+    },
+    "errors": {
+      "cannot_open_folder": "No se pudo abrir la carpeta:\n{error}",
+      "cannot_clear": "No se pudo limpiar la configuración:\n{error}",
+      "cannot_save": "No se pudo guardar la configuración:\n{error}",
+      "restart_title": "Error al Reiniciar",
+      "restart_message": "No se pudo reiniciar la aplicación:\n{error}\n\nPor favor, reinicia manualmente la aplicación."
+    },
+    "confirm": {
+      "clear_all_title": "Confirmar Eliminación",
+      "clear_all_message": "¿Estás seguro de que deseas eliminar TODA la configuración guardada?\n\nEsto incluye:\n• Preferencias de backup\n• Carpetas personalizadas\n• Nivel de logging\n• Todas las demás configuraciones\n\nLa aplicación volverá a los valores por defecto.",
+      "restore_title": "Restaurar Valores",
+      "restore_message": "¿Restaurar toda la configuración a los valores por defecto?"
+    },
+    "messages": {
+      "cleared_title": "Configuración Eliminada",
+      "cleared_message": "Se ha eliminado toda la configuración.\nSe recomienda reiniciar la aplicación.",
+      "restored_title": "Restaurado",
+      "restored_message": "Configuración restaurada a valores por defecto.\n\nPresiona 'Guardar Cambios' para aplicar.",
+      "saved_title": "Configuración Guardada",
+      "saved": "La configuración se ha guardado correctamente.",
+      "saved_logs_changed": "El directorio de logs ha cambiado. Los nuevos logs se escribirán en la nueva ubicación.",
+      "restart_required_intro": "Se han guardado cambios que requieren reiniciar la aplicación para tomar efecto:\n\n",
+      "restart_change_workers": "• Número de hilos de procesamiento",
+      "restart_change_logs": "• Directorio de logs",
+      "restart_change_backup": "• Directorio de backups",
+      "restart_change_log_level": "• Nivel de detalle de logs",
+      "restart_question": "¿Desea reiniciar la aplicación ahora?",
+      "restart_title": "Reiniciar Aplicación",
+      "restart_needed_title": "Reinicio Requerido",
+      "restart_needed_message": "Los cambios se han guardado correctamente, pero NO tomarán efecto hasta que reinicie la aplicación.\n\nLa aplicación puede no comportarse como espera hasta que se reinicie."
+    },
+    "file_dialog": {
+      "select_logs_dir": "Seleccionar Directorio de Logs",
+      "select_backup_dir": "Seleccionar Directorio de Backups"
+    }
+  },
+  "about": {
+    "title": "Acerca de {name}",
+    "header": {
+      "version": "Versión {version}",
+      "privacy_badge": "100% Privado • Sin conexión a internet"
+    },
+    "tab": {
+      "welcome": "Bienvenida",
+      "tools": "Herramientas",
+      "info": "Información"
+    },
+    "welcome": {
+      "title": "Bienvenido a SafeTool Pix",
+      "description": "Suite de herramientas para gestionar, optimizar y organizar tus fotos y vídeos. <b>Privacidad absoluta</b>: todo el procesamiento es 100% local en tu equipo.",
+      "workflow_title": "Proceso de trabajo (Pasos a seguir en orden)",
+      "workflow_description": "SafeTool Pix está diseñado para seguir un flujo lógico y optimizar tu colección de manera progresiva. Sigue estos 4 pasos para obtener el mejor resultado:",
+      "steps": {
+        "1": {
+          "title": "Selección de carpeta",
+          "description": "El primer paso es elegir la carpeta que contiene tus fotos y vídeos. El sistema trabajará de forma recursiva."
+        },
+        "2": {
+          "title": "Análisis",
+          "description": "Automáticamente escaneamos archivos, extraemos metadatos EXIF y calculamos firmas digitales (hashes)."
+        },
+        "3": {
+          "title": "Selección de Herramienta",
+          "description": "Entra en cada herramienta para detectar duplicados, organizar por fechas o limpiar archivos innecesarios."
+        },
+        "4": {
+          "title": "Ejecución de Cambios",
+          "description": "Tras revisar los planes de acción propuestos, confirma la ejecución. Recomendamos usar el Modo Simulación primero."
+        }
+      },
+      "tips": {
+        "simulation": {
+          "title": "Modo Simulación",
+          "description": "Prueba sin modificar archivos"
+        },
+        "backup": {
+          "title": "Backup Disponible",
+          "description": "Copia de seguridad de ficheros eliminados"
+        },
+        "logs": {
+          "title": "Logs Detallados",
+          "description": "Registro de todas las operaciones"
+        }
+      },
+      "system_tools": {
+        "title": "Herramientas externas recomendadas",
+        "info": "Para analizar vídeos (duración, fecha) se requieren herramientas externas. Sin ellas, las funciones de vídeo estarán limitadas.",
+        "check_button": "Verificar"
+      }
+    },
+    "nav": {
+      "view_tools": "Ver Herramientas",
+      "home": "Inicio",
+      "view_info": "Ver Info"
+    },
+    "tools_section": {
+      "title": "Herramientas Disponibles"
+    },
+    "info": {
+      "title": "Información",
+      "app_card": {
+        "title": "Aplicación",
+        "developed_by": "Desarrollado por:",
+        "name": "Nombre",
+        "version": "Versión",
+        "platforms": "Plataformas",
+        "platforms_value": "Windows • Linux • macOS"
+      },
+      "contact": {
+        "title": "Contacto (Email)"
+      },
+      "license": {
+        "title": "Licencia"
+      },
+      "tech_card": {
+        "title": "Tecnología",
+        "language": "Lenguaje",
+        "ui": "Interfaz",
+        "architecture": "Arquitectura",
+        "architecture_value": "Modular / Local-First"
+      },
+      "formats": {
+        "title": "Formatos Soportados",
+        "images": "Imágenes",
+        "videos": "Vídeos"
+      }
+    },
+    "dev": {
+      "tagline": "Software 100% privado, gratuito y sin rastreo",
+      "subtitle": "Tus archivos nunca salen de tu dispositivo. Todas las operaciones son 100% locales.",
+      "values": {
+        "offline": {
+          "title": "100% Offline",
+          "description": "Sin conexión a internet"
+        },
+        "no_tracking": {
+          "title": "Sin Rastreo",
+          "description": "Privacidad absoluta"
+        },
+        "backup": {
+          "title": "Copias de Seguridad",
+          "description": "Protección de datos"
+        },
+        "open_source": {
+          "title": "Código Abierto",
+          "description": "Transparente y auditable"
+        }
+      },
+      "trust_footer": "Todo tu contenido está a salvo y bajo tu control exclusivo."
+    }
+  },
+  "dialogs": {
+    "base": {
+      "options_label": "Opciones:",
+      "backup_label": "Crear backup",
+      "dry_run_label": "Modo simulación",
+      "backup_tooltip": "Crea una copia de seguridad antes de realizar cambios.\nRecomendado para operaciones destructivas.\n\nCarpeta de backups: {path}\n\nPuedes cambiar la carpeta desde Configuración.",
+      "dry_run_tooltip": "Simula la operación sin realizar cambios reales.\nÚtil para verificar qué archivos se verían afectados.\n\nAl activar modo simulación, el backup se deshabilita\nautomáticamente ya que no se realizarán cambios reales.",
+      "backup_path_label": "Carpeta donde se guardarán los archivos eliminados: {path}",
+      "backup_path_tooltip": "Ruta completa: {path}\n\nPuedes cambiar esta carpeta desde Configuración.",
+      "backup_disabled_tooltip": "El backup está deshabilitado porque el modo simulación está activo.\nNo se realizarán cambios reales, por lo que no es necesario crear backup.",
+      "tip_toggle_tooltip": "Mostrar/ocultar consejo",
+      "filter": {
+        "search_placeholder": "Buscar...",
+        "files_selected": "Archivos seleccionados",
+        "groups_selected": "Grupos seleccionados",
+        "more_filters": "Más filtros",
+        "hide_extra": "Ocultar filtros adicionales",
+        "show_extra": "Mostrar filtros adicionales",
+        "size_quantity_label": "Tamaño / Cantidad",
+        "size_quantity_tooltip": "Filtrar por tamaño o cantidad",
+        "showing_all": "Mostrando todos los {entity}: {count}",
+        "filtered_tooltip": "{entity} filtrados: {filtered}\nTotal de {entity}: {total}",
+        "loaded_in_list": "(Cargados en lista: {loaded} de {total})"
+      },
+      "progress": {
+        "indicator_tooltip": "Muestra cuántos elementos se han cargado en la lista.\nPor rendimiento, los elementos se cargan en lotes.\nUsa 'Cargar más' para ver elementos adicionales.",
+        "load_all": "Cargar todos",
+        "load_all_tooltip": "Cargar todos los elementos restantes de una vez",
+        "load_more": "Cargar más",
+        "loaded_text": "{percent}% cargado en lista ({loaded} de {total})",
+        "no_items": "Sin elementos que mostrar",
+        "load_n_more": "Cargar {count} más",
+        "load_n_more_tooltip": "Cargar {count} elementos más ({remaining} pendientes)",
+        "all_loaded": "Todos cargados"
+      },
+      "date_source": {
+        "all": "Todos",
+        "exif": "EXIF",
+        "filename": "Filename",
+        "filesystem": "Filesystem"
+      }
+    },
+    "utils": {
+      "error_open_file": "Error al abrir archivo",
+      "error_open_folder": "Error al abrir carpeta",
+      "group_tooltip_expand": "Doble clic para expandir y ver detalles de archivos",
+      "group_tooltip_columns": "Las columnas muestran información de cada archivo individual",
+      "status_keep": "Conservar",
+      "status_delete": "Eliminar",
+      "menu": {
+        "open_file": "Abrir archivo",
+        "open_folder": "Abrir carpeta contenedora",
+        "view_details": "Ver detalles del archivo"
+      }
+    },
+    "details": {
+      "title": "Detalles del Archivo",
+      "refresh_tooltip": "Buscar todos los metadatos disponibles\nExtrae hash SHA256 y metadatos EXIF completos\naunque no se hayan obtenido en el análisis inicial",
+      "full_metadata_loaded": "Metadatos completos cargados (búsqueda forzada)",
+      "copy_path_tooltip": "Copiar ruta al portapapeles",
+      "copy_success": "¡Copiado!",
+      "copy_error": "Error al copiar",
+      "buttons": {
+        "open_file": "Abrir Archivo",
+        "open_folder": "Abrir Carpeta"
+      },
+      "section": {
+        "general": "Información General",
+        "best_date": "Mejor Fecha Disponible",
+        "filesystem_dates": "Fechas del Sistema de Archivos",
+        "operation_context": "Contexto de la Operación",
+        "video_tech": "Metadatos Técnicos de Video",
+        "exif_dates": "Fechas EXIF",
+        "exif_tech": "Metadatos Técnicos (EXIF)"
+      },
+      "general": {
+        "full_path": "Ruta completa",
+        "full_path_desc": "Ubicación completa del archivo en el sistema",
+        "size": "Tamaño",
+        "size_desc": "Espacio que ocupa en el sistema de archivos",
+        "type": "Tipo",
+        "type_desc": "Categoría detectada por extensión",
+        "hash": "Hash SHA256",
+        "hash_desc": "Huella digital única del contenido del archivo"
+      },
+      "best_date": {
+        "label": "Fecha seleccionada",
+        "description": "Fecha más representativa seleccionada automáticamente (Origen: {source})"
+      },
+      "fs_dates": {
+        "ctime": "Creación (ctime)",
+        "ctime_desc": "Fecha de creación del archivo en el sistema de archivos",
+        "mtime": "Modificación (mtime)",
+        "mtime_desc": "Última modificación del contenido del archivo",
+        "atime": "Último acceso (atime)",
+        "atime_desc": "Última vez que se abrió o leyó el archivo"
+      },
+      "operation_context": {
+        "generic_desc": "Información adicional del contexto de la operación"
+      },
+      "video": {
+        "resolution": "Resolución",
+        "resolution_desc": "Dimensiones del video en píxeles",
+        "width": "Ancho",
+        "width_desc": "Ancho del video",
+        "height": "Alto",
+        "height_desc": "Alto del video",
+        "duration": "Duración",
+        "duration_desc": "Duración total del video",
+        "fps": "Frames por segundo",
+        "fps_desc": "Tasa de fotogramas del video",
+        "codec": "Códec de video",
+        "codec_desc": "Códec utilizado para comprimir el video",
+        "bitrate": "Bitrate",
+        "bitrate_desc": "Tasa de bits del video",
+        "format_container": "Formato contenedor",
+        "format_container_desc": "Formato del archivo contenedor",
+        "format": "Formato",
+        "format_desc": "Formato del archivo",
+        "pixel_format": "Formato de píxel",
+        "pixel_format_desc": "Formato de representación de color",
+        "encoder": "Codificador",
+        "encoder_desc": "Software usado para codificar el video"
+      },
+      "exif_dates": {
+        "original_desc": "Fecha de captura original",
+        "create_desc": "Fecha de creación del archivo según EXIF",
+        "digitized_desc": "Fecha de digitalización",
+        "gps_desc": "Fecha GPS del archivo",
+        "filename_label": "Fecha del nombre",
+        "filename_desc": "Extraída del nombre del archivo (WhatsApp, etc.)",
+        "video_metadata": "Metadata de video",
+        "video_metadata_desc": "Fecha de creación del video (ffprobe)"
+      },
+      "exif_tech": {
+        "width_desc": "Ancho de la imagen original",
+        "height_desc": "Alto de la imagen original",
+        "version": "Versión EXIF",
+        "version_desc": "Versión del estándar EXIF usado",
+        "software": "Software",
+        "software_desc": "Aplicación que creó o modificó el archivo",
+        "subseconds": "Subsegundos",
+        "subseconds_desc": "Fracción de segundo en la captura original",
+        "timezone": "Zona horaria",
+        "timezone_desc": "Desplazamiento UTC en el momento de captura"
+      }
+    },
+    "visual_identical": {
+      "metric_groups": "Grupos",
+      "metric_duplicates": "Duplicados",
+      "metric_recoverable": "Recuperable",
+      "tip_message": "<b>Tip:</b> Esta herramienta detecta imágenes (videos próximamente) <i>visualmente idénticas al 100%</i> (mismo contenido visual). Para detectar imágenes <i>similares</i> con variaciones (recortes, ediciones, filtros), usa \"Archivos Similares\".",
+      "warning_many_groups": "<b>{count} grupos encontrados.</b> Se cargan {initial} grupos inicialmente. Usa búsqueda y filtros para encontrar grupos específicos.",
+      "option_backup": "Crear backup antes de eliminar",
+      "option_dry_run": "Modo simulación (no eliminar realmente)",
+      "button_delete": "Eliminar duplicados",
+      "strategy": {
+        "title": "Conservar:",
+        "description": "Elige qué archivo mantener de cada grupo",
+        "largest_title": "Mejor calidad",
+        "largest_desc": "Conserva el archivo más grande (mejor resolución)",
+        "smallest_title": "Menor tamaño",
+        "smallest_desc": "Conserva el archivo más pequeño (ahorra espacio)",
+        "oldest_title": "Más antiguo",
+        "oldest_desc": "Conserva el archivo con fecha más antigua",
+        "newest_title": "Más reciente",
+        "newest_desc": "Conserva el archivo con fecha más reciente"
+      },
+      "filter": {
+        "search": "Buscar por nombre",
+        "size": "Tamaño / Cantidad",
+        "groups": "Grupos seleccionados",
+        "source": "Origen de la fecha",
+        "type": "Tipo de archivo",
+        "source_tooltip": "Filtrar por origen de la fecha",
+        "type_tooltip": "Filtrar por tipo de archivo",
+        "size_variation": "Variación >50%"
+      },
+      "tooltip": {
+        "group_desc": "{count} archivos visualmente idénticos",
+        "size_variation": "Variación de tamaño: {pct:.0f}%"
+      },
+      "details": {
+        "group_desc": "{count} archivos visualmente idénticos"
+      }
+    },
+    "duplicates_exact": {
+      "metric_groups": "Grupos",
+      "metric_copies": "Copias",
+      "metric_recoverable": "Recuperable",
+      "warning_many_groups": "<b>{count} grupos encontrados.</b> Se cargan {initial} grupos inicialmente. Usa búsqueda y filtros para encontrar grupos específicos.",
+      "option_backup": "Crear backup antes de eliminar",
+      "option_dry_run": "Modo simulación (no eliminar realmente)",
+      "button_delete": "Eliminar duplicados",
+      "strategy": {
+        "title": "Conservar:",
+        "description": "Elige qué archivo mantener de cada grupo",
+        "oldest_title": "Más antiguo",
+        "oldest_desc": "Conserva el archivo con fecha más antigua (original)",
+        "newest_title": "Más reciente",
+        "newest_desc": "Conserva el archivo con fecha más reciente"
+      },
+      "filter": {
+        "search": "Buscar por nombre",
+        "size": "Tamaño / Cantidad",
+        "groups": "Grupos seleccionados",
+        "source": "Origen de la fecha",
+        "type": "Tipo de archivo",
+        "source_tooltip": "Filtrar por origen de la fecha",
+        "type_tooltip": "Filtrar por tipo de archivo"
+      },
+      "tooltip": {
+        "group_desc": "{count} archivos idénticos (mismo SHA256)",
+        "total_size": "Tamaño total: {size}"
+      },
+      "details": {
+        "group_desc": "{count} archivos idénticos"
+      },
+      "pagination": {
+        "tooltip": "Muestra cuántos grupos se han cargado en la lista.\nPor rendimiento, los grupos se cargan en lotes.\nUsa 'Cargar más' para ver grupos adicionales.",
+        "load_all_tooltip": "Cargar todos los grupos restantes de una vez",
+        "progress_text": "{percent}% cargado en lista ({loaded} de {total} grupos)",
+        "load_more_tooltip": "Cargar {count} grupos más ({remaining} pendientes)",
+        "all_loaded": "Todos cargados",
+        "load_all_msg": "Hay {count} grupos pendientes de cargar.\nEsto puede tardar y afectar al rendimiento.\n\n¿Continuar?"
+      }
+    },
+    "heic": {
+      "metric_groups": "Grupos",
+      "metric_recoverable": "Recuperable",
+      "strategy": {
+        "title": "Conservar:",
+        "description": "Elige qué formato mantener de cada par HEIC/JPG",
+        "jpg_title": "Mantener JPG",
+        "jpg_desc": "Máxima compatibilidad. Liberarás {size}",
+        "heic_title": "Mantener HEIC",
+        "heic_desc": "Archivos más pequeños. Liberarás {size}"
+      },
+      "filter": {
+        "search": "Buscar por nombre",
+        "size": "Mínimo tamaño",
+        "groups": "Grupos seleccionados",
+        "source": "Origen de la fecha",
+        "directory": "Directorio",
+        "source_tooltip": "Filtrar por origen de la fecha",
+        "dir_tooltip": "Filtrar por directorio"
+      },
+      "option_backup": "Crear backup antes de eliminar",
+      "option_dry_run": "Modo simulación (no eliminar realmente)",
+      "tree": {
+        "group_label": "Grupo #{num} • {name}"
+      },
+      "tooltip": {
+        "group_desc": "par HEIC/JPG: {name}",
+        "common_date": "Fecha común: {source}",
+        "date_diff": "Diferencia: {diff:.3f}s"
+      },
+      "button_delete": "Eliminar Duplicados ({count} grupos, {size})",
+      "no_items_type": "pares HEIC/JPG"
+    },
+    "live_photos": {
+      "metric_groups": "Grupos",
+      "metric_images": "Imágenes",
+      "metric_recoverable": "Recuperable",
+      "warning": {
+        "tools_unavailable_title": "Herramientas de video no disponibles",
+        "tools_unavailable_msg": "No se detectaron <b>ffprobe</b> ni <b>exiftool</b> en el sistema. Sin estas herramientas, no es posible validar la duración ni fechas de los videos. Los Live Photos se detectan solo por coincidencia de nombres, lo que puede incluir falsos positivos.",
+        "tools_action": "Ver cómo instalar",
+        "no_validation_title": "Detección sin validación temporal",
+        "no_validation_msg": "La extracción de metadata de video está desactivada. Los Live Photos se detectan solo por coincidencia de nombres, validando únicamente las fechas provenientes del sistema. Esto puede incluir falsos positivos.",
+        "no_validation_action": "Activar en Configuración"
+      },
+      "filter": {
+        "search": "Buscar por nombre",
+        "size": "Mínimo tamaño",
+        "groups": "Grupos seleccionados",
+        "source": "Origen de la fecha",
+        "directory": "Directorio",
+        "source_tooltip": "Filtrar grupos por origen de la fecha de comparación",
+        "dir_tooltip": "Filtrar grupos por directorio"
+      },
+      "option_backup": "Crear backup antes de eliminar",
+      "option_dry_run": "Modo simulación (no eliminar realmente)",
+      "tree": {
+        "image_count_singular": "{count} imagen",
+        "image_count_plural": "{count} imágenes",
+        "group_label": "Grupo #{num} • {name} ({images})"
+      },
+      "tooltip": {
+        "group_desc": "{count} imagen(es) + 1 video MOV",
+        "common_date": "Fecha común: {source}",
+        "date_diff": "Diferencia: {diff:.3f}s"
+      },
+      "button_delete": "Eliminar Videos ({count} grupos, {size})",
+      "no_items_type": "Live Photos"
+    },
+    "zero_byte": {
+      "metric_files": "Archivos",
+      "tree_header": {
+        "folder_file": "Carpeta / Archivo",
+        "location": "Ubicación"
+      },
+      "button_select_all": "Seleccionar todos",
+      "button_select_none": "Deseleccionar todos",
+      "option_backup": "Crear copia de seguridad antes de eliminar",
+      "option_dry_run": "Modo simulación (no eliminar realmente)",
+      "tree": {
+        "folder_label": "📁 {name} ({count} archivos)"
+      },
+      "tooltip": {
+        "folder": "Carpeta: {path}\n{count} archivos vacíos",
+        "file": "Archivo vacío (0 bytes): {path}"
+      },
+      "selection_count": "{selected} de {total} seleccionados",
+      "details": {
+        "size_key": "Tamaño",
+        "size_value": "0 bytes",
+        "status_key": "Estado",
+        "status_value": "Archivo vacío - seguro eliminar"
+      },
+      "no_items_type": "archivos vacíos seleccionados"
+    },
+    "file_renamer": {
+      "metric_total": "Total",
+      "metric_ok": "OK",
+      "metric_rename": "Renombrar",
+      "metric_conflicts": "Conflictos",
+      "info": {
+        "title": "Nota Importante",
+        "message": "El renombrado de archivos puede afectar a pares de archivos como Live Photos o HEIC+JPG si no se renombran juntos.<br><br>Los conflictos de nombre se resolverán añadiendo un sufijo numérico (ej: _1, _2) para evitar sobrescrituras."
+      },
+      "filter": {
+        "search": "Buscar por nombre",
+        "groups": "Archivos seleccionados",
+        "conflict": "Conflicto",
+        "file_type": "Tipo archivo",
+        "source": "Origen de la fecha",
+        "year": "Año",
+        "only_conflicts": "Solo conflictos",
+        "no_conflicts": "Sin conflictos",
+        "conflict_tooltip": "Filtrar por estado de conflicto",
+        "type_tooltip": "Filtrar por tipo de archivo",
+        "source_tooltip": "Filtrar por fuente de la fecha",
+        "year_tooltip": "Filtrar por año"
+      },
+      "tree_header": {
+        "folder_file": "Carpeta / Archivo",
+        "new_name": "Nuevo nombre",
+        "source": "Fuente"
+      },
+      "problems": {
+        "title": "Archivos con Problemas ({count})",
+        "description": "Estos archivos no pueden procesarse y serán ignorados:",
+        "and_more": "... y {count} más"
+      },
+      "option_backup": "Crear backup antes de renombrar",
+      "option_dry_run": "Modo simulación (no renombrar realmente)",
+      "button_proceed": "Proceder ({count})",
+      "tree": {
+        "folder_label": "📁 {name} ({count} archivos)",
+        "folder_tooltip": "Carpeta: {path}\n{count} archivos a renombrar",
+        "conflicts_tooltip": "{count} conflictos",
+        "conflict_file_tooltip": "Conflicto: Se añadirá sufijo numérico"
+      },
+      "dialog_load_all_title": "Cargar todos los archivos",
+      "dialog_load_all_msg": "Hay {count} archivos en {folders} carpetas. ¿Seguro que quieres cargarlos todos?\nEsto puede tardar y consumir memoria.",
+      "details": {
+        "detected_date": "Fecha detectada",
+        "date_source": "Fuente de fecha",
+        "year": "Año",
+        "conflict_key": "Conflicto",
+        "conflict_value": "Sí - Se resolverá con sufijo numérico",
+        "sequence": "Secuencia"
+      },
+      "no_items_type": "archivos para renombrar"
+    },
+    "file_organizer": {
+      "selection": {
+        "title": "¿Cómo quieres organizar tus archivos?",
+        "subtitle": "Selecciona una estrategia de organización"
+      },
+      "strategy": {
+        "date": {
+          "title": "Organizar por Fecha",
+          "desc": "Crea carpetas cronológicas basadas en la fecha de cada archivo",
+          "hint": "Granularidad: mes, año o ambos · Subcarpetas: fuente, tipo"
+        },
+        "type": {
+          "title": "Organizar por Tipo",
+          "desc": "Separa archivos en carpetas según su tipo",
+          "hint": "Subcarpetas opcionales: por fecha"
+        },
+        "source": {
+          "title": "Organizar por Fuente",
+          "desc": "Agrupa por origen del archivo"
+        },
+        "cleanup": {
+          "title": "Mover Todo al Raíz",
+          "desc": "Elimina subcarpetas y mueve todo al directorio principal"
+        }
+      },
+      "example_title": "Vista previa:",
+      "button_back": "< Cambiar",
+      "button_back_tooltip": "Volver a elegir otra estrategia de organización",
+      "options": {
+        "date_label": "Por Fecha",
+        "granularity_label": "Carpetas por:",
+        "month": "Mes",
+        "year": "Año",
+        "year_month": "Año/Mes",
+        "subfolders_label": "Subcarpetas:",
+        "add_source": "+ Fuente",
+        "add_source_tooltip": "Añadir subcarpetas por fuente (WhatsApp, Cámara...)",
+        "add_type": "+ Tipo",
+        "add_type_tooltip": "Añadir subcarpetas por tipo (Fotos/Videos)",
+        "type_label": "Por Tipo",
+        "subfolders_by_date_label": "Subcarpetas por fecha:",
+        "none": "Ninguna",
+        "source_label": "Por Fuente",
+        "cleanup_label": "Mover al Raíz",
+        "cleanup_desc": "Todos los archivos se moverán al directorio principal, sin subcarpetas",
+        "label": "Opciones:",
+        "backup_label": "Crear backup antes de mover",
+        "backup_tooltip": "Crea una copia de seguridad antes de mover archivos.\nRecomendado para operaciones destructivas.\n\nCarpeta de backups: {path}\n\nPuedes cambiar la carpeta desde Configuración.",
+        "dry_run_label": "Modo simulación",
+        "dry_run_tooltip": "Simula la operación sin mover archivos realmente.\nÚtil para verificar qué archivos se moverían.\n\nAl activar modo simulación, el backup se deshabilita\nautomáticamente ya que no se realizarán cambios reales.",
+        "cleanup_empty_label": "Limpiar carpetas vacías",
+        "cleanup_empty_tooltip": "Elimina todas las carpetas vacías dentro de la ruta\nseleccionada tras organizar los archivos.\n\nIncluye tanto las carpetas que queden vacías después\nde mover archivos como las que ya estuvieran vacías\nantes de ejecutar la organización.\n\nLas carpetas que solo contengan archivos de sistema\n(.nomedia, .DS_Store, Thumbs.db, etc.) también se\nconsideran vacías y se eliminarán.",
+        "move_unsupported_label": "Mover no soportados a 'other/'",
+        "move_unsupported_tooltip": "Mueve los archivos no soportados (GIF, documentos, etc.)\na una carpeta 'other/' en el directorio raíz,\nconservando su estructura de subcarpetas original.\n\nEsto evita que queden archivos sueltos fuera de la\norganización elegida.",
+        "backup_path_label": "Carpeta donde se guardarán los archivos movidos: {path}",
+        "backup_path_tooltip": "Ruta completa: {path}\n\nPuedes cambiar esta carpeta desde Configuración."
+      },
+      "indicator": {
+        "date": "Organizando por fecha",
+        "type": "Organizando por tipo de archivo",
+        "source": "Organizando por fuente",
+        "cleanup": "Moviendo todo al raíz"
+      },
+      "error_no_root": "No se pudo determinar el directorio raíz para organizar archivos",
+      "error_analysis_failed": "Error al analizar:\n{error}",
+      "metric_total": "Total",
+      "metric_organize": "Organizar",
+      "metric_size": "Tamaño",
+      "folders_info_label": "Se crearán {count} carpetas: <b>{list}</b>",
+      "folders_info_more": "... (+{count} más)",
+      "filter": {
+        "search": "Buscar por nombre",
+        "groups": "Archivos seleccionados",
+        "category": "Tipo de archivo",
+        "status": "Estado",
+        "source": "Origen de la fecha",
+        "source_tooltip": "Filtrar por origen de la fecha",
+        "category_tooltip": "Filtrar por tipo de archivo (Fotos/Videos)",
+        "status_tooltip": "Filtrar por estado (Con/Sin conflictos)",
+        "with_conflicts": "Con Conflictos",
+        "without_conflicts": "Sin Conflictos"
+      },
+      "tree_tooltip": "Doble clic en archivo para abrirlo\nClic derecho para ver detalles y opciones",
+      "tree_header": {
+        "original_name": "Nombre Original",
+        "new_name": "Nuevo Nombre"
+      },
+      "tree": {
+        "no_date": "Sin fecha",
+        "no_category": "Sin categoría",
+        "from_subdir": "Desde: {subdir} ({count} archivos)",
+        "folder_group": "{folder}/ ({count} archivos)",
+        "unchanged": "Igual"
+      },
+      "button": {
+        "select_option": "Selecciona una opción",
+        "organize": "Organizar Archivos ({count} archivos, {size})",
+        "waiting": "Esperando análisis...",
+        "no_files": "Sin archivos para organizar"
+      },
+      "dialog_load_all_title": "Cargar todos los archivos",
+      "dialog_load_all_msg": "Hay {count} archivos. ¿Seguro que quieres cargarlos todos?\nEsto puede tardar y consumir memoria.",
+      "details": {
+        "subdir": "Subdirectorio origen",
+        "target_folder": "Carpeta destino"
+      },
+      "no_items_type": "archivos para organizar"
+    },
+    "duplicates_similar": {
+      "metric_groups": "Grupos",
+      "metric_similar": "Similares",
+      "metric_recoverable": "Recuperable",
+      "tip_message": "<b>Tip:</b> Esta herramienta detecta imágenes (videos próximamente) <i>similares</i> (recortes, ediciones). Para copias <i>idénticas</i> visualmente, usa \"Copias Visuales Idénticas\".",
+      "option_backup": "Crear backup antes de eliminar",
+      "option_dry_run": "Modo simulación",
+      "button_delete": "Eliminar Seleccionados",
+      "strategy": {
+        "title": "Selección Automática:",
+        "description": "Aplica a los grupos visibles actualmente",
+        "auto_title": "Seleccionar automáticamente mejores imágenes",
+        "auto_tooltip": "Seleccionar los mejores archivos disponibles de cada grupo",
+        "keep_largest_title": "Mejor imagen",
+        "keep_largest_tooltip": "Conservar archivo de mayor tamaño",
+        "disabled_tooltip": "No hay grupos disponibles con los filtros actuales"
+      },
+      "filter": {
+        "search": "Buscar por nombre",
+        "size": "Tamaño / Cantidad",
+        "groups": "Grupos filtrados",
+        "source": "Origen de la fecha",
+        "type": "Tipo de archivo",
+        "source_tooltip": "Filtrar por origen de la fecha",
+        "type_tooltip": "Filtrar por tipo de archivo",
+        "sensitivity_label": "Sensibilidad",
+        "min_tooltip": "Valor mínimo de similitud",
+        "max_tooltip": "Valor máximo de similitud"
+      },
+      "loading": {
+        "counter": "Cargando...",
+        "preparing": "Preparando análisis...",
+        "submessage": "Sensibilidad: {sensitivity}% · {count} archivos"
+      },
+      "nav": {
+        "prev_tooltip": "Grupo anterior",
+        "next_tooltip": "Grupo siguiente",
+        "counter": "Grupo {index} de {total}",
+        "counter_empty": "0 de 0"
+      },
+      "toolbar": {
+        "keep_label": "Conservar:"
+      },
+      "summary": {
+        "none_selected": "0 seleccionados",
+        "selected": "{count} archivos seleccionados ({size})"
+      },
+      "badge": {
+        "similarity": "{score:.1f}% Similitud",
+        "files_info": "{count} archivos · {size}"
+      },
+      "no_groups": {
+        "filtered": "No se encontraron grupos que coincidan\ncon los filtros seleccionados.\n\nPrueba a modificar los filtros para ver más resultados.",
+        "none_found": "No se encontraron archivos similares\ncon sensibilidad {pct}%\n\nReduce la sensibilidad para detectar\narchivos con más diferencias."
+      },
+      "card": {
+        "checkbox_delete": "Eliminar"
+      },
+      "auto_select": {
+        "strategy_name": "Selección Automática (Mejores Imágenes)",
+        "title": "Confirmar Auto-Selección: {name}",
+        "text_filtered": "<b>¿Aplicar selección '{name}' a los {count} grupos filtrados?</b>",
+        "info_filtered": "<b>NOTA:</b><br><br>Esta acción se aplicará <b>únicamente</b> a los <b>{filtered} grupos</b> que coinciden con los filtros actuales.<br><br>Los <b>{remaining} grupos restantes</b> <b>conservarán su selección actual</b> sin cambios.<br><br>Puedes cambiar los filtros y repetir la operación para otros grupos.",
+        "text_all": "<b>¿Aplicar selección '{name}' a todos los {count} grupos?</b>",
+        "info_all": "Esta acción seleccionará el archivo de mayor tamaño como el que se <b>conservará</b> en cada grupo.<br><br>Los demás archivos del grupo serán marcados para <b>eliminación</b>."
+      },
+      "button_delete_n": "Eliminar {count} Archivos",
+      "context_view_details": "Ver detalles",
+      "no_items_type": "archivos similares seleccionados"
+    },
+    "image_preview": {
+      "window_title": "Vista previa - {filename}",
+      "error_loading": "No se pudo cargar la imagen",
+      "button_close": "Cerrar"
+    }
+  },
+  "cards": {
+    "badge_pending": "PENDIENTE",
+    "badge_nothing_found": "NADA ENCONTRADO",
+    "nothing_to_delete": "No hay nada que eliminar",
+    "action_manage": "Gestionar ahora",
+    "action_analyze": "Analizar ahora",
+    "action_organize": "Organizar ahora",
+    "action_rename": "Renombrar ahora",
+    "space_wasted": "~{size} desperdiciados",
+    "space_recoverable": "~{size} recuperables",
+    "duplicate_files_found": "{count} archivos duplicados encontrados",
+    "no_duplicates_found": "No se encontraron archivos duplicados",
+    "pending_exact_copies": "Analizar para detectar copias exactas",
+    "similar_groups_found": "{count} grupos de archivos similares encontrados",
+    "no_similar_found": "No se encontraron archivos similares",
+    "analyzed_click_to_group": "{count} analizados · Clic para agrupar",
+    "no_files_to_analyze": "No se encontraron archivos para analizar",
+    "pending_similar_files": "Analizar para detectar archivos similares",
+    "ready_to_organize": "Listo para organizar archivos",
+    "ready_to_rename": "Listo para renombrar archivos",
+    "heic_groups_found": "{count} grupos de duplicados HEIC/JPG encontrados",
+    "no_heic_pairs_found": "No se encontraron pares HEIC/JPG",
+    "pending_heic": "Analizar para detectar duplicados HEIC/JPG",
+    "live_photo_groups_detected": "{count} Grupos de Live Photos detectados",
+    "no_live_photos_found": "No se encontraron Live Photos",
+    "pending_live_photos": "Analizar para detectar Live Photos",
+    "groups_detected": "{count} grupos detectados",
+    "no_visual_identical_found": "No se encontraron copias visuales idénticas",
+    "pending_visual_identical": "Analizar para detectar copias visuales idénticas",
+    "empty_files_detected": "{count} archivos vacíos detectados",
+    "n_files": "{count} archivos",
+    "no_empty_files_found": "No se encontraron archivos vacíos",
+    "pending_empty_files": "Analizar para detectar archivos vacíos"
+  },
+  "services": {
+    "phase": {
+      "file_classification": "Escaneando estructura de carpetas",
+      "filesystem_metadata": "Obteniendo información de archivos",
+      "hash": "Calculando hashes de los archivos",
+      "exif_images": "Obteniendo metadatos de las imágenes",
+      "exif_videos": "Obteniendo metadatos de los videos",
+      "best_date": "Calculando mejor fecha disponible",
+      "video_tools_missing": "ffprobe/exiftool no instalados"
+    },
+    "progress": {
+      "classifying_files": "Clasificando archivos",
+      "creating_backup": "Creando backup...",
+      "organizing": "Organizando...",
+      "processing_n_of_total": "Procesando {current}/{total}",
+      "analyzing": "Analizando",
+      "classifying_unsupported": "Clasificando archivos no soportados",
+      "analyzing_dates": "Analizando fechas",
+      "analyzing_types": "Analizando tipos",
+      "analyzing_sources": "Analizando fuentes",
+      "analyzing_filenames": "Analizando nombres de archivos",
+      "renaming_n_of_total": "Renombrando... {current}/{total}",
+      "simulating_n_of_total": "Simulando... {current}/{total}",
+      "processing_file": "Procesando: {name}",
+      "deleting_file": "Eliminando: {name}",
+      "filtering_empty_files": "Filtrando archivos vacíos...",
+      "would_delete": "[Simulación] Eliminaría",
+      "deleting": "Eliminando",
+      "calculating_signatures": "Calculando firmas digitales...",
+      "classifying_heic_jpg": "Clasificando archivos HEIC/JPG",
+      "pairing_files": "Emparejando archivos...",
+      "processing_pair_n_of_total": "Procesando par {current}/{total}",
+      "pairing_live_photos": "Emparejando Live Photos...",
+      "evaluating_file": "Evaluando {name}",
+      "simulation_prefix": "[Simulación] ",
+      "extracting_video_duration": "Extrayendo duración de videos ({current}/{total})...",
+      "operation_completed": "Operación completada",
+      "scanning_file": "Escaneando: {name}",
+      "building_index": "Construyendo índice... ({current}/{total})",
+      "grouping_similar": "Agrupando archivos similares... ({current}/{total})"
+    },
+    "result": {
+      "no_files_to_move": "No hay archivos para mover",
+      "no_files_to_rename": "No hay archivos para renombrar",
+      "no_duplicates_to_delete": "No hay duplicados para eliminar",
+      "no_duplicates_already_processed": "No hay duplicados para eliminar (archivos ya procesados)",
+      "no_duplicate_files": "No hay archivos duplicados para eliminar",
+      "no_live_photos_to_clean": "No hay Live Photos para limpiar",
+      "would_be_processed": "se procesarían",
+      "processed": "procesados",
+      "would_be_freed": "se liberarían",
+      "freed": "liberados",
+      "completed": "completado",
+      "would_be_renamed": "se renombrarían",
+      "renamed": "renombrados",
+      "renamed_n_files": "Renombrados {count} archivos",
+      "warning_n_errors": "Advertencia: {count} errores encontrados",
+      "videos_protected_by_duration": "⛔ {count} videos protegidos (duración > {max_duration}s)"
+    },
+    "operation": {
+      "organization": "Organización",
+      "empty_file_deletion": "Eliminación de archivos vacíos",
+      "exact_duplicate_deletion": "Eliminación de duplicados exactos",
+      "heic_jpg_deletion": "Eliminación HEIC/JPG",
+      "live_photos_cleanup": "Limpieza Live Photos",
+      "similar_duplicate_deletion": "Eliminación de duplicados similares",
+      "visual_identical_deletion": "Eliminación de copias visuales idénticas"
+    },
+    "mode": {
+      "simulation": "SIMULACIÓN"
+    },
+    "error": {
+      "directory_not_found": "Directorio no existe: {path}",
+      "not_a_directory": "No es un directorio: {path}",
+      "unsupported_type": "Tipo no soportado: {type}",
+      "invalid_strategy": "Estrategia no válida: {strategy}. Opciones: {options}",
+      "backup_creation_failed": "No se pudo crear el backup",
+      "invalid_selection_strategy": "Estrategia no válida para selección: {strategy}",
+      "backup_failed_operation_aborted": "Fallo al crear backup: {error}. Operación no ejecutada."
+    },
+    "folder": {
+      "photos": "Fotos",
+      "videos": "Videos",
+      "other": "Otros"
+    },
+    "unit": {
+      "files": "archivos"
+    }
+  },
+  "platform": {
+    "tool": {
+      "ffprobe_not_installed": "No instalado - Necesario para duración de videos",
+      "exiftool_not_installed": "No instalado - Necesario para fechas de Live Photos"
+    },
+    "install": {
+      "windows_instructions": "Descargar desde ffmpeg.org y exiftool.org",
+      "generic_instructions": "Consulta la documentación de tu sistema operativo"
+    },
+    "error": {
+      "file_not_found": "El archivo no existe: {path}",
+      "path_not_a_file": "La ruta no es un archivo: {path}",
+      "unsupported_os": "Sistema operativo no soportado: {system}",
+      "open_file_failed": "Error al abrir archivo: {error}",
+      "folder_not_found": "La carpeta no existe: {path}",
+      "path_not_a_folder": "La ruta no es una carpeta: {path}",
+      "open_folder_failed": "Error al abrir carpeta: {error}"
+    }
+  }
+}

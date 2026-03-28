@@ -1,0 +1,1278 @@
+{
+  "app": {
+    "name": "SafeTool Pix",
+    "description": "Organize, rename, and optimize your photo library"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "error": "Error",
+    "info": "Info",
+    "ok": "OK",
+    "save": "Save",
+    "delete": "Delete",
+    "all": "All",
+    "unknown": "Unknown",
+    "files": "files",
+    "groups": "groups",
+    "pixels": "pixels",
+    "folder": "Folder:",
+    "size": "Size:",
+    "date": "Date:",
+    "date_source": "Date source:",
+    "file_type": {
+      "image": "Image",
+      "video": "Video",
+      "other": "File {ext}"
+    },
+    "filter": {
+      "all": "All",
+      "photos": "Photos",
+      "videos": "Videos",
+      "others": "Other",
+      "all_directories": "All directories",
+      "all_sizes": "All sizes",
+      "lt_1mb": "< 1 MB",
+      "1_10mb": "1 - 10 MB",
+      "10_100mb": "10 - 100 MB",
+      "gt_10mb": ">10 MB",
+      "gt_50mb": ">50 MB",
+      "gt_100mb": "> 100 MB",
+      "3_plus_copies": "3+ copies",
+      "5_plus_copies": "5+ copies"
+    },
+    "tree_header": {
+      "groups_files": "Groups / Files",
+      "size": "Size",
+      "date": "Date",
+      "date_source": "Date Source",
+      "location": "Location",
+      "status": "Status",
+      "type": "Type",
+      "origin": "Origin"
+    },
+    "pagination": {
+      "load_all": "Load all",
+      "load_more": "Load more",
+      "no_groups": "No groups to display",
+      "load_n_more": "Load {count} more",
+      "load_n_more_tooltip": "Load {count} more items ({remaining} remaining)",
+      "all_loaded": "All loaded",
+      "progress_text": "{percent}% loaded in list ({loaded} of {total})",
+      "no_items": "No items to display"
+    },
+    "status": {
+      "will_keep": "Will be kept",
+      "will_delete": "Will be deleted",
+      "mark_keep": "Keep",
+      "mark_delete": "Delete"
+    },
+    "tooltip": {
+      "settings": "Settings",
+      "about": "About - Instructions and application capabilities",
+      "folder": "Folder:",
+      "size": "Size:",
+      "date": "Date:",
+      "date_source": "Date source:",
+      "will_keep": "Will be kept",
+      "will_delete": "Will be deleted"
+    },
+    "details": {
+      "group_space": "Group space",
+      "strategy": "Strategy",
+      "status": "Status"
+    },
+    "strategy_name": {
+      "oldest": "oldest",
+      "newest": "newest",
+      "largest": "best quality (largest)",
+      "smallest": "smallest size"
+    },
+    "confirm_operation_title": "Confirm operation",
+    "confirm_operation_message": "{files_count} files will be {operation_verb}{size_info}.",
+    "confirm_continue": "Continue?",
+    "no_items_title": "No changes",
+    "no_items_message": "There are no {item_type} to process.",
+    "dialog": {
+      "load_all_groups_title": "Load all groups",
+      "load_all_groups_msg": "There are {count} groups. Are you sure you want to load them all?\nThis may take a while and consume memory.",
+      "error_title": "Error"
+    },
+    "tree": {
+      "group_label": "Group #{num} • {count} copies"
+    }
+  },
+  "tools": {
+    "zero_byte": {
+      "title": "Empty files",
+      "short_description": "These files are 0 bytes and contain no information. It is 100% safe to delete them",
+      "long_description": "Scans your folders for \"ghost files\" (0-byte or corrupted files) that contain no useful data. They can be safely removed because they are useless."
+    },
+    "live_photos": {
+      "title": "Live Photos",
+      "short_description": "iPhone Live Photos (Image + MOV). The MOV videos will be deleted to free up space",
+      "long_description": "iPhone Live Photos consist of an image and a short video. This tool detects these pairs and lets you decide whether to keep both, or clean up the video component to save space if you only care about the still photograph."
+    },
+    "heic": {
+      "title": "HEIC/JPG Duplicates",
+      "short_description": "HEIC photos with identical JPG versions. Choose which format to keep and free up space",
+      "long_description": "Finds cases where you have the same photograph in two formats: HEIC (used by iPhones) and the traditional JPG. The tool helps you identify these duplicates and remove the redundant versions to free up space."
+    },
+    "duplicates_exact": {
+      "title": "Exact copies",
+      "short_description": "100% identical files even if they have different names. It is completely safe to delete them",
+      "long_description": "Analyzes your collection to find files that are mathematically identical. This is the safest form of cleanup, as it guarantees that you are not deleting a \"similar\" photo, but exactly the same file repeated in different folders (even if it has a different name)."
+    },
+    "visual_identical": {
+      "title": "Visually identical copies",
+      "short_description": "Visually identical files but with different internal data. Happens with photos sent via WhatsApp or resized.",
+      "long_description": "Identifies images (videos in future versions) that are visually indistinguishable to the human eye, even though they are technically different files (for example, a copy downloaded from the internet, or the same photo saved on different dates). Ideal for removing WhatsApp copies, repeated screenshots, or resized images."
+    },
+    "duplicates_similar": {
+      "title": "Similar files",
+      "short_description": "Detects similar but not identical images (edits, crops, different resolution...)",
+      "long_description": "Detects photos (videos in future versions) that are very similar but not identical. This is perfect for:\n• Selecting the best shot from a burst of photos.\n• Removing slightly edited or cropped versions you no longer need.\n• Detecting low-resolution copies."
+    },
+    "file_organizer": {
+      "title": "Smart organization",
+      "short_description": "Organizes images and videos into a new folder structure",
+      "long_description": "This tool analyzes your files and proposes a new logically organized folder structure (for example, by Year/Month), allowing you to relocate thousands of photos with a single click and keep your library spotless."
+    },
+    "file_renamer": {
+      "title": "Full rename",
+      "short_description": "Files will be renamed to the format YYYY-MM-DD_HH-MM-SS_<PHOTO|VIDEO> using their creation date",
+      "long_description": "Standardizes your filenames professionally. You can change cryptic names like \"IMG_8823.JPG\" to useful and readable formats like \"20241231_112300_PHOTO.jpg\", using dates and automatic sequences to avoid name conflicts."
+    }
+  },
+  "categories": {
+    "cleanup": {
+      "title": "Cleanup & space",
+      "description": "Free up space by removing unnecessary files"
+    },
+    "visual": {
+      "title": "Visual detection",
+      "description": "Find visually similar images"
+    },
+    "organization": {
+      "title": "Organization",
+      "description": "Sort and rename your collection"
+    }
+  },
+  "stage1": {
+    "header_title": "Step 1: select the folder with your photos",
+    "button_select_folder": "Select folder...",
+    "tip_choose_folder": "Choose the folder where you have your iPhone photos and videos, WhatsApp media, or any collection you want to organize.",
+    "tip_privacy_notice": "SafeTool Pix will only analyze that folder and all its subfolders. Nothing will be modified until you authorize it.",
+    "last_folder_label": "Last analyzed folder: {path}",
+    "button_use_last_folder": "Use this folder",
+    "step2_header": "Step 2: choose what you want to do",
+    "step2_empty_state": "Tools will appear here after analyzing your folder",
+    "dialog_select_folder": "Select folder with photos",
+    "error": {
+      "folder_unavailable_title": "Folder unavailable",
+      "folder_unavailable_msg": "The last folder no longer exists:\n{path}\n\nPlease select another folder.",
+      "folder_not_found_title": "Error - Folder not found",
+      "folder_not_found_msg": "The selected folder does not exist:\n\n{path}\n\nIt may have been moved or deleted.",
+      "invalid_selection_title": "Invalid selection",
+      "invalid_selection_msg": "Please select a folder, not an individual file.",
+      "no_permission_title": "Error - Insufficient permissions",
+      "no_permission_msg": "You do not have read permissions for this folder:\n\n{path}\n\nPlease select a folder where you have read access."
+    },
+    "warning": {
+      "empty_folder_title": "Empty folder",
+      "empty_folder_msg": "The selected folder appears to be empty:\n\n{path}\n\nDo you want to continue anyway?"
+    }
+  },
+  "stage2": {
+    "error": {
+      "analysis_title": "Analysis error",
+      "analysis_msg": "An error occurred during folder analysis.",
+      "analysis_details": "Error details:\n{error}"
+    },
+    "button": {
+      "retry": "Retry",
+      "change_folder": "Change folder",
+      "exit": "Exit",
+      "continue_analysis": "Continue analysis",
+      "select_other_folder": "Select another folder"
+    },
+    "cancel": {
+      "title": "Cancel analysis",
+      "confirm_msg": "Are you sure you want to cancel the analysis?",
+      "warning_msg": "Current progress will be lost."
+    }
+  },
+  "stage3": {
+    "banner": {
+      "stale_stats": "<b>Outdated statistics</b><br>Changes have been made to the files. The displayed statistics may not be accurate."
+    },
+    "button": {
+      "reanalyze_now": "Re-analyze now"
+    },
+    "error": {
+      "no_analysis_data": "No analysis data available",
+      "analysis_failed": "Analysis error: {msg}",
+      "operation_failed_msg": "An error occurred:\n\n{error}",
+      "update_failed_title": "Update error",
+      "update_failed_msg": "Error updating {tool_id} statistics:\n\n{error}",
+      "stats_update_failed_msg": "Could not update statistics for {name}.\n\n{msg}"
+    },
+    "progress": {
+      "analyzing_live_photos": "Analyzing Live Photos...",
+      "searching_heic": "Searching for HEIC/JPG duplicates...",
+      "searching_exact_copies": "Searching for exact copies...",
+      "searching_visual_identical": "Searching for visually identical copies...",
+      "analyzing_similar": "Analyzing similar files...",
+      "searching_empty_files": "Searching for empty files...",
+      "analyzing_structure": "Analyzing structure...",
+      "analyzing_names": "Analyzing names...",
+      "executing_operation": "Executing operation...",
+      "processing_title": "Processing",
+      "cancelling": "Cancelling operation, please wait...",
+      "updating_live_photos": "Updating Live Photos...",
+      "updating_heic": "Updating HEIC/JPG duplicates...",
+      "updating_exact_copies": "Updating exact copies...",
+      "updating_visual": "Updating visual copies...",
+      "updating_similar": "Updating similar files...",
+      "updating_empty": "Updating empty files...",
+      "updating_structure": "Updating structure...",
+      "updating_names": "Updating names..."
+    },
+    "confirm": {
+      "delete_title": "Confirm Deletion",
+      "delete_msg": "This operation will permanently delete files.\n\nAre you sure you want to continue?",
+      "update_stats_title": "Update statistics",
+      "update_stats_msg": "Do you want to update the statistics for {name}?\n\nThis will recalculate only the {name} analysis to reflect the changes made. The metadata cache is already up to date.\n\nNote: This operation is fast and only affects {name}.",
+      "change_folder_title": "Change folder",
+      "change_folder_msg": "Change folder? The current analysis will be lost."
+    },
+    "info": {
+      "no_live_photos": "No Live Photos found.",
+      "no_heic_pairs": "No HEIC/JPG pairs found.",
+      "no_exact_copies": "No exact copies found.",
+      "no_visual_identical_title": "No visually identical copies",
+      "no_visual_identical_msg": "No visually identical copies were found.\n\nAll images are visually unique.",
+      "no_files_to_analyze_title": "No files to analyze",
+      "no_files_to_analyze_msg": "No images or videos were found to analyze.\n\nMake sure the directory contains supported files.",
+      "no_empty_files": "No empty files found.",
+      "stats_updated_title": "Statistics updated",
+      "stats_updated_msg": "The statistics for {name} have been updated successfully."
+    },
+    "result": {
+      "simulation_title": "Simulation Completed",
+      "operation_title": "Operation Completed",
+      "files_would_process": "Files that would be processed: {count}",
+      "files_processed": "Files processed: {count}",
+      "space_would_free": "Space that would be freed: {size}",
+      "space_freed": "Space freed: {size}",
+      "backup_simulation": "Backup: Not created in simulation mode",
+      "backup_created": "Backup created at:\n{path}",
+      "backup_no_files": "Backup: Requested but no files found to back up",
+      "errors_warning": "Warning: {count} errors were found during the operation.",
+      "simulation_note": "SIMULATION MODE: No actual changes were made to the files.",
+      "simulation_completed": "The simulation has been completed.",
+      "operation_completed": "The operation completed successfully."
+    }
+  },
+  "progress_card": {
+    "header_title": "Analyzing folder",
+    "status_analyzing": "Analyzing your collection...",
+    "status_completed": "Analysis completed - Loading results..."
+  },
+  "summary_card": {
+    "label_folder": "Folder:",
+    "button_change": "Change",
+    "tooltip_change": "Select another folder",
+    "stats_calculating": "Calculating...",
+    "stats_total": "{count} files • {size}",
+    "stats_images": "{count} images",
+    "stats_videos": "{count} videos",
+    "stats_unsupported": "{count} unsupported files",
+    "stats_empty": "No files to display",
+    "button_reanalyze": "Reanalyze"
+  },
+  "analysis_phase": {
+    "phase1": "Scanning folder structure",
+    "phase2": "Retrieving file information",
+    "phase3": "Calculating file hashes",
+    "phase4": "Extracting image metadata",
+    "phase5": "Extracting video metadata",
+    "phase6": "Determining optimal date",
+    "skipped": "(skipped)"
+  },
+  "dropzone": {
+    "main_text": "Drag a folder here",
+    "hint_text": "or use the button below",
+    "drop_text": "Drop to analyze"
+  },
+  "settings": {
+    "title": "Settings",
+    "tab": {
+      "general": "General",
+      "analysis": "Initial analysis",
+      "backup_logs": "Backup & Logs",
+      "advanced": "Advanced"
+    },
+    "buttons": {
+      "restore_defaults": "Restore defaults",
+      "save_changes": "Save Changes",
+      "browse": "Browse..."
+    },
+    "general": {
+      "confirmations": {
+        "title": "Confirmations",
+        "confirm_delete": "Ask for additional confirmation for delete operations",
+        "confirm_delete_tooltip": "Double confirmation for operations that delete files",
+        "confirm_reanalyze": "Confirm before reanalyzing after executing operations",
+        "confirm_reanalyze_tooltip": "If enabled, confirmation will be requested before updating statistics.\nIf disabled, statistics will be updated automatically after destructive operations."
+      },
+      "interface": {
+        "title": "Interface",
+        "language_label": "Language:",
+        "language_restart_title": "Language change",
+        "language_restart_msg": "The language change will be applied the next time you start the application.",
+        "show_full_path": "Show full directory path in the search bar",
+        "show_full_path_tooltip": "If enabled, shows the full directory path (e.g.: /home/user/Photos).\nIf disabled, shows only the folder name (e.g.: Photos)."
+      },
+      "dry_run": {
+        "title": "Simulation Mode (Dry Run)",
+        "info": "In simulation mode, operations are analyzed and displayed but <b>not actually executed</b>. Useful for verifying what the application will do before applying changes.",
+        "enable_default": "Enable simulation mode by default for all operations",
+        "enable_default_tooltip": "If enabled, all delete dialogs (HEIC, Live Photos, Duplicates)\nwill show the 'Simulation mode' checkbox checked by default.\nThis adds an extra layer of safety to prevent accidental deletions."
+      }
+    },
+    "analysis": {
+      "system_tools": {
+        "title": "System Tools",
+        "info": "External tools are required to extract video metadata (duration, creation date). Without them, the video analysis phase will be automatically skipped.",
+        "ffprobe_checking": "⏳ ffprobe: Checking...",
+        "exiftool_checking": "⏳ exiftool: Checking...",
+        "check_button": "Check",
+        "check_button_tooltip": "Check if the tools are installed",
+        "install_how": "📦 How to install these tools?",
+        "install_hide": "📦 Hide installation instructions",
+        "ffprobe_installed": "ffprobe: Installed",
+        "ffprobe_not_installed": "ffprobe: Not installed",
+        "exiftool_installed": "exiftool: Installed",
+        "exiftool_not_installed": "exiftool: Not installed",
+        "install_your_system": "Your system:",
+        "install_windows": "Download from ffmpeg.org and exiftool.org"
+      },
+      "config": {
+        "title": "Initial Analysis Configuration",
+        "info": "Control what information is extracted during the initial directory scan. Disabling options makes the scan faster, but each tool's analysis will take longer when opened.",
+        "precalculate_hashes": "Pre-calculate SHA256 hashes for all files",
+        "precalculate_hashes_tooltip": "Pre-calculates SHA256 hashes for all files during the initial scan.\n\nADVANTAGES:\n  • 'Exact duplicates' tool is INSTANT (all hashes are ready)\n  • Ideal if you always search for duplicates\n\nDISADVANTAGES:\n  • Makes the initial scan VERY slow (calculates hash for every file)\n  • For 10,000 files: scan goes from ~10s to ~2-5 min\n\nRECOMMENDATION: Leave DISABLED (on-demand analysis is efficient).",
+        "image_exif": "Extract EXIF metadata from images",
+        "image_exif_tooltip": "Extracts EXIF metadata from all images during the initial scan.\n\nADVANTAGES:\n  • Organization and rename tools are faster\n  • Moderate cost during initial scan (~30-60 sec for 30k photos)\n\nDISADVANTAGES:\n  • Adds time to the initial scan\n\nRECOMMENDATION: Leave ENABLED (the cost is reasonable and useful for most users).",
+        "video_exif": "Extract EXIF metadata from videos (VERY SLOW)",
+        "video_exif_tooltip": "Extracts video metadata using ffprobe during the initial scan.\n\nWARNING: This process is EXTREMELY SLOW\n  • For 5,000 videos: ~3-10 additional minutes\n  • Blocks the initial scan\n\nADVANTAGES:\n  • Video organization tool has data ready\n\nDISADVANTAGES:\n  • Makes the initial scan MUCH slower\n  • Most users don't organize videos by date\n\nRECOMMENDATION: Leave DISABLED (on-demand analysis is much more efficient)."
+      }
+    },
+    "backup": {
+      "auto": {
+        "title": "Automatic Backups",
+        "warning_info": "<b>Highly Recommended:</b> Backups allow you to recover files in case of an error.",
+        "enable": "Automatically create a backup before each destructive operation",
+        "enable_tooltip": "If enabled, a backup will be created before:\n• Renaming files\n• Deleting Live Photos\n• Deleting HEIC duplicates\n• Organizing folders"
+      },
+      "directory": {
+        "title": "Backup Directory",
+        "info": "Location where automatic backups are saved.",
+        "browse_tooltip": "Change backup location"
+      },
+      "labels": {
+        "folder": "Folder:"
+      }
+    },
+    "logs": {
+      "title": "Logs & diagnostics",
+      "info": "Log files record all operations for diagnostics and auditing.",
+      "browse_tooltip": "Change log location",
+      "level_label": "Detail level:",
+      "level": {
+        "debug": "DEBUG - Maximum detail (for development)",
+        "info": "INFO - Normal (recommended)",
+        "warning": "WARNING - Warnings only",
+        "error": "ERROR - Critical errors only"
+      },
+      "level_tooltip": "DEBUG: All technical information\nINFO: Normal operations\nWARNING: Unusual situations\nERROR: Severe errors only",
+      "dual_log": "Create additional file with WARNING and ERROR only (for large datasets)",
+      "dual_log_tooltip": "When enabled and the log level is INFO or DEBUG:\n• A main file will be created with ALL logs (suffix: _INFO or _DEBUG)\n• An additional file will be created with WARNING and ERROR only (suffix: _WARNERROR)\n\nUseful for large datasets where the full log is very extensive.\nThis option is automatically disabled if the level is WARNING or ERROR.",
+      "dual_log_disabled_tooltip": "This option is only available for INFO or DEBUG levels.\nWith WARNING or ERROR level, all logs already contain only warnings and errors.",
+      "disable_file_logging": "Do not write log files to disk",
+      "disable_file_logging_tooltip": "When enabled:\n• No log files will be written to disk\n• Only WARNING and ERROR messages will be shown in the console\n• DEBUG and INFO messages will be completely discarded\n\nRecommended if you don't need to keep operation records.\nThis option disables the logs directory, detail level and dual logging.",
+      "open_folder": "Open logs folder"
+    },
+    "advanced": {
+      "performance": {
+        "title": "Performance",
+        "auto_info": "🤖 Automatic configuration based on your hardware:\n   • CPU Cores: {cpu_count}\n   • I/O Workers (recommended): {io_workers}\n   • CPU Workers (recommended): {cpu_workers}",
+        "override_label": "Manual override (set to 0 for automatic):",
+        "workers_label": "Processing threads:",
+        "workers_auto": "Automatic",
+        "workers_tooltip": "Number of parallel threads for processing files.\n\n• 0 (Automatic): Detects and uses the optimal number for your hardware\n• I/O workers: {io_workers} (reading/hashing)\n• CPU workers: {cpu_workers} (image analysis)\n\nOnly change this if you experience performance issues.\nValid range: 1-{max_workers}",
+        "ui_update_label": "Analysis update frequency:",
+        "ui_update_tooltip": "How often user feedback is provided during analyses.\nHigher values improve performance but provide less feedback.\nLower values (1) may slow down the process.\nRecommended: 10-50",
+        "restart_note": "Changing the number of threads requires restarting the application to take full effect."
+      },
+      "debug": {
+        "title": "Debug",
+        "clear_all": "Reset ALL saved settings",
+        "clear_all_info": "This will delete all saved preferences and restore default values."
+      }
+    },
+    "errors": {
+      "cannot_open_folder": "Could not open folder:\n{error}",
+      "cannot_clear": "Could not clear settings:\n{error}",
+      "cannot_save": "Could not save settings:\n{error}",
+      "restart_title": "Restart Error",
+      "restart_message": "Could not restart the application:\n{error}\n\nPlease restart the application manually."
+    },
+    "confirm": {
+      "clear_all_title": "Confirm Deletion",
+      "clear_all_message": "Are you sure you want to delete ALL saved settings?\n\nThis includes:\n• Backup preferences\n• Custom folders\n• Logging level\n• All other settings\n\nThe application will return to default values.",
+      "restore_title": "Restore Values",
+      "restore_message": "Restore all settings to default values?"
+    },
+    "messages": {
+      "cleared_title": "Settings Deleted",
+      "cleared_message": "All settings have been deleted.\nIt is recommended to restart the application.",
+      "restored_title": "Restored",
+      "restored_message": "Settings restored to default values.\n\nPress 'Save Changes' to apply.",
+      "saved_title": "Settings Saved",
+      "saved": "Settings have been saved successfully.",
+      "saved_logs_changed": "The logs directory has changed. New logs will be written to the new location.",
+      "restart_required_intro": "Changes have been saved that require restarting the application to take effect:\n\n",
+      "restart_change_workers": "• Number of processing threads",
+      "restart_change_logs": "• Logs directory",
+      "restart_change_backup": "• Backup directory",
+      "restart_change_log_level": "• Log detail level",
+      "restart_question": "Do you want to restart the application now?",
+      "restart_title": "Restart Application",
+      "restart_needed_title": "Restart Required",
+      "restart_needed_message": "Changes have been saved successfully, but will NOT take effect until you restart the application.\n\nThe application may not behave as expected until it is restarted."
+    },
+    "file_dialog": {
+      "select_logs_dir": "Select Logs Directory",
+      "select_backup_dir": "Select Backup Directory"
+    }
+  },
+  "about": {
+    "title": "About {name}",
+    "header": {
+      "version": "Version {version}",
+      "privacy_badge": "100% Private • No internet connection"
+    },
+    "tab": {
+      "welcome": "Welcome",
+      "tools": "Tools",
+      "info": "Information"
+    },
+    "welcome": {
+      "title": "Welcome to SafeTool Pix",
+      "description": "A suite of tools for managing, optimizing, and organizing your photos and videos. <b>Absolute privacy</b>: all processing is 100% local on your computer.",
+      "workflow_title": "Workflow (Steps to follow in order)",
+      "workflow_description": "SafeTool Pix is designed to follow a logical flow and progressively optimize your collection. Follow these 4 steps for the best results:",
+      "steps": {
+        "1": {
+          "title": "Folder selection",
+          "description": "The first step is to choose the folder containing your photos and videos. The system will work recursively."
+        },
+        "2": {
+          "title": "Analysis",
+          "description": "We automatically scan files, extract EXIF metadata, and calculate digital signatures (hashes)."
+        },
+        "3": {
+          "title": "Tool Selection",
+          "description": "Enter each tool to detect duplicates, organize by date, or clean up unnecessary files."
+        },
+        "4": {
+          "title": "Execute Changes",
+          "description": "After reviewing the proposed action plans, confirm execution. We recommend using Simulation Mode first."
+        }
+      },
+      "tips": {
+        "simulation": {
+          "title": "Simulation Mode",
+          "description": "Test without modifying files"
+        },
+        "backup": {
+          "title": "Backup Available",
+          "description": "Backup of deleted files"
+        },
+        "logs": {
+          "title": "Detailed Logs",
+          "description": "Record of all operations"
+        }
+      },
+      "system_tools": {
+        "title": "Recommended external tools",
+        "info": "External tools are needed to analyze videos (duration, date). Without them, video features will be limited.",
+        "check_button": "Check"
+      }
+    },
+    "nav": {
+      "view_tools": "View Tools",
+      "home": "Home",
+      "view_info": "View Info"
+    },
+    "tools_section": {
+      "title": "Available Tools"
+    },
+    "info": {
+      "title": "Information",
+      "app_card": {
+        "title": "Application",
+        "developed_by": "Developed by:",
+        "name": "Name",
+        "version": "Version",
+        "platforms": "Platforms",
+        "platforms_value": "Windows • Linux • macOS"
+      },
+      "contact": {
+        "title": "Contact (Email)"
+      },
+      "license": {
+        "title": "License"
+      },
+      "tech_card": {
+        "title": "Technology",
+        "language": "Language",
+        "ui": "Interface",
+        "architecture": "Architecture",
+        "architecture_value": "Modular / Local-First"
+      },
+      "formats": {
+        "title": "Supported Formats",
+        "images": "Images",
+        "videos": "Videos"
+      }
+    },
+    "dev": {
+      "tagline": "100% private, free, and tracking-free software",
+      "subtitle": "Your files never leave your device. All operations are 100% local.",
+      "values": {
+        "offline": {
+          "title": "100% Offline",
+          "description": "No internet connection"
+        },
+        "no_tracking": {
+          "title": "No Tracking",
+          "description": "Absolute privacy"
+        },
+        "backup": {
+          "title": "Backups",
+          "description": "Data protection"
+        },
+        "open_source": {
+          "title": "Open Source",
+          "description": "Transparent and auditable"
+        }
+      },
+      "trust_footer": "All your content is safe and under your exclusive control."
+    }
+  },
+  "dialogs": {
+    "base": {
+      "options_label": "Options:",
+      "backup_label": "Create backup",
+      "dry_run_label": "Simulation mode",
+      "backup_tooltip": "Creates a backup before making changes.\nRecommended for destructive operations.\n\nBackup folder: {path}\n\nYou can change the folder from Settings.",
+      "dry_run_tooltip": "Simulates the operation without making actual changes.\nUseful for verifying which files would be affected.\n\nWhen simulation mode is enabled, backup is automatically\ndisabled since no actual changes will be made.",
+      "backup_path_label": "Folder where deleted files will be saved: {path}",
+      "backup_path_tooltip": "Full path: {path}\n\nYou can change this folder from Settings.",
+      "backup_disabled_tooltip": "Backup is disabled because simulation mode is active.\nNo actual changes will be made, so creating a backup is unnecessary.",
+      "tip_toggle_tooltip": "Show/hide tip",
+      "filter": {
+        "search_placeholder": "Search...",
+        "files_selected": "Files selected",
+        "groups_selected": "Groups selected",
+        "more_filters": "More filters",
+        "hide_extra": "Hide additional filters",
+        "show_extra": "Show additional filters",
+        "size_quantity_label": "Size / Quantity",
+        "size_quantity_tooltip": "Filter by size or quantity",
+        "showing_all": "Showing all {entity}: {count}",
+        "filtered_tooltip": "Filtered {entity}: {filtered}\nTotal {entity}: {total}",
+        "loaded_in_list": "(Loaded in list: {loaded} of {total})"
+      },
+      "progress": {
+        "indicator_tooltip": "Shows how many items have been loaded in the list.\nFor performance, items are loaded in batches.\nUse 'Load more' to see additional items.",
+        "load_all": "Load all",
+        "load_all_tooltip": "Load all remaining items at once",
+        "load_more": "Load more",
+        "loaded_text": "{percent}% loaded in list ({loaded} of {total})",
+        "no_items": "No items to display",
+        "load_n_more": "Load {count} more",
+        "load_n_more_tooltip": "Load {count} more items ({remaining} remaining)",
+        "all_loaded": "All loaded"
+      },
+      "date_source": {
+        "all": "All",
+        "exif": "EXIF",
+        "filename": "Filename",
+        "filesystem": "Filesystem"
+      }
+    },
+    "utils": {
+      "error_open_file": "Error opening file",
+      "error_open_folder": "Error opening folder",
+      "group_tooltip_expand": "Double-click to expand and view file details",
+      "group_tooltip_columns": "Columns show information for each individual file",
+      "status_keep": "Keep",
+      "status_delete": "Delete",
+      "menu": {
+        "open_file": "Open file",
+        "open_folder": "Open containing folder",
+        "view_details": "View file details"
+      }
+    },
+    "details": {
+      "title": "File Details",
+      "refresh_tooltip": "Search for all available metadata\nExtracts SHA256 hash and complete EXIF metadata\neven if not obtained during the initial analysis",
+      "full_metadata_loaded": "Full metadata loaded (forced search)",
+      "copy_path_tooltip": "Copy path to clipboard",
+      "copy_success": "Copied!",
+      "copy_error": "Error copying",
+      "buttons": {
+        "open_file": "Open File",
+        "open_folder": "Open Folder"
+      },
+      "section": {
+        "general": "General Information",
+        "best_date": "Best Available Date",
+        "filesystem_dates": "Filesystem Dates",
+        "operation_context": "Operation Context",
+        "video_tech": "Video Technical Metadata",
+        "exif_dates": "EXIF Dates",
+        "exif_tech": "Technical Metadata (EXIF)"
+      },
+      "general": {
+        "full_path": "Full path",
+        "full_path_desc": "Full location of the file in the system",
+        "size": "Size",
+        "size_desc": "Space occupied in the filesystem",
+        "type": "Type",
+        "type_desc": "Category detected by extension",
+        "hash": "SHA256 Hash",
+        "hash_desc": "Unique digital fingerprint of the file contents"
+      },
+      "best_date": {
+        "label": "Selected date",
+        "description": "Most representative date automatically selected (Source: {source})"
+      },
+      "fs_dates": {
+        "ctime": "Creation (ctime)",
+        "ctime_desc": "File creation date in the filesystem",
+        "mtime": "Modified (mtime)",
+        "mtime_desc": "Last modification of the file contents",
+        "atime": "Last access (atime)",
+        "atime_desc": "Last time the file was opened or read"
+      },
+      "operation_context": {
+        "generic_desc": "Additional information from the operation context"
+      },
+      "video": {
+        "resolution": "Resolution",
+        "resolution_desc": "Video dimensions in pixels",
+        "width": "Width",
+        "width_desc": "Video width",
+        "height": "Height",
+        "height_desc": "Video height",
+        "duration": "Duration",
+        "duration_desc": "Total video duration",
+        "fps": "Frames per second",
+        "fps_desc": "Video frame rate",
+        "codec": "Video codec",
+        "codec_desc": "Codec used to compress the video",
+        "bitrate": "Bitrate",
+        "bitrate_desc": "Video bit rate",
+        "format_container": "Container format",
+        "format_container_desc": "Container file format",
+        "format": "Format",
+        "format_desc": "File format",
+        "pixel_format": "Pixel format",
+        "pixel_format_desc": "Color representation format",
+        "encoder": "Encoder",
+        "encoder_desc": "Software used to encode the video"
+      },
+      "exif_dates": {
+        "original_desc": "Original capture date",
+        "create_desc": "File creation date according to EXIF",
+        "digitized_desc": "Digitization date",
+        "gps_desc": "GPS date of the file",
+        "filename_label": "Filename date",
+        "filename_desc": "Extracted from the filename (WhatsApp, etc.)",
+        "video_metadata": "Video metadata",
+        "video_metadata_desc": "Video creation date (ffprobe)"
+      },
+      "exif_tech": {
+        "width_desc": "Original image width",
+        "height_desc": "Original image height",
+        "version": "EXIF Version",
+        "version_desc": "EXIF standard version used",
+        "software": "Software",
+        "software_desc": "Application that created or modified the file",
+        "subseconds": "Subseconds",
+        "subseconds_desc": "Fraction of a second in the original capture",
+        "timezone": "Timezone",
+        "timezone_desc": "UTC offset at the time of capture"
+      }
+    },
+    "visual_identical": {
+      "metric_groups": "Groups",
+      "metric_duplicates": "Duplicates",
+      "metric_recoverable": "Recoverable",
+      "tip_message": "<b>Tip:</b> This tool detects images (videos coming soon) that are <i>100% visually identical</i> (same visual content). To detect <i>similar</i> images with variations (crops, edits, filters), use \"Similar Files\".",
+      "warning_many_groups": "<b>{count} groups found.</b> {initial} groups are loaded initially. Use search and filters to find specific groups.",
+      "option_backup": "Create backup before deleting",
+      "option_dry_run": "Simulation mode (don't actually delete)",
+      "button_delete": "Delete duplicates",
+      "strategy": {
+        "title": "Keep:",
+        "description": "Choose which file to keep from each group",
+        "largest_title": "Best quality",
+        "largest_desc": "Keep the largest file (best resolution)",
+        "smallest_title": "Smallest size",
+        "smallest_desc": "Keep the smallest file (save space)",
+        "oldest_title": "Oldest",
+        "oldest_desc": "Keep the file with the oldest date",
+        "newest_title": "Newest",
+        "newest_desc": "Keep the file with the newest date"
+      },
+      "filter": {
+        "search": "Search by name",
+        "size": "Size / Quantity",
+        "groups": "Selected groups",
+        "source": "Date source",
+        "type": "File type",
+        "source_tooltip": "Filter by date source",
+        "type_tooltip": "Filter by file type",
+        "size_variation": "Variation >50%"
+      },
+      "tooltip": {
+        "group_desc": "{count} visually identical files",
+        "size_variation": "Size variation: {pct:.0f}%"
+      },
+      "details": {
+        "group_desc": "{count} visually identical files"
+      }
+    },
+    "duplicates_exact": {
+      "metric_groups": "Groups",
+      "metric_copies": "Copies",
+      "metric_recoverable": "Recoverable",
+      "warning_many_groups": "<b>{count} groups found.</b> {initial} groups are loaded initially. Use search and filters to find specific groups.",
+      "option_backup": "Create backup before deleting",
+      "option_dry_run": "Simulation mode (don't actually delete)",
+      "button_delete": "Delete duplicates",
+      "strategy": {
+        "title": "Keep:",
+        "description": "Choose which file to keep from each group",
+        "oldest_title": "Oldest",
+        "oldest_desc": "Keep the file with the oldest date (original)",
+        "newest_title": "Newest",
+        "newest_desc": "Keep the file with the newest date"
+      },
+      "filter": {
+        "search": "Search by name",
+        "size": "Size / Quantity",
+        "groups": "Selected groups",
+        "source": "Date source",
+        "type": "File type",
+        "source_tooltip": "Filter by date source",
+        "type_tooltip": "Filter by file type"
+      },
+      "tooltip": {
+        "group_desc": "{count} identical files (same SHA256)",
+        "total_size": "Total size: {size}"
+      },
+      "details": {
+        "group_desc": "{count} identical files"
+      },
+      "pagination": {
+        "tooltip": "Shows how many groups have been loaded in the list.\nFor performance, groups are loaded in batches.\nUse 'Load more' to see additional groups.",
+        "load_all_tooltip": "Load all remaining groups at once",
+        "progress_text": "{percent}% loaded in list ({loaded} of {total} groups)",
+        "load_more_tooltip": "Load {count} more groups ({remaining} remaining)",
+        "all_loaded": "All loaded",
+        "load_all_msg": "There are {count} groups pending to load.\nThis may take a while and affect performance.\n\nContinue?"
+      }
+    },
+    "heic": {
+      "metric_groups": "Groups",
+      "metric_recoverable": "Recoverable",
+      "strategy": {
+        "title": "Keep:",
+        "description": "Choose which format to keep from each HEIC/JPG pair",
+        "jpg_title": "Keep JPG",
+        "jpg_desc": "Maximum compatibility. You'll free up {size}",
+        "heic_title": "Keep HEIC",
+        "heic_desc": "Smaller files. You'll free up {size}"
+      },
+      "filter": {
+        "search": "Search by name",
+        "size": "Minimum size",
+        "groups": "Selected groups",
+        "source": "Date source",
+        "directory": "Directory",
+        "source_tooltip": "Filter by date source",
+        "dir_tooltip": "Filter by directory"
+      },
+      "option_backup": "Create backup before deleting",
+      "option_dry_run": "Simulation mode (don't actually delete)",
+      "tree": {
+        "group_label": "Group #{num} • {name}"
+      },
+      "tooltip": {
+        "group_desc": "HEIC/JPG pair: {name}",
+        "common_date": "Common date: {source}",
+        "date_diff": "Difference: {diff:.3f}s"
+      },
+      "button_delete": "Delete Duplicates ({count} groups, {size})",
+      "no_items_type": "HEIC/JPG pairs"
+    },
+    "live_photos": {
+      "metric_groups": "Groups",
+      "metric_images": "Images",
+      "metric_recoverable": "Recoverable",
+      "warning": {
+        "tools_unavailable_title": "Video tools unavailable",
+        "tools_unavailable_msg": "Neither <b>ffprobe</b> nor <b>exiftool</b> were detected on the system. Without these tools, it is not possible to validate video duration or dates. Live Photos are detected only by name matching, which may include false positives.",
+        "tools_action": "See how to install",
+        "no_validation_title": "Detection without temporal validation",
+        "no_validation_msg": "Video metadata extraction is disabled. Live Photos are detected only by name matching, validating only dates from the filesystem. This may include false positives.",
+        "no_validation_action": "Enable in Settings"
+      },
+      "filter": {
+        "search": "Search by name",
+        "size": "Minimum size",
+        "groups": "Selected groups",
+        "source": "Date source",
+        "directory": "Directory",
+        "source_tooltip": "Filter groups by comparison date source",
+        "dir_tooltip": "Filter groups by directory"
+      },
+      "option_backup": "Create backup before deleting",
+      "option_dry_run": "Simulation mode (don't actually delete)",
+      "tree": {
+        "image_count_singular": "{count} image",
+        "image_count_plural": "{count} images",
+        "group_label": "Group #{num} • {name} ({images})"
+      },
+      "tooltip": {
+        "group_desc": "{count} image(s) + 1 MOV video",
+        "common_date": "Common date: {source}",
+        "date_diff": "Difference: {diff:.3f}s"
+      },
+      "button_delete": "Delete Videos ({count} groups, {size})",
+      "no_items_type": "Live Photos"
+    },
+    "zero_byte": {
+      "metric_files": "Files",
+      "tree_header": {
+        "folder_file": "Folder / File",
+        "location": "Location"
+      },
+      "button_select_all": "Select all",
+      "button_select_none": "Deselect all",
+      "option_backup": "Create backup before deleting",
+      "option_dry_run": "Simulation mode (don't actually delete)",
+      "tree": {
+        "folder_label": "📁 {name} ({count} files)"
+      },
+      "tooltip": {
+        "folder": "Folder: {path}\n{count} empty files",
+        "file": "Empty file (0 bytes): {path}"
+      },
+      "selection_count": "{selected} of {total} selected",
+      "details": {
+        "size_key": "Size",
+        "size_value": "0 bytes",
+        "status_key": "Status",
+        "status_value": "Empty file - safe to delete"
+      },
+      "no_items_type": "selected empty files"
+    },
+    "file_renamer": {
+      "metric_total": "Total",
+      "metric_ok": "OK",
+      "metric_rename": "Rename",
+      "metric_conflicts": "Conflicts",
+      "info": {
+        "title": "Important Note",
+        "message": "File renaming may affect paired files such as Live Photos or HEIC+JPG if they are not renamed together.<br><br>Name conflicts will be resolved by adding a numeric suffix (e.g.: _1, _2) to avoid overwriting."
+      },
+      "filter": {
+        "search": "Search by name",
+        "groups": "Selected files",
+        "conflict": "Conflict",
+        "file_type": "File type",
+        "source": "Date source",
+        "year": "Year",
+        "only_conflicts": "Conflicts only",
+        "no_conflicts": "No conflicts",
+        "conflict_tooltip": "Filter by conflict status",
+        "type_tooltip": "Filter by file type",
+        "source_tooltip": "Filter by date source",
+        "year_tooltip": "Filter by year"
+      },
+      "tree_header": {
+        "folder_file": "Folder / File",
+        "new_name": "New name",
+        "source": "Source"
+      },
+      "problems": {
+        "title": "Files with Problems ({count})",
+        "description": "These files cannot be processed and will be skipped:",
+        "and_more": "... and {count} more"
+      },
+      "option_backup": "Create backup before renaming",
+      "option_dry_run": "Simulation mode (don't actually rename)",
+      "button_proceed": "Proceed ({count})",
+      "tree": {
+        "folder_label": "📁 {name} ({count} files)",
+        "folder_tooltip": "Folder: {path}\n{count} files to rename",
+        "conflicts_tooltip": "{count} conflicts",
+        "conflict_file_tooltip": "Conflict: A numeric suffix will be added"
+      },
+      "dialog_load_all_title": "Load all files",
+      "dialog_load_all_msg": "There are {count} files in {folders} folders. Are you sure you want to load them all?\nThis may take a while and consume memory.",
+      "details": {
+        "detected_date": "Detected date",
+        "date_source": "Date source",
+        "year": "Year",
+        "conflict_key": "Conflict",
+        "conflict_value": "Yes - Will be resolved with a numeric suffix",
+        "sequence": "Sequence"
+      },
+      "no_items_type": "files to rename"
+    },
+    "file_organizer": {
+      "selection": {
+        "title": "How would you like to organize your files?",
+        "subtitle": "Select an organization strategy"
+      },
+      "strategy": {
+        "date": {
+          "title": "Organize by Date",
+          "desc": "Creates chronological folders based on each file's date",
+          "hint": "Granularity: month, year, or both · Subfolders: source, type"
+        },
+        "type": {
+          "title": "Organize by Type",
+          "desc": "Separates files into folders by their type",
+          "hint": "Optional subfolders: by date"
+        },
+        "source": {
+          "title": "Organize by Source",
+          "desc": "Groups by file origin"
+        },
+        "cleanup": {
+          "title": "Move All to Root",
+          "desc": "Removes subfolders and moves everything to the main directory"
+        }
+      },
+      "example_title": "Preview:",
+      "button_back": "< Change",
+      "button_back_tooltip": "Go back to choose another organization strategy",
+      "options": {
+        "date_label": "By Date",
+        "granularity_label": "Folders by:",
+        "month": "Month",
+        "year": "Year",
+        "year_month": "Year/Month",
+        "subfolders_label": "Subfolders:",
+        "add_source": "+ Source",
+        "add_source_tooltip": "Add subfolders by source (WhatsApp, Camera...)",
+        "add_type": "+ Type",
+        "add_type_tooltip": "Add subfolders by type (Photos/Videos)",
+        "type_label": "By Type",
+        "subfolders_by_date_label": "Subfolders by date:",
+        "none": "None",
+        "source_label": "By Source",
+        "cleanup_label": "Move to Root",
+        "cleanup_desc": "All files will be moved to the main directory, without subfolders",
+        "label": "Options:",
+        "backup_label": "Create backup before moving",
+        "backup_tooltip": "Creates a backup before moving files.\nRecommended for destructive operations.\n\nBackup folder: {path}\n\nYou can change the folder from Settings.",
+        "dry_run_label": "Simulation mode",
+        "dry_run_tooltip": "Simulates the operation without actually moving files.\nUseful for verifying which files would be moved.\n\nWhen simulation mode is enabled, backup is automatically\ndisabled since no actual changes will be made.",
+        "cleanup_empty_label": "Clean up empty folders",
+        "cleanup_empty_tooltip": "Removes all empty folders within the selected\npath after organizing the files.\n\nIncludes both folders that become empty after\nmoving files and folders that were already empty\nbefore the organization was executed.\n\nFolders containing only system files\n(.nomedia, .DS_Store, Thumbs.db, etc.) are also\nconsidered empty and will be removed.",
+        "move_unsupported_label": "Move unsupported to 'other/'",
+        "move_unsupported_tooltip": "Moves unsupported files (GIF, documents, etc.)\nto an 'other/' folder in the root directory,\npreserving their original subfolder structure.\n\nThis prevents loose files from remaining outside\nthe chosen organization.",
+        "backup_path_label": "Folder where moved files will be saved: {path}",
+        "backup_path_tooltip": "Full path: {path}\n\nYou can change this folder from Settings."
+      },
+      "indicator": {
+        "date": "Organizing by date",
+        "type": "Organizing by file type",
+        "source": "Organizing by source",
+        "cleanup": "Moving everything to root"
+      },
+      "error_no_root": "Could not determine the root directory for organizing files",
+      "error_analysis_failed": "Error during analysis:\n{error}",
+      "metric_total": "Total",
+      "metric_organize": "Organize",
+      "metric_size": "Size",
+      "folders_info_label": "{count} folders will be created: <b>{list}</b>",
+      "folders_info_more": "... (+{count} more)",
+      "filter": {
+        "search": "Search by name",
+        "groups": "Selected files",
+        "category": "File type",
+        "status": "Status",
+        "source": "Date source",
+        "source_tooltip": "Filter by date source",
+        "category_tooltip": "Filter by file type (Photos/Videos)",
+        "status_tooltip": "Filter by status (With/Without conflicts)",
+        "with_conflicts": "With Conflicts",
+        "without_conflicts": "Without Conflicts"
+      },
+      "tree_tooltip": "Double-click a file to open it\nRight-click for details and options",
+      "tree_header": {
+        "original_name": "Original Name",
+        "new_name": "New Name"
+      },
+      "tree": {
+        "no_date": "No date",
+        "no_category": "No category",
+        "from_subdir": "From: {subdir} ({count} files)",
+        "folder_group": "{folder}/ ({count} files)",
+        "unchanged": "Same"
+      },
+      "button": {
+        "select_option": "Select an option",
+        "organize": "Organize Files ({count} files, {size})",
+        "waiting": "Waiting for analysis...",
+        "no_files": "No files to organize"
+      },
+      "dialog_load_all_title": "Load all files",
+      "dialog_load_all_msg": "There are {count} files. Are you sure you want to load them all?\nThis may take a while and consume memory.",
+      "details": {
+        "subdir": "Source subdirectory",
+        "target_folder": "Target folder"
+      },
+      "no_items_type": "files to organize"
+    },
+    "duplicates_similar": {
+      "metric_groups": "Groups",
+      "metric_similar": "Similar",
+      "metric_recoverable": "Recoverable",
+      "tip_message": "<b>Tip:</b> This tool detects <i>similar</i> images (videos coming soon) (crops, edits). For <i>identical</i> visual copies, use \"Visually Identical Copies\".",
+      "option_backup": "Create backup before deleting",
+      "option_dry_run": "Simulation mode",
+      "button_delete": "Delete Selected",
+      "strategy": {
+        "title": "Auto-Selection:",
+        "description": "Applies to currently visible groups",
+        "auto_title": "Automatically select best images",
+        "auto_tooltip": "Select the best available files from each group",
+        "keep_largest_title": "Best image",
+        "keep_largest_tooltip": "Keep the largest file",
+        "disabled_tooltip": "No groups available with the current filters"
+      },
+      "filter": {
+        "search": "Search by name",
+        "size": "Size / Quantity",
+        "groups": "Filtered groups",
+        "source": "Date source",
+        "type": "File type",
+        "source_tooltip": "Filter by date source",
+        "type_tooltip": "Filter by file type",
+        "sensitivity_label": "Sensitivity",
+        "min_tooltip": "Minimum similarity value",
+        "max_tooltip": "Maximum similarity value"
+      },
+      "loading": {
+        "counter": "Loading...",
+        "preparing": "Preparing analysis...",
+        "submessage": "Sensitivity: {sensitivity}% · {count} files"
+      },
+      "nav": {
+        "prev_tooltip": "Previous group",
+        "next_tooltip": "Next group",
+        "counter": "Group {index} of {total}",
+        "counter_empty": "0 of 0"
+      },
+      "toolbar": {
+        "keep_label": "Keep:"
+      },
+      "summary": {
+        "none_selected": "0 selected",
+        "selected": "{count} files selected ({size})"
+      },
+      "badge": {
+        "similarity": "{score:.1f}% Similarity",
+        "files_info": "{count} files · {size}"
+      },
+      "no_groups": {
+        "filtered": "No groups found matching\nthe selected filters.\n\nTry modifying the filters to see more results.",
+        "none_found": "No similar files found\nwith {pct}% sensitivity\n\nReduce the sensitivity to detect\nfiles with more differences."
+      },
+      "card": {
+        "checkbox_delete": "Delete"
+      },
+      "auto_select": {
+        "strategy_name": "Auto-Selection (Best Images)",
+        "title": "Confirm Auto-Selection: {name}",
+        "text_filtered": "<b>Apply '{name}' selection to the {count} filtered groups?</b>",
+        "info_filtered": "<b>NOTE:</b><br><br>This action will be applied <b>only</b> to the <b>{filtered} groups</b> that match the current filters.<br><br>The <b>{remaining} remaining groups</b> will <b>keep their current selection</b> unchanged.<br><br>You can change the filters and repeat the operation for other groups.",
+        "text_all": "<b>Apply '{name}' selection to all {count} groups?</b>",
+        "info_all": "This action will select the largest file as the one to <b>keep</b> in each group.<br><br>The other files in the group will be marked for <b>deletion</b>."
+      },
+      "button_delete_n": "Delete {count} Files",
+      "context_view_details": "View details",
+      "no_items_type": "selected similar files"
+    },
+    "image_preview": {
+      "window_title": "Preview - {filename}",
+      "error_loading": "Could not load the image",
+      "button_close": "Close"
+    }
+  },
+  "cards": {
+    "badge_pending": "PENDING",
+    "badge_nothing_found": "NOTHING FOUND",
+    "nothing_to_delete": "Nothing to delete",
+    "action_manage": "Manage now",
+    "action_analyze": "Analyze now",
+    "action_organize": "Organize now",
+    "action_rename": "Rename now",
+    "space_wasted": "~{size} wasted",
+    "space_recoverable": "~{size} recoverable",
+    "duplicate_files_found": "{count} duplicate files found",
+    "no_duplicates_found": "No duplicate files found",
+    "pending_exact_copies": "Analyze to detect exact copies",
+    "similar_groups_found": "{count} groups of similar files found",
+    "no_similar_found": "No similar files found",
+    "analyzed_click_to_group": "{count} analyzed · Click to group",
+    "no_files_to_analyze": "No files found to analyze",
+    "pending_similar_files": "Analyze to detect similar files",
+    "ready_to_organize": "Ready to organize files",
+    "ready_to_rename": "Ready to rename files",
+    "heic_groups_found": "{count} HEIC/JPG duplicate groups found",
+    "no_heic_pairs_found": "No HEIC/JPG pairs found",
+    "pending_heic": "Analyze to detect HEIC/JPG duplicates",
+    "live_photo_groups_detected": "{count} Live Photo groups detected",
+    "no_live_photos_found": "No Live Photos found",
+    "pending_live_photos": "Analyze to detect Live Photos",
+    "groups_detected": "{count} groups detected",
+    "no_visual_identical_found": "No visually identical copies found",
+    "pending_visual_identical": "Analyze to detect visually identical copies",
+    "empty_files_detected": "{count} empty files detected",
+    "n_files": "{count} files",
+    "no_empty_files_found": "No empty files found",
+    "pending_empty_files": "Analyze to detect empty files"
+  },
+  "services": {
+    "phase": {
+      "file_classification": "Scanning folder structure",
+      "filesystem_metadata": "Retrieving file information",
+      "hash": "Calculating file hashes",
+      "exif_images": "Extracting image metadata",
+      "exif_videos": "Extracting video metadata",
+      "best_date": "Calculating best available date",
+      "video_tools_missing": "ffprobe/exiftool not installed"
+    },
+    "progress": {
+      "classifying_files": "Classifying files",
+      "creating_backup": "Creating backup...",
+      "organizing": "Organizing...",
+      "processing_n_of_total": "Processing {current}/{total}",
+      "analyzing": "Analyzing",
+      "classifying_unsupported": "Classifying unsupported files",
+      "analyzing_dates": "Analyzing dates",
+      "analyzing_types": "Analyzing types",
+      "analyzing_sources": "Analyzing sources",
+      "analyzing_filenames": "Analyzing filenames",
+      "renaming_n_of_total": "Renaming... {current}/{total}",
+      "simulating_n_of_total": "Simulating... {current}/{total}",
+      "processing_file": "Processing: {name}",
+      "deleting_file": "Deleting: {name}",
+      "filtering_empty_files": "Filtering empty files...",
+      "would_delete": "[Simulation] Would delete",
+      "deleting": "Deleting",
+      "calculating_signatures": "Calculating digital signatures...",
+      "classifying_heic_jpg": "Classifying HEIC/JPG files",
+      "pairing_files": "Pairing files...",
+      "processing_pair_n_of_total": "Processing pair {current}/{total}",
+      "pairing_live_photos": "Pairing Live Photos...",
+      "evaluating_file": "Evaluating {name}",
+      "simulation_prefix": "[Simulation] ",
+      "extracting_video_duration": "Extracting video duration ({current}/{total})...",
+      "operation_completed": "Operation completed",
+      "scanning_file": "Scanning: {name}",
+      "building_index": "Building index... ({current}/{total})",
+      "grouping_similar": "Grouping similar files... ({current}/{total})"
+    },
+    "result": {
+      "no_files_to_move": "No files to move",
+      "no_files_to_rename": "No files to rename",
+      "no_duplicates_to_delete": "No duplicates to delete",
+      "no_duplicates_already_processed": "No duplicates to delete (files already processed)",
+      "no_duplicate_files": "No duplicate files to delete",
+      "no_live_photos_to_clean": "No Live Photos to clean up",
+      "would_be_processed": "would be processed",
+      "processed": "processed",
+      "would_be_freed": "would be freed",
+      "freed": "freed",
+      "completed": "completed",
+      "would_be_renamed": "would be renamed",
+      "renamed": "renamed",
+      "renamed_n_files": "{count} files renamed",
+      "warning_n_errors": "Warning: {count} errors found",
+      "videos_protected_by_duration": "⛔ {count} videos protected (duration > {max_duration}s)"
+    },
+    "operation": {
+      "organization": "Organization",
+      "empty_file_deletion": "Empty file deletion",
+      "exact_duplicate_deletion": "Exact duplicate deletion",
+      "heic_jpg_deletion": "HEIC/JPG deletion",
+      "live_photos_cleanup": "Live Photos cleanup",
+      "similar_duplicate_deletion": "Similar duplicate deletion",
+      "visual_identical_deletion": "Visual identical deletion"
+    },
+    "mode": {
+      "simulation": "SIMULATION"
+    },
+    "error": {
+      "directory_not_found": "Directory does not exist: {path}",
+      "not_a_directory": "Not a directory: {path}",
+      "unsupported_type": "Unsupported type: {type}",
+      "invalid_strategy": "Invalid strategy: {strategy}. Options: {options}",
+      "backup_creation_failed": "Could not create the backup",
+      "invalid_selection_strategy": "Invalid strategy for selection: {strategy}",
+      "backup_failed_operation_aborted": "Backup creation failed: {error}. Operation not executed."
+    },
+    "folder": {
+      "photos": "Photos",
+      "videos": "Videos",
+      "other": "Other"
+    },
+    "unit": {
+      "files": "files"
+    }
+  },
+  "platform": {
+    "tool": {
+      "ffprobe_not_installed": "Not installed - Required for video duration",
+      "exiftool_not_installed": "Not installed - Required for Live Photos dates"
+    },
+    "install": {
+      "windows_instructions": "Download from ffmpeg.org and exiftool.org",
+      "generic_instructions": "Refer to your operating system's documentation"
+    },
+    "error": {
+      "file_not_found": "The file does not exist: {path}",
+      "path_not_a_file": "The path is not a file: {path}",
+      "unsupported_os": "Unsupported operating system: {system}",
+      "open_file_failed": "Error opening file: {error}",
+      "folder_not_found": "The folder does not exist: {path}",
+      "path_not_a_folder": "The path is not a folder: {path}",
+      "open_folder_failed": "Error opening folder: {error}"
+    }
+  }
+}
