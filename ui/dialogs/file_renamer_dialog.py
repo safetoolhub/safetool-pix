@@ -299,7 +299,7 @@ class FileRenamerDialog(BaseDialog):
         layout = QVBoxLayout()
         
         info = QLabel(tr("dialogs.file_renamer.problems.description"))
-        info.setStyleSheet(f"color: {DesignSystem.COLOR_WARNING}; font-size: {DesignSystem.FONT_SIZE_SM}px;")
+        info.setStyleSheet(f"QLabel {{ color: {DesignSystem.COLOR_WARNING}; font-size: {DesignSystem.FONT_SIZE_SM}px; }}")
         layout.addWidget(info)
         
         # Lista simple de problemas
@@ -309,7 +309,7 @@ class FileRenamerDialog(BaseDialog):
         
         problems_label = QLabel(problems_text)
         problems_label.setWordWrap(True)
-        problems_label.setStyleSheet(f"font-size: {DesignSystem.FONT_SIZE_SM}px; color: {DesignSystem.COLOR_TEXT_SECONDARY};")
+        problems_label.setStyleSheet(f"QLabel {{ font-size: {DesignSystem.FONT_SIZE_SM}px; color: {DesignSystem.COLOR_TEXT_SECONDARY}; }}")
         layout.addWidget(problems_label)
         
         group.setLayout(layout)

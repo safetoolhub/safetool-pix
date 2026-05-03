@@ -73,9 +73,13 @@ class AboutDialog(QDialog):
         self.setModal(True)
         self.setMinimumSize(1100, 920)
         self.resize(1100, 920)
-        
-        # Aplicar estilo global de tooltips
-        self.setStyleSheet(DesignSystem.get_tooltip_style())
+
+        # Forzar palette de tooltips — sin CSS QToolTip (ver bug Wayland AGENTS.md)
+        from PyQt6.QtGui import QPalette, QColor
+        pal = self.palette()
+        pal.setColor(QPalette.ColorRole.ToolTipBase, QColor("#000000"))
+        pal.setColor(QPalette.ColorRole.ToolTipText, QColor("#FFFFFF"))
+        self.setPalette(pal)
 
         # Layout principal sin márgenes
         main_layout = QVBoxLayout(self)

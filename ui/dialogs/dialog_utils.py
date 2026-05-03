@@ -376,7 +376,7 @@ def show_file_details_dialog(file_path: Path, parent_widget=None, additional_inf
     header_layout.addWidget(header_icon)
     
     title_label = QLabel(file_path.name)
-    title_label.setStyleSheet(f"font-size: {DesignSystem.FONT_SIZE_2XL}px; font-weight: {DesignSystem.FONT_WEIGHT_SEMIBOLD}; color: {DesignSystem.COLOR_TEXT};")
+    title_label.setStyleSheet(f"QLabel {{ font-size: {DesignSystem.FONT_SIZE_2XL}px; font-weight: {DesignSystem.FONT_WEIGHT_SEMIBOLD}; color: {DesignSystem.COLOR_TEXT}; }}")
     header_layout.addWidget(title_label)
     header_layout.addStretch()
     
@@ -625,7 +625,7 @@ def show_file_details_dialog(file_path: Path, parent_widget=None, additional_inf
     separator = QFrame()
     separator.setFrameShape(QFrame.Shape.HLine)
     separator.setFrameShadow(QFrame.Shadow.Sunken)
-    separator.setStyleSheet(f"color: {DesignSystem.COLOR_CARD_BORDER};")
+    separator.setStyleSheet(f"QFrame {{ color: {DesignSystem.COLOR_CARD_BORDER}; }}")
     main_layout.addWidget(separator)
     
     # Botones
@@ -703,7 +703,7 @@ def _create_enhanced_section(title: str, items: list):
         if i < len(items) - 1:
             separator = QWidget()
             separator.setFixedHeight(1)
-            separator.setStyleSheet(f"background-color: {DesignSystem.COLOR_CARD_BORDER}; margin: {DesignSystem.SPACE_4}px 0;")
+            separator.setStyleSheet(f"QWidget {{ background-color: {DesignSystem.COLOR_CARD_BORDER}; margin: {DesignSystem.SPACE_4}px 0; }}")
             layout.addWidget(separator)
     
     group.setLayout(layout)
@@ -769,7 +769,7 @@ def _create_enhanced_section_with_copy(
         if i < len(items) - 1:
             separator = QWidget()
             separator.setFixedHeight(1)
-            separator.setStyleSheet(f"background-color: {DesignSystem.COLOR_CARD_BORDER}; margin: {DesignSystem.SPACE_4}px 0;")
+            separator.setStyleSheet(f"QWidget {{ background-color: {DesignSystem.COLOR_CARD_BORDER}; margin: {DesignSystem.SPACE_4}px 0; }}")
             layout.addWidget(separator)
     
     group.setLayout(layout)
@@ -878,7 +878,7 @@ def _create_dates_section(metadata: 'FileMetadata'):
     if exif_dates_added:
         separator = QWidget()
         separator.setFixedHeight(1)
-        separator.setStyleSheet(f"background-color: {DesignSystem.COLOR_CARD_BORDER}; margin: {DesignSystem.SPACE_8}px 0;")
+        separator.setStyleSheet(f"QWidget {{ background-color: {DesignSystem.COLOR_CARD_BORDER}; margin: {DesignSystem.SPACE_8}px 0; }}")
         layout.addWidget(separator)
     
     # === FECHA DEL NOMBRE DE ARCHIVO ===
@@ -909,7 +909,7 @@ def _create_dates_section(metadata: 'FileMetadata'):
     if filename_date or (metadata.is_video and exif_create_date):
         separator = QWidget()
         separator.setFixedHeight(1)
-        separator.setStyleSheet(f"background-color: {DesignSystem.COLOR_CARD_BORDER};")
+        separator.setStyleSheet(f"QWidget {{ background-color: {DesignSystem.COLOR_CARD_BORDER}; }}")
         layout.addWidget(separator)
     
     # === FECHAS DEL SISTEMA DE ARCHIVOS ===

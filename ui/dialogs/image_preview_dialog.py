@@ -21,9 +21,14 @@ class ImagePreviewDialog(QDialog):
         self.setModal(True)
         self.resize(1000, 800)
         self.setStyleSheet(
-            f"background-color: {DesignSystem.COLOR_BACKGROUND};"
-            + DesignSystem.get_tooltip_style()
+            f"QDialog {{ background-color: {DesignSystem.COLOR_BACKGROUND}; }}"
         )
+        # Forzar palette de tooltips — sin CSS QToolTip (ver bug Wayland AGENTS.md)
+        from PyQt6.QtGui import QPalette, QColor
+        pal = self.palette()
+        pal.setColor(QPalette.ColorRole.ToolTipBase, QColor("#000000"))
+        pal.setColor(QPalette.ColorRole.ToolTipText, QColor("#FFFFFF"))
+        self.setPalette(pal)
 
         layout = QVBoxLayout(self)
         layout.setSpacing(0)
@@ -31,12 +36,12 @@ class ImagePreviewDialog(QDialog):
 
         # Toolbar superior
         toolbar = QFrame()
-        toolbar.setStyleSheet(f"background-color: {DesignSystem.COLOR_SURFACE}; border-bottom: 1px solid {DesignSystem.COLOR_BORDER};")
+        toolbar.setStyleSheet(f"QFrame {{ background-color: {DesignSystem.COLOR_SURFACE}; border-bottom: 1px solid {DesignSystem.COLOR_BORDER}; }}")
         toolbar_layout = QHBoxLayout(toolbar)
         toolbar_layout.setContentsMargins(DesignSystem.SPACE_16, DesignSystem.SPACE_8, DesignSystem.SPACE_16, DesignSystem.SPACE_8)
 
         file_info = QLabel(f"{image_path.name}")
-        file_info.setStyleSheet(f"font-weight: {DesignSystem.FONT_WEIGHT_BOLD}; font-size: {DesignSystem.FONT_SIZE_MD}px; color: {DesignSystem.COLOR_TEXT};")
+        file_info.setStyleSheet(f"QLabel {{ font-weight: {DesignSystem.FONT_WEIGHT_BOLD}; font-size: {DesignSystem.FONT_SIZE_MD}px; color: {DesignSystem.COLOR_TEXT}; }}")
         toolbar_layout.addWidget(file_info)
         toolbar_layout.addStretch()
 
@@ -46,7 +51,7 @@ class ImagePreviewDialog(QDialog):
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        scroll.setStyleSheet(f"background-color: {DesignSystem.COLOR_BACKGROUND}; border: none;")
+        scroll.setStyleSheet(f"QScrollArea {{ background-color: {DesignSystem.COLOR_BACKGROUND}; border: none; }}")
 
         # Label con imagen
         image_label = QLabel()
@@ -65,9 +70,11 @@ class ImagePreviewDialog(QDialog):
         else:
             image_label.setText(tr("dialogs.image_preview.error_loading"))
             image_label.setStyleSheet(f"""
-                font-size: {DesignSystem.FONT_SIZE_LG}px;
-                color: {DesignSystem.COLOR_TEXT_SECONDARY};
-                padding: {DesignSystem.SPACE_40}px;
+                QLabel {{
+                    font-size: {DesignSystem.FONT_SIZE_LG}px;
+                    color: {DesignSystem.COLOR_TEXT_SECONDARY};
+                    padding: {DesignSystem.SPACE_40}px;
+                }}
             """)
 
         scroll.setWidget(image_label)
@@ -75,7 +82,7 @@ class ImagePreviewDialog(QDialog):
 
         # Botón cerrar en la parte inferior
         button_container = QWidget()
-        button_container.setStyleSheet(f"background-color: {DesignSystem.COLOR_SURFACE}; border-top: 1px solid {DesignSystem.COLOR_BORDER};")
+        button_container.setStyleSheet(f"QWidget {{ background-color: {DesignSystem.COLOR_SURFACE}; border-top: 1px solid {DesignSystem.COLOR_BORDER}; }}")
         button_layout = QHBoxLayout(button_container)
         button_layout.setContentsMargins(
             DesignSystem.SPACE_16, DesignSystem.SPACE_12,

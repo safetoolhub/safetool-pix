@@ -68,8 +68,8 @@
       "mark_delete": "Delete"
     },
     "tooltip": {
-      "settings": "Settings",
-      "about": "About - Instructions and application capabilities",
+      "settings": "Settings\nAdjust language, performance, backups, logs and advanced options",
+      "about": "About - Instructions and application capabilities\nView the tutorial and available shortcuts",
       "folder": "Folder:",
       "size": "Size:",
       "date": "Date:",
@@ -282,7 +282,7 @@
   "summary_card": {
     "label_folder": "Folder:",
     "button_change": "Change",
-    "tooltip_change": "Select another folder",
+    "tooltip_change": "Select another folder\nThe current analysis will be cleared and you will return to the start",
     "stats_calculating": "Calculating...",
     "stats_total": "{count} files • {size}",
     "stats_images": "{count} images",

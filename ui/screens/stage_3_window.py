@@ -195,7 +195,7 @@ class Stage3Window(BaseStage):
         
         # Mensaje
         msg_label = QLabel(tr("stage3.banner.stale_stats"))
-        msg_label.setStyleSheet(f"color: {DesignSystem.COLOR_TEXT}; font-size: {DesignSystem.FONT_SIZE_BASE}px;")
+        msg_label.setStyleSheet(f"QLabel {{ color: {DesignSystem.COLOR_TEXT}; font-size: {DesignSystem.FONT_SIZE_BASE}px; }}")
         layout.addWidget(msg_label)
         
         layout.addStretch()
@@ -394,73 +394,85 @@ class Stage3Window(BaseStage):
         # Abrir diálogo correspondiente si ya tenemos datos
         dialog = None
         
-        if tool_id == 'live_photos':
-            if hasattr(self.analysis_results, 'live_photos') and self.analysis_results.live_photos:
-                live_photo_data = self.analysis_results.live_photos
-                if live_photo_data.items_count > 0:
-                    dialog = LivePhotosDialog(live_photo_data, self.main_window)
-                else:
-                    QMessageBox.information(self.main_window, tr("common.info"), tr("stage3.info.no_live_photos"))
+        try:
+            if tool_id == 'live_photos':
+                if hasattr(self.analysis_results, 'live_photos') and self.analysis_results.live_photos:
+                    live_photo_data = self.analysis_results.live_photos
+                    if live_photo_data.items_count > 0:
+                        dialog = LivePhotosDialog(live_photo_data, self.main_window)
+                    else:
+                        QMessageBox.information(self.main_window, tr("common.info"), tr("stage3.info.no_live_photos"))
 
-        elif tool_id == 'heic':
-            if hasattr(self.analysis_results, 'heic') and self.analysis_results.heic:
-                heic_data = self.analysis_results.heic
-                if heic_data.items_count > 0:
-                    dialog = HeicDialog(heic_data, self.main_window)
-                else:
-                     QMessageBox.information(self.main_window, tr("common.info"), tr("stage3.info.no_heic_pairs"))
+            elif tool_id == 'heic':
+                if hasattr(self.analysis_results, 'heic') and self.analysis_results.heic:
+                    heic_data = self.analysis_results.heic
+                    if heic_data.items_count > 0:
+                        dialog = HeicDialog(heic_data, self.main_window)
+                    else:
+                         QMessageBox.information(self.main_window, tr("common.info"), tr("stage3.info.no_heic_pairs"))
 
-        elif tool_id == 'duplicates_exact':
-            if hasattr(self.analysis_results, 'duplicates') and self.analysis_results.duplicates:
-                dup_data = self.analysis_results.duplicates
-                if dup_data.total_groups > 0:
-                    dialog = DuplicatesExactDialog(dup_data, self.main_window)
-                else:
-                     QMessageBox.information(self.main_window, tr("common.info"), tr("stage3.info.no_exact_copies"))
+            elif tool_id == 'duplicates_exact':
+                if hasattr(self.analysis_results, 'duplicates') and self.analysis_results.duplicates:
+                    dup_data = self.analysis_results.duplicates
+                    if dup_data.total_groups > 0:
+                        dialog = DuplicatesExactDialog(dup_data, self.main_window)
+                    else:
+                         QMessageBox.information(self.main_window, tr("common.info"), tr("stage3.info.no_exact_copies"))
 
-        elif tool_id == 'visual_identical':
-            if hasattr(self.analysis_results, 'visual_identical') and self.analysis_results.visual_identical:
-                vi_data = self.analysis_results.visual_identical
-                if vi_data.total_groups > 0:
-                    dialog = VisualIdenticalDialog(vi_data, self.main_window)
-                else:
-                    QMessageBox.information(
-                        self.main_window, 
-                        tr("stage3.info.no_visual_identical_title"), 
-                        tr("stage3.info.no_visual_identical_msg")
-                    )
+            elif tool_id == 'visual_identical':
+                if hasattr(self.analysis_results, 'visual_identical') and self.analysis_results.visual_identical:
+                    vi_data = self.analysis_results.visual_identical
+                    if vi_data.total_groups > 0:
+                        dialog = VisualIdenticalDialog(vi_data, self.main_window)
+                    else:
+                        QMessageBox.information(
+                            self.main_window, 
+                            tr("stage3.info.no_visual_identical_title"), 
+                            tr("stage3.info.no_visual_identical_msg")
+                        )
 
-        elif tool_id == 'duplicates_similar':
-            if hasattr(self.analysis_results, 'duplicates_similar') and self.analysis_results.duplicates_similar:
-                sim_data = self.analysis_results.duplicates_similar
-                # DuplicatesSimilarAnalysis contiene perceptual_hashes, no total_groups
-                # El diálogo genera los grupos dinámicamente con get_groups()
-                if len(sim_data.perceptual_hashes) > 0:
-                    dialog = DuplicatesSimilarDialog(sim_data, self.main_window)
-                else:
-                    QMessageBox.information(
-                        self.main_window, 
-                        tr("stage3.info.no_files_to_analyze_title"), 
-                        tr("stage3.info.no_files_to_analyze_msg")
-                    )
+            elif tool_id == 'duplicates_similar':
+                if hasattr(self.analysis_results, 'duplicates_similar') and self.analysis_results.duplicates_similar:
+                    sim_data = self.analysis_results.duplicates_similar
+                    # DuplicatesSimilarAnalysis contiene perceptual_hashes, no total_groups
+                    # El diálogo genera los grupos dinámicamente con get_groups()
+                    if len(sim_data.perceptual_hashes) > 0:
+                        dialog = DuplicatesSimilarDialog(sim_data, self.main_window)
+                    else:
+                        QMessageBox.information(
+                            self.main_window, 
+                            tr("stage3.info.no_files_to_analyze_title"), 
+                            tr("stage3.info.no_files_to_analyze_msg")
+                        )
 
-        elif tool_id == 'file_organizer':
-            # Organizing puede funcionar sin análisis previo (usa defaults o analiza on-fly)
-            org_data = getattr(self.analysis_results, 'organization', None) if hasattr(self.analysis_results, 'organization') else None
-            dialog = FileOrganizerDialog(org_data, self.main_window)
+            elif tool_id == 'file_organizer':
+                # Organizing puede funcionar sin análisis previo (usa defaults o analiza on-fly)
+                org_data = getattr(self.analysis_results, 'organization', None) if hasattr(self.analysis_results, 'organization') else None
+                dialog = FileOrganizerDialog(org_data, self.main_window)
 
-        elif tool_id == 'file_renamer':
-            # Renaming igual
-            rename_data = getattr(self.analysis_results, 'renaming', None) if hasattr(self.analysis_results, 'renaming') else None
-            dialog = FileRenamerDialog(rename_data, self.main_window)
-            
-        elif tool_id == 'zero_byte':
-            if hasattr(self.analysis_results, 'zero_byte') and self.analysis_results.zero_byte:
-                zero_byte_data = self.analysis_results.zero_byte
-                if zero_byte_data.items_count > 0:
-                    dialog = ZeroByteDialog(zero_byte_data, self.main_window)
-                else:
-                     QMessageBox.information(self.main_window, tr("common.info"), tr("stage3.info.no_empty_files"))
+            elif tool_id == 'file_renamer':
+                # Renaming igual
+                rename_data = getattr(self.analysis_results, 'renaming', None) if hasattr(self.analysis_results, 'renaming') else None
+                dialog = FileRenamerDialog(rename_data, self.main_window)
+                
+            elif tool_id == 'zero_byte':
+                if hasattr(self.analysis_results, 'zero_byte') and self.analysis_results.zero_byte:
+                    zero_byte_data = self.analysis_results.zero_byte
+                    if zero_byte_data.items_count > 0:
+                        dialog = ZeroByteDialog(zero_byte_data, self.main_window)
+                    else:
+                         QMessageBox.information(self.main_window, tr("common.info"), tr("stage3.info.no_empty_files"))
+
+        except Exception as e:
+            self.logger.error(f"Failed to create dialog for {tool_id}: {e}")
+            import traceback
+            self.logger.error(traceback.format_exc())
+            QMessageBox.critical(
+                self.main_window,
+                tr("common.error"),
+                f"Error opening tool dialog: {e}"
+            )
+            return
 
         if dialog:
             result = dialog.exec()

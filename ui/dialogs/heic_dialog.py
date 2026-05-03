@@ -434,15 +434,15 @@ class HeicDialog(BaseDialog):
         
         # Tooltip para HEIC
         heic_mtime = datetime.fromtimestamp(pair.heic_path.stat().st_mtime)
-        heic_tooltip = (f"<b>{pair.heic_path.name}</b><br>"
-                       f"{tr('common.tooltip.folder')} {pair.heic_path.parent}<br>"
-                       f"{tr('common.tooltip.size')} {format_size(pair.heic_size)}<br>"
-                       f"{tr('common.tooltip.date')} {heic_mtime.strftime('%d/%m/%Y %H:%M:%S')}<br>")
+        heic_tooltip = (f"{pair.heic_path.name}\n"
+                       f"{tr('common.tooltip.folder')} {pair.heic_path.parent}\n"
+                       f"{tr('common.tooltip.size')} {format_size(pair.heic_size)}\n"
+                       f"{tr('common.tooltip.date')} {heic_mtime.strftime('%d/%m/%Y %H:%M:%S')}")
         
         if pair.date_source:
-             heic_tooltip += f"{tr('common.tooltip.date_source')} {pair.date_source}<br>"
+             heic_tooltip += f"\n{tr('common.tooltip.date_source')} {pair.date_source}"
              
-        heic_tooltip += f"{tr('common.tooltip.will_keep') if format_to_delete == 'JPG' else tr('common.tooltip.will_delete')}"
+        heic_tooltip += f"\n{tr('common.tooltip.will_keep') if format_to_delete == 'JPG' else tr('common.tooltip.will_delete')}"
         heic_item.setToolTip(0, heic_tooltip)
         
         # Añadir archivo JPG como hijo
@@ -467,15 +467,15 @@ class HeicDialog(BaseDialog):
         
         # Tooltip para JPG
         jpg_mtime = datetime.fromtimestamp(pair.jpg_path.stat().st_mtime)
-        jpg_tooltip = (f"<b>{pair.jpg_path.name}</b><br>"
-                       f"{tr('common.tooltip.folder')} {pair.jpg_path.parent}<br>"
-                       f"{tr('common.tooltip.size')} {format_size(pair.jpg_size)}<br>"
-                       f"{tr('common.tooltip.date')} {jpg_mtime.strftime('%d/%m/%Y %H:%M:%S')}<br>")
+        jpg_tooltip = (f"{pair.jpg_path.name}\n"
+                       f"{tr('common.tooltip.folder')} {pair.jpg_path.parent}\n"
+                       f"{tr('common.tooltip.size')} {format_size(pair.jpg_size)}\n"
+                       f"{tr('common.tooltip.date')} {jpg_mtime.strftime('%d/%m/%Y %H:%M:%S')}")
         
         if pair.date_source:
-             jpg_tooltip += f"{tr('common.tooltip.date_source')} {pair.date_source}<br>"
+             jpg_tooltip += f"\n{tr('common.tooltip.date_source')} {pair.date_source}"
              
-        jpg_tooltip += f"{tr('common.tooltip.will_keep') if format_to_delete == 'HEIC' else tr('common.tooltip.will_delete')}"
+        jpg_tooltip += f"\n{tr('common.tooltip.will_keep') if format_to_delete == 'HEIC' else tr('common.tooltip.will_delete')}"
         jpg_item.setToolTip(0, jpg_tooltip)
     
     def _on_item_double_clicked(self, item, column):

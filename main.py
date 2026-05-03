@@ -204,13 +204,9 @@ def main():
     palette.setColor(QPalette.ColorRole.ButtonText, QColor(DesignSystem.COLOR_TEXT))
     palette.setColor(QPalette.ColorRole.Highlight, QColor(DesignSystem.COLOR_PRIMARY))
     palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#FFFFFF"))
-    palette.setColor(QPalette.ColorRole.ToolTipBase, QColor("#2D3436"))
-    palette.setColor(QPalette.ColorRole.ToolTipText, QColor("#F5F6FA"))
+    palette.setColor(QPalette.ColorRole.ToolTipBase, QColor("#000000"))
+    palette.setColor(QPalette.ColorRole.ToolTipText, QColor("#FFFFFF"))
     app.setPalette(palette)
-
-    # Apply tooltip style at QApplication level so ALL tooltips inherit it,
-    # even those on widgets with their own local stylesheets.
-    app.setStyleSheet(DesignSystem.get_tooltip_style())
 
     # Load Qt's own translations for standard widgets (QMessageBox Yes/No, QFileDialog, etc.)
     qt_translator = QTranslator()

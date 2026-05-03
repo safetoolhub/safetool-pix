@@ -330,26 +330,17 @@ class DesignSystem:
     
     @staticmethod
     def get_tooltip_style():
-        """Retorna el estilo QSS para tooltips.
-        
-        TODOS los tooltips de la aplicación deben usar este estilo.
-        Diseño profesional: fondo oscuro, texto claro, compacto.
-        
+        """Retorna cadena vacía — tooltips gestionados exclusivamente via QPalette.
+
+        NO se usa ninguna regla QToolTip { } en CSS (ver bug Wayland en AGENTS.md).
+        El fondo negro y texto blanco se consiguen forzando ToolTipBase=#000000 y
+        ToolTipText=#FFFFFF en la QPalette de cada widget (main.py y BaseDialog).
+        Se mantiene el método por compatibilidad con los lugares que aún lo llaman.
+
         Returns:
-            str: Estilo QSS para tooltips.
+            str: Cadena vacía.
         """
-        return f"""
-            QToolTip {{
-                background-color: #2D3436;
-                color: #F5F6FA;
-                border: none;
-                border-radius: {DesignSystem.RADIUS_SM}px;
-                padding: {DesignSystem.SPACE_4}px {DesignSystem.SPACE_8}px;
-                font-size: {DesignSystem.FONT_SIZE_SM}px;
-                font-weight: {DesignSystem.FONT_WEIGHT_NORMAL};
-                font-family: {DesignSystem.FONT_FAMILY_BASE};
-            }}
-        """
+        return ""
     
     @staticmethod
     def get_tab_widget_style():

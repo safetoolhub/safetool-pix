@@ -432,13 +432,13 @@ class LivePhotosDialog(BaseDialog):
             # Tooltip para imagen
             try:
                 img_mtime = datetime.fromtimestamp(img_info.path.stat().st_mtime)
-                img_tooltip = (f"<b>{img_info.path.name}</b><br>"
-                               f"{tr('common.tooltip.folder')} {img_info.path.parent}<br>"
-                               f"{tr('common.tooltip.size')} {format_size(img_info.size)}<br>"
-                               f"{tr('common.tooltip.date')} {img_mtime.strftime('%d/%m/%Y %H:%M:%S')}<br>")
+                img_tooltip = (f"{img_info.path.name}\n"
+                               f"{tr('common.tooltip.folder')} {img_info.path.parent}\n"
+                               f"{tr('common.tooltip.size')} {format_size(img_info.size)}\n"
+                               f"{tr('common.tooltip.date')} {img_mtime.strftime('%d/%m/%Y %H:%M:%S')}")
                 if img_info.date_source:
-                    img_tooltip += f"{tr('common.tooltip.date_source')} {img_info.date_source}<br>"
-                img_tooltip += tr("common.tooltip.will_keep")
+                    img_tooltip += f"\n{tr('common.tooltip.date_source')} {img_info.date_source}"
+                img_tooltip += f"\n{tr('common.tooltip.will_keep')}"
                 img_item.setToolTip(0, img_tooltip)
             except Exception:
                 pass
@@ -461,13 +461,13 @@ class LivePhotosDialog(BaseDialog):
         # Tooltip para video
         try:
             video_mtime = datetime.fromtimestamp(group.video_path.stat().st_mtime)
-            video_tooltip = (f"<b>{group.video_path.name}</b><br>"
-                             f"{tr('common.tooltip.folder')} {group.video_path.parent}<br>"
-                             f"{tr('common.tooltip.size')} {format_size(group.video_size)}<br>"
-                             f"{tr('common.tooltip.date')} {video_mtime.strftime('%d/%m/%Y %H:%M:%S')}<br>")
+            video_tooltip = (f"{group.video_path.name}\n"
+                             f"{tr('common.tooltip.folder')} {group.video_path.parent}\n"
+                             f"{tr('common.tooltip.size')} {format_size(group.video_size)}\n"
+                             f"{tr('common.tooltip.date')} {video_mtime.strftime('%d/%m/%Y %H:%M:%S')}")
             if group.video_date_source:
-                video_tooltip += f"{tr('common.tooltip.date_source')} {group.video_date_source}<br>"
-            video_tooltip += tr("common.tooltip.will_delete")
+                video_tooltip += f"\n{tr('common.tooltip.date_source')} {group.video_date_source}"
+            video_tooltip += f"\n{tr('common.tooltip.will_delete')}"
             video_item.setToolTip(0, video_tooltip)
         except Exception:
             pass
