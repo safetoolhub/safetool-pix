@@ -42,6 +42,27 @@ _dual_log_enabled = True  # Por defecto habilitado
 _file_logging_disabled = False  # Cuando True, no se escriben archivos y solo WARNING/ERROR en consola
 
 
+def _get_platform_fallback_logs_dir() -> Path:
+    """
+    Returns a platform-appropriate fallback directory for logs.
+    
+    On macOS, Path.cwd() inside a .app bundle may be read-only due to
+    App Translocation (Gatekeeper). We use ~/Library/Logs/ which is the
+    standard location for application logs on macOS and is always writable.
+    
+    On other platforms, falls back to Path.cwd().
+    """
+    import platform
+    if platform.system() == 'Darwin':
+        macos_logs = Path.home() / "Library" / "Logs" / "SafeTool Pix"
+        try:
+            macos_logs.mkdir(parents=True, exist_ok=True)
+            return macos_logs
+        except Exception:
+            pass
+    return Path.cwd()
+
+
 class ThreadSafeHandler(logging.Handler):
     """
     Base handler thread-safe que usa un RLock para serializar escrituras de logs.
@@ -381,23 +402,23 @@ def configure_logging(
         import sys as _sys
         print(f"WARNING: Insufficient permissions to create logs directory '{_logs_directory}'", file=_sys.stderr)
         print(f"WARNING: Details: {e}", file=_sys.stderr)
-        print(f"WARNING: Logs will be saved in current directory: {Path.cwd()}", file=_sys.stderr)
-        _logs_directory = Path.cwd()
+        _logs_directory = _get_platform_fallback_logs_dir()
+        print(f"WARNING: Logs will be saved in: {_logs_directory}", file=_sys.stderr)
     except OSError as e:
         # Filesystem error (disk full, invalid name, etc.)
         import sys as _sys
         error_type = "Disk full" if e.errno == 28 else "Filesystem error"
         print(f"WARNING: {error_type} creating logs directory '{_logs_directory}'", file=_sys.stderr)
         print(f"WARNING: Details: {e}", file=_sys.stderr)
-        print(f"WARNING: Logs will be saved in current directory: {Path.cwd()}", file=_sys.stderr)
-        _logs_directory = Path.cwd()
+        _logs_directory = _get_platform_fallback_logs_dir()
+        print(f"WARNING: Logs will be saved in: {_logs_directory}", file=_sys.stderr)
     except Exception as e:
         # Other unexpected errors
         import sys as _sys
         print(f"WARNING: Unexpected error creating logs directory '{_logs_directory}'", file=_sys.stderr)
         print(f"WARNING: Type: {type(e).__name__}, Details: {e}", file=_sys.stderr)
-        print(f"WARNING: Logs will be saved in current directory: {Path.cwd()}", file=_sys.stderr)
-        _logs_directory = Path.cwd()
+        _logs_directory = _get_platform_fallback_logs_dir()
+        print(f"WARNING: Logs will be saved in: {_logs_directory}", file=_sys.stderr)
     
     # Configurar nivel
     level_upper = level.upper()
@@ -528,7 +549,7 @@ def change_logs_directory(new_dir: Path | str, dual_log_enabled: Optional[bool] 
     try:
         _logs_directory.mkdir(parents=True, exist_ok=True)
     except Exception:
-        _logs_directory = Path.cwd()
+        _logs_directory = _get_platform_fallback_logs_dir()
     
     # Obtener nivel actual
     level_name = logging.getLevelName(_current_level)

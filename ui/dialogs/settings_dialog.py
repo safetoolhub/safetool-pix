@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import (
     QMessageBox, QCheckBox, QScrollArea
 )
 from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QPalette, QColor
 from config import Config
 from ui.styles.design_system import DesignSystem
 from utils.i18n import tr, SUPPORTED_LANGUAGES
@@ -63,13 +64,19 @@ class SettingsDialog(QDialog):
         self.setModal(True)
         self.resize(850, 960)  # Aumentado verticalmente para acomodar instrucciones sin scroll
         
-        # Aplicar estilo base del DesignSystem
-        self.setStyleSheet(f"""
+        # Aplicar estilo base del DesignSystem y añadir fondo del diálogo
+        # (NO reemplazar por un stylesheet mínimo: perderíamos QToolTip{{color}}
+        # y el resto de reglas de get_stylesheet, incluyendo fuentes y colores)
+        self.setStyleSheet(DesignSystem.get_stylesheet() + f"""
             QDialog {{
                 background-color: {DesignSystem.COLOR_BACKGROUND};
             }}
-            {DesignSystem.get_tooltip_style()}
         """)
+        # Forzar palette de tooltips — sin CSS QToolTip (ver bug Wayland AGENTS.md)
+        pal = self.palette()
+        pal.setColor(QPalette.ColorRole.ToolTipBase, QColor("#000000"))
+        pal.setColor(QPalette.ColorRole.ToolTipText, QColor("#FFFFFF"))
+        self.setPalette(pal)
 
         # Layout principal
         main_layout = QVBoxLayout(self)
@@ -158,7 +165,7 @@ class SettingsDialog(QDialog):
         scroll.setFrameShape(QFrame.Shape.NoFrame)
         scroll.setWidget(widget)
         # Hacer el fondo del scroll area transparente para que herede el del tab widget
-        scroll.setStyleSheet(f"background-color: transparent;")
+        scroll.setStyleSheet("QScrollArea { background-color: transparent; }")
         return scroll
 
     def _create_groupbox(self, title: str) -> QGroupBox:
@@ -364,11 +371,11 @@ class SettingsDialog(QDialog):
         tools_status_layout.setSpacing(DesignSystem.SPACE_4)
 
         self.ffprobe_status_label = QLabel(tr("settings.analysis.system_tools.ffprobe_checking"))
-        self.ffprobe_status_label.setStyleSheet(f"font-size: {DesignSystem.FONT_SIZE_SM}px;")
+        self.ffprobe_status_label.setStyleSheet(f"QLabel {{ font-size: {DesignSystem.FONT_SIZE_SM}px; }}")
         tools_status_layout.addWidget(self.ffprobe_status_label)
 
         self.exiftool_status_label = QLabel(tr("settings.analysis.system_tools.exiftool_checking"))
-        self.exiftool_status_label.setStyleSheet(f"font-size: {DesignSystem.FONT_SIZE_SM}px;")
+        self.exiftool_status_label.setStyleSheet(f"QLabel {{ font-size: {DesignSystem.FONT_SIZE_SM}px; }}")
         tools_status_layout.addWidget(self.exiftool_status_label)
 
         tools_row_layout.addWidget(self.tools_status_frame, 1)
@@ -689,7 +696,7 @@ class SettingsDialog(QDialog):
         # Separador
         separator = QFrame()
         separator.setFrameShape(QFrame.Shape.HLine)
-        separator.setStyleSheet(f"background-color: {DesignSystem.COLOR_BORDER};")
+        separator.setStyleSheet(f"QFrame {{ background-color: {DesignSystem.COLOR_BORDER}; }}")
         perf_layout.addWidget(separator)
         
         # Override manual (opcional)
@@ -1508,14 +1515,18 @@ class SettingsDialog(QDialog):
             display_text = f"ffprobe: {ffprobe_status.version[:40]}" if ffprobe_status.version else tr("settings.analysis.system_tools.ffprobe_installed")
             self.ffprobe_status_label.setText(display_text)
             self.ffprobe_status_label.setStyleSheet(f"""
-                font-size: {DesignSystem.FONT_SIZE_SM}px;
-                color: {DesignSystem.COLOR_SUCCESS};
+                QLabel {{
+                    font-size: {DesignSystem.FONT_SIZE_SM}px;
+                    color: {DesignSystem.COLOR_SUCCESS};
+                }}
             """)
         else:
             self.ffprobe_status_label.setText(tr("settings.analysis.system_tools.ffprobe_not_installed"))
             self.ffprobe_status_label.setStyleSheet(f"""
-                font-size: {DesignSystem.FONT_SIZE_SM}px;
-                color: {DesignSystem.COLOR_ERROR};
+                QLabel {{
+                    font-size: {DesignSystem.FONT_SIZE_SM}px;
+                    color: {DesignSystem.COLOR_ERROR};
+                }}
             """)
         
         # Verificar exiftool usando función unificada
@@ -1526,14 +1537,18 @@ class SettingsDialog(QDialog):
             display_text = f"exiftool: v{exiftool_status.version}" if exiftool_status.version else tr("settings.analysis.system_tools.exiftool_installed")
             self.exiftool_status_label.setText(display_text)
             self.exiftool_status_label.setStyleSheet(f"""
-                font-size: {DesignSystem.FONT_SIZE_SM}px;
-                color: {DesignSystem.COLOR_SUCCESS};
+                QLabel {{
+                    font-size: {DesignSystem.FONT_SIZE_SM}px;
+                    color: {DesignSystem.COLOR_SUCCESS};
+                }}
             """)
         else:
             self.exiftool_status_label.setText(tr("settings.analysis.system_tools.exiftool_not_installed"))
             self.exiftool_status_label.setStyleSheet(f"""
-                font-size: {DesignSystem.FONT_SIZE_SM}px;
-                color: {DesignSystem.COLOR_ERROR};
+                QLabel {{
+                    font-size: {DesignSystem.FONT_SIZE_SM}px;
+                    color: {DesignSystem.COLOR_ERROR};
+                }}
             """)
         
         # Actualizar estilo del frame según disponibilidad

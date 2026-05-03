@@ -68,8 +68,8 @@
       "mark_delete": "Eliminar"
     },
     "tooltip": {
-      "settings": "Configuración",
-      "about": "Acerca de - Instrucciones y capacidades de la aplicación",
+      "settings": "Configuración\nAjusta idioma, rendimiento, backups, logs y opciones avanzadas",
+      "about": "Acerca de - Instrucciones y capacidades de la aplicación\nConsulta el tutorial y los atajos disponibles",
       "folder": "Carpeta:",
       "size": "Tamaño:",
       "date": "Fecha:",
@@ -282,7 +282,7 @@
   "summary_card": {
     "label_folder": "Carpeta:",
     "button_change": "Cambiar",
-    "tooltip_change": "Seleccionar otra carpeta",
+    "tooltip_change": "Seleccionar otra carpeta\nSe borrará el análisis actual y se volverá al inicio",
     "stats_calculating": "Calculando...",
     "stats_total": "{count} archivos • {size}",
     "stats_images": "{count} imágenes",

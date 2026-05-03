@@ -275,6 +275,10 @@ class DuplicatesSimilarDialog(BaseDialog):
         self._setup_ui()
         self._show_loading_state()
         
+        # Maximizar DESPUÉS de que el event loop procese la ventana.
+        # showMaximized() en el constructor falla en macOS (dialogs modales no soportan maximize directo)
+        QTimer.singleShot(0, self.showMaximized)
+        
         # Cargar grupos DESPUÉS de que el diálogo sea visible
         QTimer.singleShot(100, self._initial_load)
     
@@ -370,8 +374,9 @@ class DuplicatesSimilarDialog(BaseDialog):
         self.delete_btn: Optional[QPushButton] = button_box.button(QDialogButtonBox.StandardButton.Ok)
         content_layout.addWidget(button_box)
         
-        # Maximizar el diálogo para aprovechar el espacio
-        self.showMaximized()
+        # Maximización diferida — se ejecuta en __init__() via QTimer.singleShot(0)
+        # No llamar a showMaximized() aquí: en macOS los diálogos modales no lo soportan
+        # durante la construcción y causa un crash silencioso (qFatal/abort)
 
     def _create_global_actions_bar(self) -> QFrame:
         """Crea la barra de acciones globales con estilo unificado (Chips)."""
@@ -1209,7 +1214,7 @@ class DuplicatesSimilarDialog(BaseDialog):
         
         msg = QLabel(msg_text)
         msg.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        msg.setStyleSheet(f"font-size: {DesignSystem.FONT_SIZE_MD}px; color: {DesignSystem.COLOR_TEXT_SECONDARY};")
+        msg.setStyleSheet(f"QLabel {{ font-size: {DesignSystem.FONT_SIZE_MD}px; color: {DesignSystem.COLOR_TEXT_SECONDARY}; }}")
         layout.addWidget(msg)
         
         self.group_layout.addWidget(container)
@@ -1261,7 +1266,7 @@ class DuplicatesSimilarDialog(BaseDialog):
         # Grid de imágenes
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("background: transparent; border: none;")
+        scroll.setStyleSheet("QScrollArea { background: transparent; border: none; }")
         
         grid_widget = QWidget()
         grid_layout = QGridLayout(grid_widget)
@@ -1313,7 +1318,7 @@ class DuplicatesSimilarDialog(BaseDialog):
         except:
             size_text = "?"
         size_lbl = QLabel(size_text)
-        size_lbl.setStyleSheet(f"color: {DesignSystem.COLOR_TEXT_SECONDARY}; font-size: {DesignSystem.FONT_SIZE_XS}px; border: none; background: transparent;")
+        size_lbl.setStyleSheet(f"QLabel {{ color: {DesignSystem.COLOR_TEXT_SECONDARY}; font-size: {DesignSystem.FONT_SIZE_XS}px; border: none; background: transparent; }}")
         header.addWidget(size_lbl)
         
         layout.addLayout(header)
@@ -1328,7 +1333,7 @@ class DuplicatesSimilarDialog(BaseDialog):
         name_lbl = QLabel(file_path.name)
         name_lbl.setWordWrap(True)
         name_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        name_lbl.setStyleSheet(f"font-size: {DesignSystem.FONT_SIZE_SM}px; color: {DesignSystem.COLOR_TEXT}; border: none; background: transparent;")
+        name_lbl.setStyleSheet(f"QLabel {{ font-size: {DesignSystem.FONT_SIZE_SM}px; color: {DesignSystem.COLOR_TEXT}; border: none; background: transparent; }}")
         layout.addWidget(name_lbl)
         
         # Fecha
@@ -1337,7 +1342,7 @@ class DuplicatesSimilarDialog(BaseDialog):
             date_lbl = QLabel(date_info)
             date_lbl.setWordWrap(True)
             date_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            date_lbl.setStyleSheet(f"font-size: {DesignSystem.FONT_SIZE_XS}px; color: {DesignSystem.COLOR_TEXT_SECONDARY}; border: none; background: transparent;")
+            date_lbl.setStyleSheet(f"QLabel {{ font-size: {DesignSystem.FONT_SIZE_XS}px; color: {DesignSystem.COLOR_TEXT_SECONDARY}; border: none; background: transparent; }}")
             layout.addWidget(date_lbl)
         
         card.setProperty("file_path", str(file_path))
@@ -1712,7 +1717,7 @@ class DuplicatesSimilarDialog(BaseDialog):
             lbl.setPixmap(pixmap)
             lbl.setFixedSize(280, 280)
             lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            lbl.setStyleSheet(f"background-color: {DesignSystem.COLOR_BACKGROUND}; border-radius: 4px;")
+            lbl.setStyleSheet(f"QLabel {{ background-color: {DesignSystem.COLOR_BACKGROUND}; border-radius: 4px; }}")
             lbl.setCursor(Qt.CursorShape.PointingHandCursor)
             
             return lbl, is_video

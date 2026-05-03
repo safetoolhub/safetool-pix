@@ -6,6 +6,7 @@ Refactorizado para usar MetadataCache.
 """
 
 from pathlib import Path
+import shutil
 from datetime import datetime
 from typing import List, Dict, Optional, Set
 from collections import defaultdict, Counter
@@ -302,7 +303,7 @@ class FileOrganizerService(BaseService):
                                  target = target.parent / f"{stem}_{counter:03d}{suffix}"
                                  counter += 1
                          
-                         move.source_path.rename(target)
+                         shutil.move(str(move.source_path), str(target))
                          bytes_processed += move.size
                          files_affected.append(target)
                          self.logger.info(f"FILE_MOVED: {move.source_path} -> {target}")

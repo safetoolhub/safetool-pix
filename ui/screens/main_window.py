@@ -217,7 +217,6 @@ class MainWindow(QMainWindow):
         """Aplica el stylesheet global incluyendo tooltips"""
         stylesheet = (
             DesignSystem.get_stylesheet() +
-            DesignSystem.get_tooltip_style() +
             DesignSystem.get_progressbar_style()
         )
         self.setStyleSheet(stylesheet)

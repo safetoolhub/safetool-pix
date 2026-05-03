@@ -5,6 +5,7 @@ Renombrador de nombres de archivos multimedia - VERSIÓN FINAL
 Refactorizado para usar MetadataCache.
 """
 from pathlib import Path
+import shutil
 from typing import List, Optional
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -271,7 +272,7 @@ class FileRenamerService(BaseService):
                     result.conflicts_resolved += 1
 
                 if not dry_run:
-                    original_path.rename(new_path)
+                    shutil.move(str(original_path), str(new_path))
                     
                     # Actualizar caché moviendo el archivo
                     repo.move_file(original_path, new_path)

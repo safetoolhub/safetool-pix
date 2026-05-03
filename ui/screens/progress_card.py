@@ -98,9 +98,11 @@ class ProgressCard(QFrame):
         self.path_label.setProperty("class", "mono")
         self.path_label.setToolTip(self.directory_path)
         self.path_label.setStyleSheet(f"""
-            font-family: {DesignSystem.FONT_FAMILY_MONO};
-            font-size: {DesignSystem.FONT_SIZE_SM}px;
-            color: {DesignSystem.COLOR_TEXT};
+            QLabel {{
+                font-family: {DesignSystem.FONT_FAMILY_MONO};
+                font-size: {DesignSystem.FONT_SIZE_SM}px;
+                color: {DesignSystem.COLOR_TEXT};
+            }}
         """)
         badge_layout.addWidget(self.path_label)
         badge_layout.addStretch()

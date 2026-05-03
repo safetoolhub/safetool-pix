@@ -4,6 +4,7 @@
 from typing import Dict, List, Optional, TYPE_CHECKING
 
 from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtGui import QPalette, QColor
 from PyQt6.QtWidgets import (
     QDialog,
     QDialogButtonBox,
@@ -37,7 +38,15 @@ class BaseDialog(QDialog):
         self._ok_button_ref = None
         
         # Aplicar estilo global a todos los diálogos
-        self.setStyleSheet(DesignSystem.get_stylesheet() + DesignSystem.get_tooltip_style())
+        self.setStyleSheet(DesignSystem.get_stylesheet())
+        # El setStyleSheet puede recalcular la palette del widget y perder los
+        # colores de tooltip heredados de la app. Se fuerzan explícitamente aquí
+        # para que el motor nativo pinte el tooltip con fondo negro y texto blanco
+        # sin ninguna regla QToolTip { } en CSS (ver bug Wayland en AGENTS.md).
+        pal = self.palette()
+        pal.setColor(QPalette.ColorRole.ToolTipBase, QColor("#000000"))
+        pal.setColor(QPalette.ColorRole.ToolTipText, QColor("#FFFFFF"))
+        self.setPalette(pal)
 
 
 
@@ -329,7 +338,7 @@ class BaseDialog(QDialog):
         icon_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         icon_label = QLabel()
-        icon_label.setStyleSheet("border: none; background: transparent;")
+        icon_label.setStyleSheet("QLabel { border: none; background: transparent; }")
         icon_manager.set_label_icon(
             icon_label, 
             icon_name, 
@@ -988,7 +997,7 @@ class BaseDialog(QDialog):
             color=DesignSystem.COLOR_TEXT  # El icono suele ser texto/emoji o SVG coloreado
         )
         # Si es un emoji (fallback), asegurar tamaño
-        icon_label.setStyleSheet(f"font-size: {DesignSystem.FONT_SIZE_LG}px;")
+        icon_label.setStyleSheet(f"QLabel {{ font-size: {DesignSystem.FONT_SIZE_LG}px; }}")
         layout.addWidget(icon_label, 0, Qt.AlignmentFlag.AlignTop)
         
         # Contenedor de texto
@@ -1875,7 +1884,7 @@ class BaseDialog(QDialog):
             # Label vacío para alinear con otros controles
             if 'search' in labels:
                 empty_label = QLabel()
-                empty_label.setStyleSheet("font-size: 9px; margin: 0px; padding: 0px;")
+                empty_label.setStyleSheet("QLabel { font-size: 9px; margin: 0px; padding: 0px; }")
                 empty_label.setFixedHeight(11)  # Altura aproximada del label
                 expand_vlayout.addWidget(empty_label)
             
