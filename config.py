@@ -3,6 +3,7 @@
 """
 Configuración centralizada para SafeTool Pix
 """
+import platform as _platform
 from pathlib import Path
 from typing import Optional, Dict
 
@@ -16,7 +17,7 @@ class Config:
     # 1. INFORMACIÓN DE LA APLICACIÓN
     # ========================================================================
     APP_NAME = "SafeTool Pix"
-    APP_VERSION = "1.0.1"
+    APP_VERSION = "1.0.2"
     APP_VERSION_SUFFIX: str = "beta"  # "beta", "rc1", "" (empty for stable)
     APP_AUTHOR = "SafeToolHub"
     APP_CONTACT = "safetoolhub@protonmail.com"
@@ -37,7 +38,14 @@ class Config:
     # 2. RUTAS Y DIRECTORIOS
     # ========================================================================
     DEFAULT_BASE_DIR = Path.home() / "SafeTool_Pix"
-    DEFAULT_LOG_DIR = DEFAULT_BASE_DIR / "logs"
+    # On macOS, ~/Library/Logs is the standard location for app logs and never
+    # requires TCC (Transparency, Consent and Control) permission, unlike
+    # ~/Documents or ~/Desktop. On Linux/Windows keep the traditional path.
+    DEFAULT_LOG_DIR = (
+        Path.home() / "Library" / "Logs" / "SafeTool Pix"
+        if _platform.system() == "Darwin"
+        else DEFAULT_BASE_DIR / "logs"
+    )
     DEFAULT_BACKUP_DIR = DEFAULT_BASE_DIR / "backups"
     DEFAULT_CACHE_SAVED_DIR = DEFAULT_BASE_DIR / "cache_saved"
     

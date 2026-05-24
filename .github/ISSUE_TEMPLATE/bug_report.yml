@@ -66,7 +66,9 @@ body:
     attributes:
       label: Relevant Log Output
       description: |
-        Paste any relevant log content from `~/Documents/SafeTool_Pix/logs/`. 
+        Paste any relevant log content.
+        - **macOS**: `~/Library/Logs/SafeTool Pix/`
+        - **Linux / Windows**: `~/SafeTool_Pix/logs/`
         You can collapse this with `<details>` tags.
       render: text
 

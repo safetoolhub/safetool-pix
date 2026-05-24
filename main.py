@@ -129,9 +129,13 @@ def main():
     saved_dual_log = settings_manager.get_dual_log_enabled()  # True by default
     saved_disable_file_logging = settings_manager.get_disable_file_logging()  # False by default
     
-    # Configure logging system with saved level
+    # Configure logging system with saved level.
+    # Honor the user-configured logs directory if set in settings; otherwise
+    # use the platform-appropriate default (~/Library/Logs/SafeTool Pix on macOS,
+    # ~/SafeTool_Pix/logs on Linux/Windows).
+    _user_logs_dir = settings_manager.get_logs_directory() or Config.DEFAULT_LOG_DIR
     log_file, logs_dir = configure_logging(
-        logs_dir=Config.DEFAULT_LOG_DIR,
+        logs_dir=_user_logs_dir,
         level=saved_log_level,
         dual_log_enabled=saved_dual_log,
         disable_file_logging=saved_disable_file_logging,
