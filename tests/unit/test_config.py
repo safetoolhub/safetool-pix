@@ -11,6 +11,7 @@ para detectar cualquier inconsistencia tras renombrados.
 """
 
 import pytest
+import platform
 from pathlib import Path
 from unittest.mock import patch
 
@@ -142,11 +143,21 @@ class TestPaths:
         assert Config.DEFAULT_BASE_DIR.name == "SafeTool_Pix"
 
     def test_log_dir_is_subdir_of_base(self):
-        """logs/ está dentro del directorio base."""
-        assert Config.DEFAULT_LOG_DIR.parent == Config.DEFAULT_BASE_DIR
+        """logs/ está dentro del directorio base (solo en Linux/Windows).
+        En macOS usa ~/Library/Logs/SafeTool Pix (convención estándar del SO)."""
+        if platform.system() != 'Darwin':
+            assert Config.DEFAULT_LOG_DIR.parent == Config.DEFAULT_BASE_DIR
+        else:
+            # macOS: ~/Library/Logs/SafeTool Pix — bajo el home pero fuera de DEFAULT_BASE_DIR
+            assert str(Path.home()) in str(Config.DEFAULT_LOG_DIR)
 
     def test_log_dir_name(self):
-        assert Config.DEFAULT_LOG_DIR.name == "logs"
+        if platform.system() == 'Darwin':
+            assert Config.DEFAULT_LOG_DIR.name == "SafeTool Pix"
+            assert "Library" in str(Config.DEFAULT_LOG_DIR)
+            assert "Logs" in str(Config.DEFAULT_LOG_DIR)
+        else:
+            assert Config.DEFAULT_LOG_DIR.name == "logs"
 
     def test_backup_dir_is_subdir_of_base(self):
         assert Config.DEFAULT_BACKUP_DIR.parent == Config.DEFAULT_BASE_DIR
