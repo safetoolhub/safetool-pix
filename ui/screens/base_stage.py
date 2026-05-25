@@ -223,10 +223,12 @@ class BaseStage(QObject):
 
     def _invalidate_related_analysis_results(self, executed_tool_id: str) -> None:
         """
-        Invalida los analysis_results de servicios relacionados después de una operación destructiva.
+        Invalida los analysis_results de servicios relacionados después de una operación
+        que modifica el sistema de archivos (eliminación, movimiento o renombrado).
         
-        Cuando una herramienta elimina archivos, los análisis de otras herramientas pueden
-        quedar obsoletos porque contienen referencias a archivos que ya no existen.
+        Cuando una herramienta elimina, mueve o renombra archivos, los análisis de otras
+        herramientas quedan obsoletos porque contienen referencias a rutas/archivos que
+        ya no existen o han cambiado de ubicación/nombre.
         
         Este método limpia selectivamente los analysis_results que podrían verse afectados.
         
@@ -236,23 +238,32 @@ class BaseStage(QObject):
         Ejemplo:
             - Si se ejecuta 'live_photos' (elimina MOVs), los análisis de 'duplicates_exact',
               'duplicates_similar' y 'visual_identical' pueden tener grupos con esos MOVs.
+            - Si se ejecuta 'file_organizer' (mueve archivos a nuevas carpetas), TODOS los
+              análisis previos contienen rutas antiguas que ya no son válidas → segfault.
+            - Si se ejecuta 'file_renamer' (renombra archivos), TODOS los análisis previos
+              contienen nombres de archivo antiguos que ya no existen → segfault.
         """
         if not hasattr(self, 'analysis_results') or self.analysis_results is None:
             return
         
-        # Mapeo de qué análisis invalidar según la herramienta ejecutada
-        # Las herramientas destructivas pueden afectar a cualquier otro análisis que trabaje con archivos
-        destructive_tools = {
+        # Herramientas que modifican el sistema de archivos y requieren invalidación
+        # - Destructivas: eliminan archivos
+        # - Organizativas: mueven/renombran archivos (cambian rutas)
+        invalidating_tools = {
+            # Destructivas (eliminan archivos)
             'live_photos',      # Elimina MOV
             'heic',             # Elimina HEIC o JPG
             'duplicates_exact', # Elimina duplicados
             'duplicates_similar', # Elimina similares
             'visual_identical', # Elimina visualmente idénticos
             'zero_byte',        # Elimina archivos vacíos
+            # Organizativas (mueven/renombran archivos — cambian rutas)
+            'file_organizer',   # Mueve archivos a nuevas carpetas
+            'file_renamer',     # Renombra archivos (cambia nombres)
         }
         
-        # Si no es una herramienta destructiva, no hay nada que invalidar
-        if executed_tool_id not in destructive_tools:
+        # Si no es una herramienta que modifica archivos, no hay nada que invalidar
+        if executed_tool_id not in invalidating_tools:
             return
         
         # Atributos de analysis_results que contienen datos de análisis de cada servicio
@@ -263,13 +274,27 @@ class BaseStage(QObject):
             'duplicates_similar': 'duplicates_similar',
             'visual_identical': 'visual_identical',
             'zero_byte': 'zero_byte',
+            'file_organizer': 'organization',
+            'file_renamer': 'renaming',
         }
         
-        # Invalidar TODOS los análisis de herramientas destructivas excepto el que acaba de ejecutarse
-        # (el que acaba de ejecutarse puede re-analizarse si el usuario lo desea)
+        # Determinar qué análisis invalidar
+        # - Herramientas organizativas (file_organizer, file_renamer): invalidan TODOS los
+        #   análisis porque cambian las rutas de los archivos, haciendo que cualquier
+        #   análisis previo contenga rutas obsoletas que causan segfault al acceder.
+        # - Herramientas destructivas: invalidan todos excepto el propio (patrón existente).
+        organization_tools = {'file_organizer', 'file_renamer'}
+        
         invalidated = []
         for tool_id, attr_name in analysis_attrs.items():
-            if tool_id != executed_tool_id and hasattr(self.analysis_results, attr_name):
+            # Las herramientas organizativas invalidan TODO (incluido su propio análisis)
+            # Las destructivas invalidan todo excepto su propio resultado
+            should_invalidate = (
+                executed_tool_id in organization_tools or
+                tool_id != executed_tool_id
+            )
+            
+            if should_invalidate and hasattr(self.analysis_results, attr_name):
                 current_value = getattr(self.analysis_results, attr_name, None)
                 if current_value is not None:
                     setattr(self.analysis_results, attr_name, None)
