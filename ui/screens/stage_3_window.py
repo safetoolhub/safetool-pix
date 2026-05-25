@@ -391,6 +391,8 @@ class Stage3Window(BaseStage):
         Abre el diálogo correspondiente a una herramienta sin hacer análisis.
         Asume que el análisis ya está disponible en self.analysis_results.
         """
+        self.logger.debug(f"Opening tool dialog for: {tool_id}")
+        
         # Abrir diálogo correspondiente si ya tenemos datos
         dialog = None
         
@@ -437,7 +439,9 @@ class Stage3Window(BaseStage):
                     # DuplicatesSimilarAnalysis contiene perceptual_hashes, no total_groups
                     # El diálogo genera los grupos dinámicamente con get_groups()
                     if len(sim_data.perceptual_hashes) > 0:
+                        self.logger.debug(f"Creating DuplicatesSimilarDialog with {len(sim_data.perceptual_hashes)} hashes")
                         dialog = DuplicatesSimilarDialog(sim_data, self.main_window)
+                        self.logger.debug("DuplicatesSimilarDialog created successfully")
                     else:
                         QMessageBox.information(
                             self.main_window, 
@@ -475,7 +479,9 @@ class Stage3Window(BaseStage):
             return
 
         if dialog:
+            self.logger.debug(f"Executing dialog for tool: {tool_id}")
             result = dialog.exec()
+            self.logger.debug(f"Dialog for {tool_id} closed with result: {result}")
             # Si el usuario aceptó el diálogo, ejecutar las acciones
             if result == QDialog.DialogCode.Accepted:
                 self._execute_tool_action(tool_id, dialog)
@@ -536,7 +542,9 @@ class Stage3Window(BaseStage):
             worker = WorkerClass(Path(self.selected_folder), self.metadata_cache)
         
         def on_finished(result):
+            self.logger.debug(f"on_finished called for {tool_id}, result type: {type(result).__name__ if result else 'None'}")
             progress.close()
+            self.logger.debug(f"Progress dialog closed for {tool_id}")
             if result:
                 # Guardar resultado en analysis_results
                 if tool_id == 'live_photos':
@@ -572,8 +580,11 @@ class Stage3Window(BaseStage):
                     self.analysis_results.renaming = result
                     self._create_tools_grid()
                 
-                # Abrir el diálogo automáticamente, pero sin volver a analizar
-                self._open_tool_dialog(tool_id)
+                # Diferir apertura del diálogo al event loop principal.
+                # En macOS, abrir un dialog.exec() dentro del callback de un
+                # QProgressDialog que se está cerrando causa un crash silencioso
+                # (nested modal event loops con Cocoa).
+                QTimer.singleShot(0, lambda: self._open_tool_dialog(tool_id))
                 
             worker.deleteLater()
             

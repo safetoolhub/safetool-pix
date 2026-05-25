@@ -10,6 +10,10 @@ import os
 import traceback
 from pathlib import Path
 
+# Enable faulthandler to get tracebacks on segfaults/SIGABRT (critical for macOS crash diagnosis)
+import faulthandler
+faulthandler.enable()
+
 # Configure Qt to avoid Wayland warnings
 os.environ['QT_LOGGING_RULES'] = 'qt.qpa.wayland=false'
 
