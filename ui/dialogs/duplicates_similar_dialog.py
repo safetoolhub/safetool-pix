@@ -1110,8 +1110,15 @@ class DuplicatesSimilarDialog(BaseDialog):
         # Procesar eventos para asegurar que el diálogo está visible
         QApplication.processEvents()
         
-        self._regenerate_groups()
-        self._is_loading = False
+        try:
+            self._regenerate_groups()
+        except Exception as e:
+            self.logger.error(f"Error during initial group loading: {e}")
+            import traceback
+            self.logger.error(traceback.format_exc())
+            self._show_no_groups_message()
+        finally:
+            self._is_loading = False
 
     # ================= LÓGICA =================
 
@@ -1171,6 +1178,12 @@ class DuplicatesSimilarDialog(BaseDialog):
                 self._load_group(0)
             else:
                 self._show_no_groups_message()
+        
+        except Exception as e:
+            self.logger.error(f"Error during group regeneration: {e}")
+            import traceback
+            self.logger.error(traceback.format_exc())
+            self._show_no_groups_message()
                 
         finally:
             QApplication.restoreOverrideCursor()
