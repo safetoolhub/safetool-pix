@@ -17,7 +17,7 @@ class Config:
     # 1. INFORMACIÓN DE LA APLICACIÓN
     # ========================================================================
     APP_NAME = "SafeTool Pix"
-    APP_VERSION = "1.2.0"
+    APP_VERSION = "1.1.1"
     APP_VERSION_SUFFIX: str = ""  # "beta", "rc1", "" (empty for stable)
     APP_AUTHOR = "SafeToolHub"
     APP_CONTACT = "safetoolhub@protonmail.com"
