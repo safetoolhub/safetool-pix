@@ -145,33 +145,67 @@ class Stage3Window(BaseStage):
         Elimina todos los items del layout principal que están después del summary_card.
         Esto incluye: spacings, tools_grid, y stretches añadidos en _create_tools_grid.
         Necesario para evitar acumulación de gaps al recrear el grid.
+        
+        En macOS, los widgets pueden ser destruidos internamente por Qt durante el cierre
+        de diálogos modales (QProgressDialog). Usamos sip.isdeleted() y try/except para
+        proteger contra accesos a widgets C++ ya destruidos (segfault).
         """
+        from PyQt6.sip import isdeleted
+        
         if not self.summary_card:
             return
         
-        # Encontrar el índice del summary_card en el layout
-        summary_index = -1
-        for i in range(self.main_layout.count()):
-            item = self.main_layout.itemAt(i)
-            if item and item.widget() == self.summary_card:
-                summary_index = i
-                break
-        
-        if summary_index == -1:
+        try:
+            if isdeleted(self.main_layout):
+                return
+        except RuntimeError:
             return
         
-        # Eliminar todos los items después del summary_card (en orden inverso)
-        while self.main_layout.count() > summary_index + 1:
-            item = self.main_layout.takeAt(summary_index + 1)
-            if item:
-                widget = item.widget()
-                if widget:
-                    widget.hide()
-                    widget.setParent(None)
-                    widget.deleteLater()
-                # Los spacers y stretches no tienen widget, se eliminan automáticamente con takeAt
+        # Estrategia segura: si tenemos referencia al tools_grid, eliminarlo directamente.
+        # Esto evita iterar por el layout y acceder a widgets potencialmente destruidos.
+        if self.tools_grid is not None:
+            try:
+                if not isdeleted(self.tools_grid):
+                    self.main_layout.removeWidget(self.tools_grid)
+                    self.tools_grid.hide()
+                    self.tools_grid.setParent(None)
+                    self.tools_grid.deleteLater()
+            except RuntimeError:
+                pass
+            self.tools_grid = None
         
-        self.tools_grid = None
+        # Limpiar spacings y stretches restantes después del summary_card
+        try:
+            summary_index = -1
+            for i in range(self.main_layout.count()):
+                item = self.main_layout.itemAt(i)
+                if item:
+                    try:
+                        w = item.widget()
+                        if w is not None and not isdeleted(w) and w is self.summary_card:
+                            summary_index = i
+                            break
+                    except RuntimeError:
+                        continue
+            
+            if summary_index == -1:
+                return
+            
+            # Eliminar spacers/stretches (no tienen widget, son seguros)
+            while self.main_layout.count() > summary_index + 1:
+                item = self.main_layout.takeAt(summary_index + 1)
+                if item:
+                    widget = item.widget()
+                    if widget:
+                        try:
+                            if not isdeleted(widget):
+                                widget.hide()
+                                widget.setParent(None)
+                                widget.deleteLater()
+                        except RuntimeError:
+                            pass
+        except RuntimeError:
+            pass
 
     def _create_stale_banner(self) -> QWidget:
         """Crea el banner de advertencia de estadísticas desactualizadas"""
@@ -551,14 +585,12 @@ class Stage3Window(BaseStage):
             for handler in logging.root.handlers:
                 handler.flush()
             
-            # Diferir TODO el procesamiento post-análisis al event loop principal.
-            # En macOS, ejecutar código complejo dentro del callback de un QProgressDialog
-            # que se está cerrando causa un crash silencioso (nested modal event loops con Cocoa).
-            # Guardamos el resultado y cerramos el progress; el procesamiento real ocurre
-            # después de que progress.exec() retorne.
+            # Guardar resultado para procesarlo después de que progress.exec() retorne.
+            # En macOS, ejecutar código que manipula widgets dentro del callback de un
+            # QProgressDialog causa segfault porque Qt puede invalidar widgets del parent.
             self._pending_analysis_result = result
             self._pending_analysis_tool_id = tool_id
-            progress.reset()
+            # Cerrar el progress dialog de forma segura
             progress.close()
             self.logger.debug(f"Progress dialog closed for {tool_id}")
             
@@ -566,7 +598,6 @@ class Stage3Window(BaseStage):
             self._pending_analysis_result = None
             self._pending_analysis_tool_id = None
             self._pending_analysis_error = msg
-            progress.reset()
             progress.close()
             
         def on_progress_update(current, total, msg):
@@ -624,8 +655,11 @@ class Stage3Window(BaseStage):
                     self.analysis_results.renaming = result
                 
                 self.logger.debug(f"Result stored for {tool_id}, refreshing grid...")
-                self._create_tools_grid()
-                self.logger.debug(f"Grid refreshed, opening dialog for {tool_id}...")
+                # NO recrear el grid aquí — en macOS, los widgets del grid pueden haber sido
+                # invalidados internamente por Qt durante el cierre del QProgressDialog modal.
+                # Llamar a _cleanup_grid_section() causa un segfault al acceder a widgets destruidos.
+                # El grid se actualizará cuando el diálogo se cierre (en _open_tool_dialog).
+                self.logger.debug(f"Opening dialog for {tool_id}...")
                 self._open_tool_dialog(tool_id)
             except Exception as e:
                 self.logger.error(f"Error processing result for {tool_id}: {e}")
