@@ -204,7 +204,7 @@
   },
   "stage3": {
     "banner": {
-      "stale_stats": "<b>Outdated statistics</b><br>Changes have been made to the files. The displayed statistics may not be accurate."
+      "stale_stats": "Re-analysis required — Files have been moved or renamed. Tool results may be incorrect or cause errors. Re-analyze before using any tool."
     },
     "button": {
       "reanalyze_now": "Re-analyze now"

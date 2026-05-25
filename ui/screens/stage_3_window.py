@@ -885,18 +885,40 @@ class Stage3Window(BaseStage):
                 was_simulation = plan.get('dry_run', False)
                 
                 # ================================================================
-                # INVALIDAR ANÁLISIS RELACIONADOS DESPUÉS DE OPERACIÓN DESTRUCTIVA
+                # INVALIDAR ANÁLISIS RELACIONADOS DESPUÉS DE OPERACIÓN QUE MODIFICA
+                # EL SISTEMA DE ARCHIVOS (eliminación, movimiento o renombrado).
                 # Esto previene que otras herramientas usen datos obsoletos que
-                # contienen referencias a archivos que ya fueron eliminados.
+                # contienen referencias a archivos que ya fueron eliminados/movidos/renombrados.
+                # CRÍTICO: file_organizer y file_renamer cambian las rutas de los archivos,
+                # lo que causa segfault si otros análisis intentan acceder a rutas antiguas.
                 # ================================================================
                 if not was_simulation:
                     self._invalidate_related_analysis_results(tool_id)
                 
-                # file_organizer y file_renamer no borran archivos, solo mueven/renombran
-                # No tiene sentido pedir re-análisis para ellos
-                skip_reanalysis_tools = {'file_organizer', 'file_renamer'}
+                # Herramientas organizativas (mueven/renombran): invalidan la caché de metadatos
+                # y muestran el banner de estadísticas desactualizadas, ya que TODAS las rutas
+                # en la caché son ahora obsoletas. No se ofrece re-análisis individual porque
+                # el cambio afecta a todo el dataset.
+                organization_tools = {'file_organizer', 'file_renamer'}
                 
-                if not was_simulation and tool_id not in skip_reanalysis_tools:
+                if not was_simulation and tool_id in organization_tools:
+                    # La caché de metadatos contiene rutas antiguas → invalidar completamente
+                    self._invalidate_metadata_cache()
+                    
+                    # Mostrar banner de advertencia para que el usuario sepa que debe reanalizar
+                    if self.stale_banner:
+                        self.stale_banner.show()
+                        if hasattr(self.main_window, 'scroll_area'):
+                            self.main_window.scroll_area.ensureWidgetVisible(self.stale_banner)
+                    
+                    # Refrescar el grid para que las cards reflejen que no hay datos
+                    self._create_tools_grid()
+                    
+                    self.logger.info(
+                        f"All analyses invalidated after {tool_id}. "
+                        f"Metadata cache cleared. User should re-analyze."
+                    )
+                elif not was_simulation and tool_id not in organization_tools:
                     # Verificar si se debe pedir confirmación antes de reanalizar
                     should_confirm = settings_manager.get_confirm_reanalyze()
                     

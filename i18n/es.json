@@ -204,7 +204,7 @@
   },
   "stage3": {
     "banner": {
-      "stale_stats": "<b>Estadísticas desactualizadas</b><br>Se han realizado cambios en los archivos. Las estadísticas mostradas pueden no ser precisas."
+      "stale_stats": "Análisis necesario — Se han movido o renombrado archivos. Los resultados de las herramientas pueden ser incorrectos o causar errores. Vuelve a analizar antes de usar cualquier herramienta."
     },
     "button": {
       "reanalyze_now": "Re-analizar ahora"
