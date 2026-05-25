@@ -11,8 +11,15 @@ import traceback
 from pathlib import Path
 
 # Enable faulthandler to get tracebacks on segfaults/SIGABRT (critical for macOS crash diagnosis)
+# Write to a file since stderr may not be visible when app is launched from Finder
 import faulthandler
-faulthandler.enable()
+_fault_log_path = Path.home() / "SafeTool_Pix" / "crash_report.log"
+try:
+    _fault_log_path.parent.mkdir(parents=True, exist_ok=True)
+    _fault_file = open(_fault_log_path, 'w')
+    faulthandler.enable(file=_fault_file)
+except Exception:
+    faulthandler.enable()  # Fallback to stderr
 
 # Configure Qt to avoid Wayland warnings
 os.environ['QT_LOGGING_RULES'] = 'qt.qpa.wayland=false'

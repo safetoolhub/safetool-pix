@@ -526,8 +526,10 @@ class Stage3Window(BaseStage):
         
         # Crear diálogo de progreso
         progress = QProgressDialog(message, "Cancelar", 0, 0, self.main_window)
-        progress.setWindowModality(Qt.WindowModality.WindowModal)
+        progress.setWindowModality(Qt.WindowModality.ApplicationModal)
         progress.setMinimumDuration(0)
+        progress.setAutoClose(False)  # Controlar cierre manualmente para evitar crash en macOS
+        progress.setAutoReset(False)
         progress.setValue(0)
         progress.resize(450, 120)  # Ancho aumentado para que el texto no se corte
         
@@ -543,55 +545,29 @@ class Stage3Window(BaseStage):
         
         def on_finished(result):
             self.logger.debug(f"on_finished called for {tool_id}, result type: {type(result).__name__ if result else 'None'}")
+            
+            # Flush logs inmediatamente para diagnóstico de crashes en macOS
+            import logging
+            for handler in logging.root.handlers:
+                handler.flush()
+            
+            # Diferir TODO el procesamiento post-análisis al event loop principal.
+            # En macOS, ejecutar código complejo dentro del callback de un QProgressDialog
+            # que se está cerrando causa un crash silencioso (nested modal event loops con Cocoa).
+            # Guardamos el resultado y cerramos el progress; el procesamiento real ocurre
+            # después de que progress.exec() retorne.
+            self._pending_analysis_result = result
+            self._pending_analysis_tool_id = tool_id
+            progress.reset()
             progress.close()
             self.logger.debug(f"Progress dialog closed for {tool_id}")
-            if result:
-                # Guardar resultado en analysis_results
-                if tool_id == 'live_photos':
-                    self.analysis_results.live_photos = result
-                    # Refrescar el grid completo para actualizar la card
-                    self._create_tools_grid()
-                    
-                elif tool_id == 'heic':
-                    self.analysis_results.heic = result
-                    self._create_tools_grid()
-                    
-                elif tool_id == 'duplicates_exact':
-                    self.analysis_results.duplicates = result
-                    self._create_tools_grid()
-                    
-                elif tool_id == 'visual_identical':
-                    self.analysis_results.visual_identical = result
-                    self._create_tools_grid()
-                    
-                elif tool_id == 'duplicates_similar':
-                    self.analysis_results.duplicates_similar = result
-                    self._create_tools_grid()
-                    
-                elif tool_id == 'zero_byte':
-                    self.analysis_results.zero_byte = result
-                    self._create_tools_grid()
-                
-                elif tool_id == 'file_organizer':
-                    self.analysis_results.organization = result
-                    self._create_tools_grid()
-                
-                elif tool_id == 'file_renamer':
-                    self.analysis_results.renaming = result
-                    self._create_tools_grid()
-                
-                # Diferir apertura del diálogo al event loop principal.
-                # En macOS, abrir un dialog.exec() dentro del callback de un
-                # QProgressDialog que se está cerrando causa un crash silencioso
-                # (nested modal event loops con Cocoa).
-                QTimer.singleShot(0, lambda: self._open_tool_dialog(tool_id))
-                
-            worker.deleteLater()
             
         def on_error(msg):
+            self._pending_analysis_result = None
+            self._pending_analysis_tool_id = None
+            self._pending_analysis_error = msg
+            progress.reset()
             progress.close()
-            QMessageBox.critical(self.main_window, tr("common.error"), tr("stage3.error.analysis_failed", msg=msg))
-            worker.deleteLater()
             
         def on_progress_update(current, total, msg):
             # Si total > 0, usar barra determinada. Si no, indeterminada.
@@ -613,6 +589,50 @@ class Stage3Window(BaseStage):
         progress.canceled.connect(worker.stop)
         worker.start()
         progress.exec()
+        self.logger.debug(f"progress.exec() returned for {tool_id}")
+        
+        # Procesar resultado DESPUÉS de que progress.exec() haya retornado completamente.
+        # Esto evita el crash en macOS causado por nested modal event loops.
+        result = getattr(self, '_pending_analysis_result', None)
+        pending_tool_id = getattr(self, '_pending_analysis_tool_id', None)
+        error_msg = getattr(self, '_pending_analysis_error', None)
+        self._pending_analysis_result = None
+        self._pending_analysis_tool_id = None
+        self._pending_analysis_error = None
+        
+        if error_msg:
+            QMessageBox.critical(self.main_window, tr("common.error"), tr("stage3.error.analysis_failed", msg=error_msg))
+        elif result and pending_tool_id == tool_id:
+            try:
+                self.logger.debug(f"Processing analysis result for {tool_id}")
+                # Guardar resultado en analysis_results
+                if tool_id == 'live_photos':
+                    self.analysis_results.live_photos = result
+                elif tool_id == 'heic':
+                    self.analysis_results.heic = result
+                elif tool_id == 'duplicates_exact':
+                    self.analysis_results.duplicates = result
+                elif tool_id == 'visual_identical':
+                    self.analysis_results.visual_identical = result
+                elif tool_id == 'duplicates_similar':
+                    self.analysis_results.duplicates_similar = result
+                elif tool_id == 'zero_byte':
+                    self.analysis_results.zero_byte = result
+                elif tool_id == 'file_organizer':
+                    self.analysis_results.organization = result
+                elif tool_id == 'file_renamer':
+                    self.analysis_results.renaming = result
+                
+                self.logger.debug(f"Result stored for {tool_id}, refreshing grid...")
+                self._create_tools_grid()
+                self.logger.debug(f"Grid refreshed, opening dialog for {tool_id}...")
+                self._open_tool_dialog(tool_id)
+            except Exception as e:
+                self.logger.error(f"Error processing result for {tool_id}: {e}")
+                import traceback as tb
+                self.logger.error(tb.format_exc())
+        
+        worker.deleteLater()
     
     def _execute_tool_action(self, tool_id: str, dialog):
         """
