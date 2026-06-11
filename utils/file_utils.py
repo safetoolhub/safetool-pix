@@ -52,6 +52,7 @@ from dataclasses import dataclass
 from utils.format_utils import format_size
 from utils.callback_utils import safe_progress_callback
 from utils.logger import get_logger
+from utils.platform_utils import get_windows_subprocess_kwargs
 
 # =============================================================================
 # CONSTANTS
@@ -1039,7 +1040,8 @@ def get_exif_from_video(file_path: Path) -> dict:
                 ['exiftool', '-Keys:CreationDate', '-d', '%Y:%m:%d %H:%M:%S', '-s3', str(file_path)],
                 capture_output=True,
                 text=True,
-                timeout=3
+                timeout=3,
+                **get_windows_subprocess_kwargs()
             )
             
             if exiftool_result.returncode == 0 and exiftool_result.stdout.strip():
@@ -1081,7 +1083,8 @@ def get_exif_from_video(file_path: Path) -> dict:
             cmd,
             capture_output=True,
             text=True,
-            timeout=10  # Timeout de 10 segundos
+            timeout=10,  # Timeout de 10 segundos
+            **get_windows_subprocess_kwargs()
         )
         
         if ffprobe_result.returncode != 0:
