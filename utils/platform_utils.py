@@ -21,6 +21,38 @@ logger = get_logger('PlatformUtils')
 
 
 # =============================================================================
+# WINDOWS SUBPROCESS HELPERS
+# =============================================================================
+
+def get_windows_subprocess_kwargs() -> Dict[str, Any]:
+    """
+    Returns kwargs to hide console windows when calling subprocess on Windows.
+    
+    On Windows, GUI applications that spawn console processes (like ffprobe.exe)
+    will briefly show a terminal window for each invocation. This is especially
+    problematic during batch operations (e.g., video metadata extraction).
+    
+    Returns:
+        Dict with 'creationflags' and 'startupinfo' to suppress console windows.
+        Empty dict on non-Windows platforms.
+    
+    Example:
+        >>> subprocess.run(['ffprobe', 'video.mp4'], **get_windows_subprocess_kwargs())
+    """
+    if platform.system() != 'Windows':
+        return {}
+    
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
+    
+    return {
+        'creationflags': subprocess.CREATE_NO_WINDOW,
+        'startupinfo': startupinfo,
+    }
+
+
+# =============================================================================
 # SYSTEM TOOLS DETECTION
 # =============================================================================
 
@@ -65,7 +97,8 @@ def get_tool_version(tool_name: str, version_args: list[str], timeout: int = 5) 
             [tool_name] + version_args,
             capture_output=True,
             text=True,
-            timeout=timeout
+            timeout=timeout,
+            **get_windows_subprocess_kwargs()
         )
         if result.returncode == 0:
             return result.stdout.strip()
@@ -489,15 +522,18 @@ def open_folder_in_explorer(folder_path: Path,
                                stderr=subprocess.DEVNULL)
                                
         elif system == 'Windows':
+            win_kwargs = get_windows_subprocess_kwargs()
             if select_file and select_file.exists():
                 # Windows Explorer soporta /select para seleccionar archivo
                 subprocess.Popen(['explorer', '/select,', str(select_file)],
                                stdout=subprocess.DEVNULL,
-                               stderr=subprocess.DEVNULL)
+                               stderr=subprocess.DEVNULL,
+                               **win_kwargs)
             else:
                 subprocess.Popen(['explorer', str(folder_path)],
                                stdout=subprocess.DEVNULL,
-                               stderr=subprocess.DEVNULL)
+                               stderr=subprocess.DEVNULL,
+                               **win_kwargs)
         else:
             error_msg = tr("platform.error.unsupported_os", system=system)
             logger.error(f"Unsupported operating system: {system}")
